@@ -1,4 +1,12 @@
-# This .gitignore will automatically ignore certain Gradle and IntelliJ files that you likely won't want to commit!
+# VSCode configs
+.code-workspace
+
+# Misc. Files
+*.swp
+*.log
+
+# macOS system files
+.DS_Store
 
 # Gradle .gitignore (https://github.com/github/gitignore/blob/master/Gradle.gitignore)
 .gradle
