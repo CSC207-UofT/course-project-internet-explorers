@@ -1,0 +1,22 @@
+#!/bin/sh
+
+target_files=$(git diff --cached --diff-filter=d --name-only | grep -e .java$ -e .json$)
+
+if [[ $target_files == "" ]]
+then
+  exit 0
+else
+  npx prettier $target_files --write
+  prettier_exit_code=$?
+  git add -f $target_files
+fi
+
+if [ $prettier_exit_code -ne 0 ]
+then
+  echo "❌ Prettier failed with exit code $prettier_exit_code"
+  exit 1
+else
+  echo "✔ Code blessed by Prettier"
+  exit 0
+fi
+
