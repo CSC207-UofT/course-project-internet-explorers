@@ -1,6 +1,13 @@
-## Replace this README.md!
+# cool java game
 
-This is a standard README.md file for you to replace. You'll want to include your own content here!
+---
 
-MD (Markdown) files use [Markdown formatting](https://guides.github.com/features/mastering-markdown/): 
-these look very much like .txt files, so you can write them in a very similar way.
+## Contributing
+
+### Getting Started
+
+1. Install [node.js](https://nodejs.org/).
+2. Install [Prettier](https://prettier.io/) and [Prettier for Java](https://prettier-java.tech/) using \
+   `npm install prettier prettier-plugin-java --save-dev`
+3. Set the Git Hooks directory using \
+   `git config --local core.hookspath .\git-hooks\`
