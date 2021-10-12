@@ -16,7 +16,7 @@ theme: gaia
 
 ---
 
-# `abstract class IndividualCharacter`
+# `abstract class GameCharacter`
 
 ### Responsibilities
 * Health: Attribute, int, denotes the total amount of health the individual has
@@ -41,7 +41,7 @@ Player, Enemy, Defender
 * Spawn_defender(position): Method to spawn defender at a certain position on the map
 
 ### Collaborators
-Player, Enemy, Defender, Weaponable, Collidable, IndividualCharacter
+Player, Enemy, Defender, Weaponable, Collidable, GameCharacter
 
 ---
 
@@ -52,7 +52,7 @@ Player, Enemy, Defender, Weaponable, Collidable, IndividualCharacter
 * Attack: Method, attacks defense on the map
 
 ### Collaborators
-IndividualCharacter, Player, Defender, Map, Weaponable, Collidable
+GameCharacter, Player, Defender, Map, Weaponable, Collidable
 
 ---
 
@@ -62,7 +62,7 @@ IndividualCharacter, Player, Defender, Map, Weaponable, Collidable
 * Attack: Method, attacks enemies on the map
 
 ### Collaborators
-IndividualCharacter, Player, Enemy, Map, Weaponable, Collidable
+GameCharacter, Player, Enemy, Map, Weaponable, Collidable
 
 ---
 
