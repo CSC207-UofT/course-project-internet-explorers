@@ -5,12 +5,6 @@ description: Hosting Marp slide deck on the web
 theme: gaia
 ---
 
-<style>
-:root {
-  font-size: 24px;
-}
-</style>
-
 <!-- _class: lead -->
 # Entity Classes
 
@@ -25,8 +19,6 @@ theme: gaia
 * Level(?): Attribute, the level of the enemy
 * Range(?): Attribute, how far the character can attack
 * Hitbox(?): Attribute, from how far the character can be hit from
-* updatePosition: Method, updates the x, y position coordinates
-* depleteHealth: Method, updates health after being attacked 
 
 ### Collaborators
 Player, Enemy, Defender
@@ -92,7 +84,7 @@ Player, Enemy, Defender, Tower
 # `interface Weaponable`
 
 ### Responsibilities
-* Hit(attacker, victim, weapon): Method that depletes victim health by weapon’s attackPower
+* H
 
 
 ### Collaborators
@@ -103,7 +95,33 @@ Player, Enemy, Defender
 # `interface Collidable`
 
 ### Responsibilities
-* Collide: Method that collides two objects whenever in the same position and depletes health according to objects clashed. 
+* Ensures that no two objects implementing Collidable are at the same place at the same time.
+* Collidable objects have an onCollision method which defines their behaviour upon collision.
+* Collidable objects have a hitbox, their shape in the world of Collidables.
+
+
+
+### Collaborators
+Player, Enemy, Defender, Tower
+
+---
+
+# `interface DamagingCollidable extends Collidable`
+
+### Responsibilities
+* Has information about how much damage to inflict when it hits something, who caused the damage
+
+
+### Collaborators
+Player, Enemy, Defender, Tower
+
+
+---
+
+# `interface DamageableCollidable extends Collidable`
+
+### Responsibilities
+* When a DamageableCollidable collides with a DamagingCollidable, the DamageableCollidable (or manager's) takeDamage method is called.
 
 
 ### Collaborators
@@ -114,11 +132,16 @@ Player, Enemy, Defender, Tower
 # `abstract class Weapon`
 
 ### Responsibilities
-* Grade: Attribute, essentially the level of the weapon
-* attackPower: The amount of damage the weapon does
+* is an inventory item
+* spawns in a DamagingCollidable which actually inflicts the damage
+* level: Attribute, upgrade level of weapon
+* static dict with attributes for each level
+  * damage
+  * range
+  * attack speed (?)
 
 ### Collaborators
-Player, Enemy, Defender, Collidable
+Player, Enemy, Defender, DamagingCollidable
 
 ---
 
@@ -203,3 +226,9 @@ Player, Enemy, Map
 
 ### Collaborators
 Player, Map 
+
+<style>
+:root {
+  font-size: 24px;
+}
+</style>
