@@ -161,12 +161,11 @@ Player, Enemy, Defender, Tower
 
 ---
 
-# `abstract class Weapon`
+# `abstract class Weapon implements Item`
 
 ### Responsibilities
-* is an inventory item
-* spawns in a DamagingCollidable which actually inflicts the damage
-* level: Attribute, upgrade level of weapon
+* behaviour determined by `WeaponUsageDelegate`
+* level: item metadata, current upgrade level of weapon
 * static dict with attributes for each level
   * damage
   * range
@@ -205,8 +204,43 @@ World, Map, GameCharacter
 
 ---
 
+# `abstract interface Item`
+
+### Responsibilities
+* store information about an Item
+  * texture
+  * name
+  * metadata: misc. information not common to all `Item`s 
+* has an `ItemUsageDelegate` which determines the behaviour of this item when used
+
+### Collaborators
+ItemUsageDelegate
+
+---
+
 <!-- _class: lead -->
 # Use Case Classes
+
+---
+
+# `class ItemUsageDelegate`
+
+### Responsibilities
+* `ItemUsageDelegate`s must implement a `use` method which takes an `Item` and the `GameCharacter` that used it.
+* `use` does nothing by default
+
+### Collaborators
+Item, GameCharacter
+
+---
+
+# `class WeaponUsageDelegate implements ItemUsageDelegate`
+
+### Responsibilities
+* spawns in a DamagingCollidable which actually inflicts the damage for the weapon used
+
+### Collaborators
+Weapon
 
 ---
 
