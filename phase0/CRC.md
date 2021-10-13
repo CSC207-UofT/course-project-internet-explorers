@@ -45,7 +45,7 @@ Player, Enemy, Defender
 
 
 ### Collaborators
-Player, Enemy, Defender, Weaponable, Collidable, GameCharacter
+Player, Enemy, Defender, Collidable, GameCharacter
 
 ---
 
@@ -54,7 +54,7 @@ Player, Enemy, Defender, Weaponable, Collidable, GameCharacter
 ### Responsibilities
 
 ### Collaborators
-GameCharacter, Player, Defender, Map, Weaponable, Collidable
+GameCharacter, Player, Defender, Map, DamageableCollidable
 
 ---
 
@@ -63,7 +63,7 @@ GameCharacter, Player, Defender, Map, Weaponable, Collidable
 ### Responsibilities
 
 ### Collaborators
-GameCharacter, Player, Enemy, Map, Weaponable, Collidable
+GameCharacter, Player, Enemy, Map, DamageableCollidable
 
 ---
 
@@ -108,17 +108,6 @@ Enemy, World, Tiles
 
 ### Collaborators
 Map, WorldEntity
-
----
-
-# `interface Weaponable`
-
-### Responsibilities
-* H
-
-
-### Collaborators
-Player, Enemy, Defender
 
 ---
 
