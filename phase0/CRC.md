@@ -188,6 +188,23 @@ KeyboardInputHandler, GameCharacter
 
 ---
 
+# `abstract class LevelState`
+
+### Responsibilities
+* represents the state of a level
+* Stores static information about the level
+  * Map
+  * Duration
+  * Which/When/How many enemies spawn
+* Can also store dynamic information about a level being played
+  * World
+  * Time passed
+
+### Collaborators
+World, Map, GameCharacter
+
+---
+
 <!-- _class: lead -->
 # Use Case Classes
 
@@ -219,6 +236,27 @@ Player, Enemy, Defender, Collidable
 
 ### Collaborators
 Player, Enemy, Defender, Map
+
+---
+
+<!-- _class: lead -->
+# Controller Classes
+
+---
+
+# `class LevelManager`
+
+### Responsibilities
+* Initialize level's `World`
+  * convert `Map` into `TileEntity` objects to add to the `World`
+  * invoke `SpawnController` for the `Player` and other `GameCharacters`
+* Query level state
+* Reset level to certain `LevelState`
+* pause/play/Progress the level
+
+
+### Collaborators
+GameManager, LevelState, World, WorldEntity, Map
 
 ---
 
