@@ -198,10 +198,10 @@ Player, Enemy, Defender, Collidable
 
 ---
 
-# `class gameManager (?)`
+# `class GameManager`
 
 ### Responsibilities
-* Spawn: Method, spawns enemies at position on the map
+* beginGame: trigger process to begin a game
 * deleteCharacter: removes a character from the map when health = 0
 
 
@@ -224,7 +224,7 @@ Player, Enemy, Defender, Map
 * + keyUp(input), move player up
 * + keyOpenInventory, browse inventory
 * + keyChooseInventoryItem, pick inventory item
-* + keyPlaceItem(input), place inventory item
+* + keyUseItem(input), place inventory item
 * + keyLevelUpDefender(?), level up the defender
 * + keyAttack(input), attack with weapon
 
