@@ -37,30 +37,30 @@ Player, Enemy, Defender
 
 ---
 
-# `class Player`
+# `class Player extends GameCharacter implements DamageableCollidable`
 
 ### Responsibilities
-* inventory: Attribute, ArrayList of items currently in player's inventory. can be defender, weapon, map item (like a wall)
-* itemDictionary: Attribute, Dictionary of items and their information
-
+* represents the `GameCharacter` controlled by the player
 
 ### Collaborators
 Player, Enemy, Defender, Collidable, GameCharacter
 
 ---
 
-# `class Enemy`
+# `class Enemy extends GameCharacter implements DamageableCollidable`
 
 ### Responsibilities
+* represents enemy GameCharacters which attack the Player's castle and defenders
 
 ### Collaborators
 GameCharacter, Player, Defender, Map, DamageableCollidable
 
 ---
 
-# `class Defender`
+# `class Defender extends GameCharacter`
 
 ### Responsibilities
+* represents friendly GameCharacters which attack enemies
 
 ### Collaborators
 GameCharacter, Player, Enemy, Map, DamageableCollidable
@@ -176,7 +176,8 @@ KeyboardInputHandler, GameCharacter
 
 ---
 
-<!-- _class: lead --># Use Case Classes
+<!-- _class: lead -->
+# Use Case Classes
 
 ---
 
