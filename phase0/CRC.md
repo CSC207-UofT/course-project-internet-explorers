@@ -10,6 +10,18 @@ theme: gaia
 
 ---
 
+# `Interface WorldEntity`
+
+### Responsibilities
+* Position: Attribute, double[x,y], continuous coordinates for where the entity is located
+* Shape: Attribute, the outline of the entity
+
+
+### Collaborators
+Player, Enemy, Defender
+
+---
+
 # `abstract class GameCharacter`
 
 ### Responsibilities
@@ -70,14 +82,38 @@ Enemy, Map, Collidable
 
 ---
 
-# `class Map`
+# `class Tile`
 
 ### Responsibilities
-* All_positions: Attribute, list of all objects and their positions
+* spawn_point: boolean, is this a spawn point for the enemies
+* collides: boolean, can other entities collide with this tile
+* texture: what the tile looks like (i.e. grass, road, water, etc.)
 
 
 ### Collaborators
-Player, Enemy, Defender, Tower
+World, Map
+
+---
+
+# `class Map`
+
+### Responsibilities
+* Tiles_layout: Attribute, 2d array of tiles
+
+
+### Collaborators
+Enemy, World, Tiles
+
+---
+
+# `class World`
+
+### Responsibilities
+* All_Positions: holds the positions of all WorldEntities
+
+
+### Collaborators
+Map, WorldEntity
 
 ---
 
@@ -226,6 +262,20 @@ Player, Enemy, Map
 
 ### Collaborators
 Player, Map 
+
+---
+
+# `class PauseMenu`
+
+### Responsibilities
+* resumeButton, attribute, position of resume button
+* helpButton, attribute, position of help button
+* quitButton, attribute, position of quit button
+
+
+
+### Collaborators
+Player, Map
 
 <style>
 :root {
