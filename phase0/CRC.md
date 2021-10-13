@@ -67,15 +67,6 @@ GameCharacter, Player, Enemy, Map, DamageableCollidable
 
 ---
 
-# `class Tower`
-
-### Responsibilities
-
-### Collaborators
-Enemy, Map, Collidable
-
----
-
 # `class Tile`
 
 ### Responsibilities
@@ -134,7 +125,7 @@ Map, WorldEntity
 
 
 ### Collaborators
-Player, Enemy, Defender, Tower
+Player, Enemy, Defender
 
 ---
 
@@ -145,7 +136,7 @@ Player, Enemy, Defender, Tower
 
 
 ### Collaborators
-Player, Enemy, Defender, Tower
+Player, Enemy, Defender
 
 
 ---
@@ -157,7 +148,7 @@ Player, Enemy, Defender, Tower
 
 
 ### Collaborators
-Player, Enemy, Defender, Tower
+Player, Enemy, Defender
 
 ---
 
