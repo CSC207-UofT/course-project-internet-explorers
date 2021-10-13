@@ -42,8 +42,6 @@ Player, Enemy, Defender
 ### Responsibilities
 * inventory: Attribute, ArrayList of items currently in player's inventory. can be defender, weapon, map item (like a wall)
 * itemDictionary: Attribute, Dictionary of items and their information
-* addInventory(item): add item to inventory
-* removeInventory(item): remove item from inventory 
 
 
 ### Collaborators
@@ -54,8 +52,6 @@ Player, Enemy, Defender, Weaponable, Collidable, GameCharacter
 # `class Enemy`
 
 ### Responsibilities
-* Path: Attribute, ArrayList, the path the enemy is meant to follow
-* Attack: Method, attacks defense on the map
 
 ### Collaborators
 GameCharacter, Player, Defender, Map, Weaponable, Collidable
@@ -65,31 +61,27 @@ GameCharacter, Player, Defender, Map, Weaponable, Collidable
 # `class Defender`
 
 ### Responsibilities
-* Attack: Method, attacks enemies on the map
 
 ### Collaborators
 GameCharacter, Player, Enemy, Map, Weaponable, Collidable
 
 ---
 
-# `class Tower (?)`
+# `class Tower`
 
 ### Responsibilities
-* Position: Attribute, array with x, y, where on the map the Tower is currently located
-* Health: Attribute, total health of the tower
-* updateHealth(health): method, updates the health of the tower to reflect damage taken
 
 ### Collaborators
 Enemy, Map, Collidable
 
 ---
 
-# `class Tile`
+# `class Tile implements WorldEntity`
 
 ### Responsibilities
 * spawn_point: boolean, is this a spawn point for the enemies
 * collides: boolean, can other entities collide with this tile
-* texture: what the tile looks like (i.e. grass, road, water, etc.)
+* texture: what the tile looks like (i.e. grass, road, water, etc.) – could be path to image file
 
 
 ### Collaborators
@@ -184,6 +176,17 @@ Player, Enemy, Defender, DamagingCollidable
 
 ---
 
+# `class ControlsState`
+
+### Responsibilities
+* is the common language representing states of a GameCharacter's input device (keyboard, controller, etc.)
+* uses `double` attributes for Up/Down, Left/Right, and other inputs
+
+### Collaborators
+KeyboardInputHandler, GameCharacter
+
+---
+
 <!-- _class: lead --># Use Case Classes
 
 ---
@@ -191,12 +194,14 @@ Player, Enemy, Defender, DamagingCollidable
 # `class CharacterManager`
 
 ### Responsibilities
-* moveCharacter: method, takes directional commands from keyboard input and moves character
-* attackObject: method, attacks nearest object when the range <= distance to that object (for NPCs)
-* takeDamage/depleteHealth: method, takes health away from the character when hit
-* openInventory: method, displays inventory for user
-* useItem: method, chooses item from inventory
-* placeItem: method, places current item on hand onto map
+* Animate the character based on inputs
+  * Inputs from some `InputManager` stored as a `ControlsState`
+* Responsible for what happens upon certain inputs
+  * moveCharacter: update character's position
+  * useItem: method, activates an inventory item
+  * addInventory(item): add item to inventory
+  * removeInventory(item): remove item from inventory
+  * openInventory: method, returns inventory contents (use presenter to display)
 
 ### Collaborators
 Player, Enemy, Defender, Collidable 
@@ -220,18 +225,26 @@ Player, Enemy, Defender, Map
 
 ---
 
-# `class InputHandler`
+# `abstract class InputHandler`
+### Responsibilities
+* Get input from any source and return a `ControlsState` representing the input.
+
+### Collaborators
+ControlsState, GameCharacter
+
+# `class KeyboardInputHandler extends inputHandler`
 
 ### Responsibilities
-* + keyLeft(input), move player left
-* + keyRight(input), move player right
-* + keyDown(input), move player down
-* + keyUp(input), move player up
-* + keyOpenInventory, browse inventory
-* + keyChooseInventoryItem, pick inventory item
-* + keyUseItem(input), place inventory item
-* + keyLevelUpDefender(?), level up the defender
-* + keyAttack(input), attack with weapon
+* Translate keyboard inputs into a `ControlsState`
+  + `keyLeft` move player left
+  + `keyRight` move player right
+  + `keyDown` move player down
+  + `keyUp` move player up
+  + `keyOpenInventory`, browse inventory
+  + `keyChooseInventoryItem`, pick inventory item
+  + `keyUseItem` place inventory item
+  + `keyLevelUpDefender` level up the defender
+  + `keyAttack` attack with weapon
 
 ### Collaborators
 Player, CharacterManager
@@ -257,31 +270,42 @@ Player, Enemy, Map
 
 ---
 
-# `class MainMenu`
+# `abstract class MenuScreen`
 
 ### Responsibilities
-* startButton, attribute, position of start button
-* helpButton, attribute, position of help button
-* quitButton, attribute, position of quit button
-* start_game, method, start game by generating map, spawning player (w/ SpawnController?)
-
+* handle menus with clickable buttons, text fields, etc. 
+* position of elements, what happens when clicked, etc.
 
 ### Collaborators
-Player, Map 
+TBD
 
 ---
 
-# `class PauseMenu`
+# `class MainMenu extends MenuScreen`
 
 ### Responsibilities
-* resumeButton, attribute, position of resume button
-* helpButton, attribute, position of help button
-* quitButton, attribute, position of quit button
-
+* buttons for
+  * Start
+  * Help
+  * Quit
 
 
 ### Collaborators
-Player, Map
+MenuScreen
+
+---
+
+# `class PauseMenu extends MenuScreen`
+
+### Responsibilities
+* buttons for
+  * Resume Game
+  * Help
+  * Quit
+
+
+### Collaborators
+MenuScreen
 
 <style>
 :root {
