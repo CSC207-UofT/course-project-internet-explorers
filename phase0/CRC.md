@@ -76,23 +76,35 @@ Enemy, Map, Collidable
 
 ---
 
-# `class Tile implements WorldEntity`
+# `class Tile`
 
 ### Responsibilities
-* spawn_point: boolean, is this a spawn point for the enemies
-* collides: boolean, can other entities collide with this tile
-* texture: what the tile looks like (i.e. grass, road, water, etc.) – could be path to image file
-
+* describes how a tile will appear and behave on the map
+  * texture: what the tile looks like (i.e. grass, road, water, etc.) – could be path to image file
+  * isCollidable: boolean, can other entities collide with this tile
+* has dict for metadata specific to certain tiles
+  * spawn_point: boolean, is this a spawn point for the enemies
 
 ### Collaborators
 World, Map
 
 ---
 
+# `class TileEntity implements WorldEntity`
+
+### Responsibilities
+* WorldEntity representing map Tiles in-game.
+
+### Collaborators
+World
+
+---
+
 # `class Map`
 
 ### Responsibilities
-* Tiles_layout: Attribute, 2d array of tiles
+* `tiles`: `Tile` objects used in this `Map`
+* `layout`: Attribute, 2d array of tiles
 
 
 ### Collaborators
@@ -103,7 +115,7 @@ Enemy, World, Tiles
 # `class World`
 
 ### Responsibilities
-* All_Positions: holds the positions of all WorldEntities
+* entities: holds all WorldEntities
 
 
 ### Collaborators
