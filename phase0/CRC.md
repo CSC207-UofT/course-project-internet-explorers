@@ -40,9 +40,11 @@ Player, Enemy, Defender
 # `class Player`
 
 ### Responsibilities
-* Spawnable_defenders: Attribute, dictionary of level of defenders and their corresponding integer of number of defenders the player can spawn.  
-* Build_wall(position): Method to use inventory to build wall at a certain position on the map
-* Spawn_defender(position): Method to spawn defender at a certain position on the map
+* inventory: Attribute, ArrayList of items currently in player's inventory. can be defender, weapon, map item (like a wall)
+* itemDictionary: Attribute, Dictionary of items and their information
+* addInventory(item): add item to inventory
+* removeInventory(item): remove item from inventory 
+
 
 ### Collaborators
 Player, Enemy, Defender, Weaponable, Collidable, GameCharacter
@@ -75,7 +77,7 @@ GameCharacter, Player, Enemy, Map, Weaponable, Collidable
 ### Responsibilities
 * Position: Attribute, array with x, y, where on the map the Tower is currently located
 * Health: Attribute, total health of the tower
-* updateHealth: method, updates the health of the tower to reflect damage taken
+* updateHealth(health): method, updates the health of the tower to reflect damage taken
 
 ### Collaborators
 Enemy, Map, Collidable
@@ -192,6 +194,9 @@ Player, Enemy, Defender, DamagingCollidable
 * moveCharacter: method, takes directional commands from keyboard input and moves character
 * attackObject: method, attacks nearest object when the range <= distance to that object (for NPCs)
 * takeDamage/depleteHealth: method, takes health away from the character when hit
+* openInventory: method, displays inventory for user
+* useItem: method, chooses item from inventory
+* placeItem: method, places current item on hand onto map
 
 ### Collaborators
 Player, Enemy, Defender, Collidable 
