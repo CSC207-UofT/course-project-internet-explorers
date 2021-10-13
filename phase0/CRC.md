@@ -234,6 +234,8 @@ Player, Enemy, Defender, Map
 ### Collaborators
 ControlsState, GameCharacter
 
+---
+
 # `class KeyboardInputHandler extends inputHandler`
 
 ### Responsibilities
@@ -253,6 +255,17 @@ Player, CharacterManager
 
 <!-- How does key input for main menu work? Would that be in a main menu class? -->
 <!-- Should there be a keyEscape for pause? Is that also in some main class instead? -->
+
+---
+# `class AIInputHandler extends inputHandler`
+
+### Responsibilities
+* Translates an AI's inputs to a `ControlsState`
+  * Since AIs could just generate a `ControlsState`, might just pass it straight through
+  * Or, the AI inputs generator could itself implement `InputHandler`
+
+### Collaborators
+Defender, Enemy, CharacterManager
 
 ---
 
