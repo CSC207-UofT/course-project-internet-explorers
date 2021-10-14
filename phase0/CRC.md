@@ -28,9 +28,7 @@ Player, Enemy, Defender
 * Health: Attribute, int, denotes the total amount of health the individual has
 * Position: Attribute, array with x, y, where on the map the IC is currently located
 * Inventory: Attribute, ArrayList, items currently being held
-* Level(?): Attribute, the level of the enemy
-* Range(?): Attribute, how far the character can attack
-* Hitbox(?): Attribute, from how far the character can be hit from
+* Level: Attribute, the level of the GameCharacter
 
 ### Collaborators
 Player, Enemy, Defender
