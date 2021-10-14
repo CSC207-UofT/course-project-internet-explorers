@@ -11,21 +11,18 @@ public abstract class GameCharacter {
     * @param inventory: The Items the GameCharacter is able to use at a given point in the game
     * */
 
-    public String imgFile;
     public int health;
     public int level;
     // Need to change type to Item when implemented
     public ArrayList<String> inventory;
 
-    public GameCharacter(String imgFile, int health, int level, ArrayList<String> inventory) {
-        this.imgFile = imgFile;
+    public GameCharacter(int health, int level, ArrayList<String> inventory) {
         this.health = health;
         this.level = level;
         this.inventory = new ArrayList<String>();
     }
 
-    public GameCharacter(String imgFile, int health, int level) {
-        this.imgFile = imgFile;
+    public GameCharacter(int health, int level) {
         this.health = health;
         this.level = level;
     }
