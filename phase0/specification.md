@@ -52,7 +52,7 @@ attack objects within their range and take damage if attacked.
 
 * Start Game
   * Load Game Scene
-  * Generate a specific Map (if there’s time, we could consider add maps)
+  * Generate a specific mapSystem.Map (if there’s time, we could consider add maps)
   * Play a quick comic scene
   * Spawn A Player
 
@@ -99,7 +99,7 @@ attack objects within their range and take damage if attacked.
   * Grass (background)
   * Path (background)
   * Wall (collidable)
-  * Map Edge (collidable)
+  * mapSystem.Map Edge (collidable)
   * Spawn points (data)
 
 

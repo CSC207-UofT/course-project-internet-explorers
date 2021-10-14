@@ -67,7 +67,7 @@ GameCharacter, Player, Enemy, Map, DamageableCollidable
 
 ---
 
-# `class Tile`
+# `abstract class Tile`
 
 ### Responsibilities
 * describes how a tile will appear and behave on the map
