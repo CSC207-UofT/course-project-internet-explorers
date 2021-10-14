@@ -37,68 +37,65 @@ Player, Enemy, Defender
 
 ---
 
-# `class Player`
+# `class Player extends GameCharacter implements DamageableCollidable`
 
 ### Responsibilities
-* Spawnable_defenders: Attribute, dictionary of level of defenders and their corresponding integer of number of defenders the player can spawn.  
-* Build_wall(position): Method to use inventory to build wall at a certain position on the map
-* Spawn_defender(position): Method to spawn defender at a certain position on the map
+* represents the `GameCharacter` controlled by the player
 
 ### Collaborators
-Player, Enemy, Defender, Weaponable, Collidable, GameCharacter
+Player, Enemy, Defender, Collidable, GameCharacter
 
 ---
 
-# `class Enemy`
+# `class Enemy extends GameCharacter implements DamageableCollidable`
 
 ### Responsibilities
-* Path: Attribute, ArrayList, the path the enemy is meant to follow
-* Attack: Method, attacks defense on the map
+* represents enemy GameCharacters which attack the Player's castle and defenders
 
 ### Collaborators
-GameCharacter, Player, Defender, Map, Weaponable, Collidable
+GameCharacter, Player, Defender, Map, DamageableCollidable
 
 ---
 
-# `class Defender`
+# `class Defender extends GameCharacter`
 
 ### Responsibilities
-* Attack: Method, attacks enemies on the map
+* represents friendly GameCharacters which attack enemies
 
 ### Collaborators
-GameCharacter, Player, Enemy, Map, Weaponable, Collidable
-
----
-
-# `class Tower (?)`
-
-### Responsibilities
-* Position: Attribute, array with x, y, where on the map the Tower is currently located
-* Health: Attribute, total health of the tower
-* updateHealth: method, updates the health of the tower to reflect damage taken
-
-### Collaborators
-Enemy, Map, Collidable
+GameCharacter, Player, Enemy, Map, DamageableCollidable
 
 ---
 
 # `class Tile`
 
 ### Responsibilities
-* spawn_point: boolean, is this a spawn point for the enemies
-* collides: boolean, can other entities collide with this tile
-* texture: what the tile looks like (i.e. grass, road, water, etc.)
-
+* describes how a tile will appear and behave on the map
+  * texture: what the tile looks like (i.e. grass, road, water, etc.) – could be path to image file
+  * isCollidable: boolean, can other entities collide with this tile
+* has dict for metadata specific to certain tiles
+  * spawn_point: boolean, is this a spawn point for the enemies
 
 ### Collaborators
 World, Map
 
 ---
 
+# `class TileEntity implements WorldEntity`
+
+### Responsibilities
+* WorldEntity representing map Tiles in-game.
+
+### Collaborators
+World
+
+---
+
 # `class Map`
 
 ### Responsibilities
-* Tiles_layout: Attribute, 2d array of tiles
+* `tiles`: `Tile` objects used in this `Map`
+* `layout`: Attribute, 2d array of tiles
 
 
 ### Collaborators
@@ -109,22 +106,11 @@ Enemy, World, Tiles
 # `class World`
 
 ### Responsibilities
-* All_Positions: holds the positions of all WorldEntities
+* entities: holds all WorldEntities
 
 
 ### Collaborators
 Map, WorldEntity
-
----
-
-# `interface Weaponable`
-
-### Responsibilities
-* H
-
-
-### Collaborators
-Player, Enemy, Defender
 
 ---
 
@@ -134,11 +120,12 @@ Player, Enemy, Defender
 * Ensures that no two objects implementing Collidable are at the same place at the same time.
 * Collidable objects have an onCollision method which defines their behaviour upon collision.
 * Collidable objects have a hitbox, their shape in the world of Collidables.
+* (If necessary) label system to ignore collisions with certain objects
 
 
 
 ### Collaborators
-Player, Enemy, Defender, Tower
+Player, Enemy, Defender
 
 ---
 
@@ -149,7 +136,7 @@ Player, Enemy, Defender, Tower
 
 
 ### Collaborators
-Player, Enemy, Defender, Tower
+Player, Enemy, Defender
 
 
 ---
@@ -161,16 +148,15 @@ Player, Enemy, Defender, Tower
 
 
 ### Collaborators
-Player, Enemy, Defender, Tower
+Player, Enemy, Defender
 
 ---
 
-# `abstract class Weapon`
+# `abstract class Weapon implements Item`
 
 ### Responsibilities
-* is an inventory item
-* spawns in a DamagingCollidable which actually inflicts the damage
-* level: Attribute, upgrade level of weapon
+* behaviour determined by `WeaponUsageDelegate`
+* level: item metadata, current upgrade level of weapon
 * static dict with attributes for each level
   * damage
   * range
@@ -181,26 +167,95 @@ Player, Enemy, Defender, DamagingCollidable
 
 ---
 
-<!-- _class: lead --># Use Case Classes
+# `class ControlsState`
+
+### Responsibilities
+* is the common language representing states of a GameCharacter's input device (keyboard, controller, etc.)
+* uses `double` attributes for Up/Down, Left/Right, and other inputs
+
+### Collaborators
+KeyboardInputHandler, GameCharacter
+
+---
+
+# `abstract class LevelState`
+
+### Responsibilities
+* represents the state of a level
+* Stores static information about the level
+  * Map
+  * Duration
+  * Which/When/How many enemies spawn
+* Can also store dynamic information about a level being played
+  * World
+  * Time passed
+
+### Collaborators
+World, Map, GameCharacter
+
+---
+
+# `abstract interface Item`
+
+### Responsibilities
+* store information about an Item
+  * texture
+  * name
+  * metadata: misc. information not common to all `Item`s 
+* has an `ItemUsageDelegate` which determines the behaviour of this item when used
+
+### Collaborators
+ItemUsageDelegate
+
+---
+
+<!-- _class: lead -->
+# Use Case Classes
+
+---
+
+# `class ItemUsageDelegate`
+
+### Responsibilities
+* `ItemUsageDelegate`s must implement a `use` method which takes an `Item` and the `GameCharacter` that used it.
+* `use` does nothing by default
+
+### Collaborators
+Item, GameCharacter
+
+---
+
+# `class WeaponUsageDelegate implements ItemUsageDelegate`
+
+### Responsibilities
+* spawns in a DamagingCollidable which actually inflicts the damage for the weapon used
+
+### Collaborators
+Weapon
 
 ---
 
 # `class CharacterManager`
 
 ### Responsibilities
-* moveCharacter: method, takes directional commands from keyboard input and moves character
-* attackObject: method, attacks nearest object when the range <= distance to that object (for NPCs)
-* takeDamage/depleteHealth: method, takes health away from the character when hit
+* Animate the character based on inputs
+  * Inputs from some `InputManager` stored as a `ControlsState`
+* Responsible for what happens upon certain inputs
+  * moveCharacter: update character's position
+  * useItem: method, activates an inventory item
+  * addInventory(item): add item to inventory
+  * removeInventory(item): remove item from inventory
+  * openInventory: method, returns inventory contents (use presenter to display)
 
 ### Collaborators
 Player, Enemy, Defender, Collidable 
 
 ---
 
-# `class gameManager (?)`
+# `class GameManager`
 
 ### Responsibilities
-* Spawn: Method, spawns enemies at position on the map
+* beginGame: trigger process to begin a game
 * deleteCharacter: removes a character from the map when health = 0
 
 
@@ -214,24 +269,66 @@ Player, Enemy, Defender, Map
 
 ---
 
-# `class InputHandler`
+# `class LevelManager`
 
 ### Responsibilities
-* + keyLeft(input), move player left
-* + keyRight(input), move player right
-* + keyDown(input), move player down
-* + keyUp(input), move player up
-* + keyOpenInventory, browse inventory
-* + keyChooseInventoryItem, pick inventory item
-* + keyPlaceItem(input), place inventory item
-* + keyLevelUpDefender(?), level up the defender
-* + keyAttack(input), attack with weapon
+* Initialize level's `World`
+  * convert `Map` into `TileEntity` objects to add to the `World`
+  * invoke `SpawnController` for the `Player` and other `GameCharacters`
+* Query level state
+* Reset level to certain `LevelState`
+* pause/play/Progress the level
+
+
+### Collaborators
+GameManager, LevelState, World, WorldEntity, Map
+
+---
+
+<!-- _class: lead -->
+# Controller Classes
+
+---
+
+# `abstract class InputHandler`
+### Responsibilities
+* Get input from any source and return a `ControlsState` representing the input.
+
+### Collaborators
+ControlsState, GameCharacter
+
+---
+
+# `class KeyboardInputHandler extends inputHandler`
+
+### Responsibilities
+* Translate keyboard inputs into a `ControlsState`
+  + `keyLeft` move player left
+  + `keyRight` move player right
+  + `keyDown` move player down
+  + `keyUp` move player up
+  + `keyOpenInventory`, browse inventory
+  + `keyChooseInventoryItem`, pick inventory item
+  + `keyUseItem` place inventory item
+  + `keyLevelUpDefender` level up the defender
+  + `keyAttack` attack with weapon
 
 ### Collaborators
 Player, CharacterManager
 
 <!-- How does key input for main menu work? Would that be in a main menu class? -->
 <!-- Should there be a keyEscape for pause? Is that also in some main class instead? -->
+
+---
+# `class AIInputHandler extends inputHandler`
+
+### Responsibilities
+* Translates an AI's inputs to a `ControlsState`
+  * Since AIs could just generate a `ControlsState`, might just pass it straight through
+  * Or, the AI inputs generator could itself implement `InputHandler`
+
+### Collaborators
+Defender, Enemy, CharacterManager
 
 ---
 
@@ -251,31 +348,42 @@ Player, Enemy, Map
 
 ---
 
-# `class MainMenu`
+# `abstract class MenuScreen`
 
 ### Responsibilities
-* startButton, attribute, position of start button
-* helpButton, attribute, position of help button
-* quitButton, attribute, position of quit button
-* start_game, method, start game by generating map, spawning player (w/ SpawnController?)
-
+* handle menus with clickable buttons, text fields, etc. 
+* position of elements, what happens when clicked, etc.
 
 ### Collaborators
-Player, Map 
+TBD
 
 ---
 
-# `class PauseMenu`
+# `class MainMenu extends MenuScreen`
 
 ### Responsibilities
-* resumeButton, attribute, position of resume button
-* helpButton, attribute, position of help button
-* quitButton, attribute, position of quit button
-
+* buttons for
+  * Start
+  * Help
+  * Quit
 
 
 ### Collaborators
-Player, Map
+MenuScreen
+
+---
+
+# `class PauseMenu extends MenuScreen`
+
+### Responsibilities
+* buttons for
+  * Resume Game
+  * Help
+  * Quit
+
+
+### Collaborators
+MenuScreen
 
 <style>
 :root {
