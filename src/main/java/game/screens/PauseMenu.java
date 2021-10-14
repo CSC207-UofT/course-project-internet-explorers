@@ -1,4 +1,4 @@
-package game.menus;
+package game.screens;
 
 public class PauseMenu{
 
