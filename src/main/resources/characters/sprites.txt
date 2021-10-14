@@ -1,0 +1,26 @@
+sprites.png
+size: 960, 1260
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+demo_defense
+  rotate: false
+  xy: 360, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: -1
+demo_enemy
+  rotate: false
+  xy: 0, 600
+  size: 900, 660
+  orig: 900, 660
+  offset: 0, 0
+  index: -1
+demo_player
+  rotate: false
+  xy: 0, 0
+  size: 360, 360
+  orig: 360, 360
+  offset: 0, 0
+  index: -1
