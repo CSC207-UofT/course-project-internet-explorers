@@ -1,6 +1,6 @@
 package game;
 
-public class WorldEntity{
+public interface WorldEntity{
 
 
 }
