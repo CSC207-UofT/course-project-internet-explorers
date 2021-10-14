@@ -10,7 +10,7 @@ public class Defender extends GameCharacter implements WorldEntity {
      * @param inventory: The Items the GameCharacter is able to use at a given point in the game
      * */
 
-    public Defender(String imgFile, int health, int level) {
-        super(imgFile, health, level);
+    public Defender(int health, int level) {
+        super(health, level);
     }
 }

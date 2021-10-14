@@ -10,42 +10,47 @@ import game_characters.*;
 
 import java.util.ArrayList;
 
+// Following documentation from: https://www.codeandweb.com/texturepacker/tutorials/libgdx-physics
+
 public class CharacterSprite {
 
     SpriteBatch batch;
-    TextureAtlas playerTextureAtlas;
-    TextureAtlas defenderTextureAtlas;
-    TextureAtlas enemyTextureAtlas;
+    TextureAtlas textureAtlas;
     Sprite playerSprite;
     Sprite defenderSprite;
     Sprite enemySprite;
 
-    public void create() {
+    public void createCharacter() {
 
 
         // Creates instances of the 3 main characters on the screen
         ArrayList<String> playerItems = new ArrayList<String>();
-        Player protagonist = new Player("characters/demo_player.jpg", 100, 1,
+        Player protagonist = new Player(100, 1,
                 playerItems);
-        Defender defender = new Defender("characters/demo_defense.jpg", 100, 1);
-        Enemy enemy = new Enemy("characters/demo_enemy.jpg", 100, 1);
+        Defender defender = new Defender(100, 1);
+        Enemy enemy = new Enemy(100, 1);
 
         // Creates the instances of the texture atlas
-        playerTextureAtlas = new TextureAtlas(protagonist.imgFile);
-        defenderTextureAtlas = new TextureAtlas(defender.imgFile);
-        enemyTextureAtlas = new TextureAtlas(enemy.imgFile);
+        textureAtlas = new TextureAtlas("characters/sprites.txt");
 
         // Creates the sprite instances
-        playerSprite = playerTextureAtlas.createSprite("player");
-        defenderSprite = defenderTextureAtlas.createSprite("defender");
-        enemySprite = enemyTextureAtlas.createSprite("enemy");
+        playerSprite = textureAtlas.createSprite("demo_player");
+        defenderSprite = textureAtlas.createSprite("demo_defense");
+        enemySprite = textureAtlas.createSprite("demo_enemy");
 
+        playerSprite.setSize(100, 100);
+        playerSprite.setPosition(0, 0);
+        defenderSprite.setSize(100, 100);
+        defenderSprite.setPosition(100, 100);
+        enemySprite.setSize(100, 100);
+        enemySprite.setPosition(200, 200);
 
+        batch = new SpriteBatch();
 
     }
 
-    public void render() {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+    public void renderCharacter() {
+        Gdx.gl.glClearColor(0.57f, 0.77f, 0.85f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         playerSprite.draw(batch);
@@ -55,9 +60,8 @@ public class CharacterSprite {
     }
 
     public void dispose() {
-        playerTextureAtlas.dispose();
-        defenderTextureAtlas.dispose();
-        enemyTextureAtlas.dispose();
+        textureAtlas.dispose();
+
     }
 
 }

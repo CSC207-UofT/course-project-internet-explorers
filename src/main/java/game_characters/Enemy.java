@@ -11,7 +11,7 @@ public class Enemy extends GameCharacter implements WorldEntity {
      * TODO: Add that the class implements DamageableCollidable when added
      * */
 
-    public Enemy(String imgFile, int health, int level) {
-        super(imgFile, health, level);
+    public Enemy(int health, int level) {
+        super(health, level);
     }
 }

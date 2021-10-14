@@ -14,7 +14,7 @@ public class Player extends GameCharacter implements WorldEntity {
      * TODO: Change inventory type to be Item when added
     * */
 
-    public Player(String imgFile, int health, int level, ArrayList<String> inventory) {
-        super(imgFile, health, level, inventory);
+    public Player(int health, int level, ArrayList<String> inventory) {
+        super(health, level, inventory);
     }
 }
