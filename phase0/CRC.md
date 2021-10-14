@@ -28,9 +28,7 @@ Player, Enemy, Defender
 * Health: Attribute, int, denotes the total amount of health the individual has
 * Position: Attribute, array with x, y, where on the map the IC is currently located
 * Inventory: Attribute, ArrayList, items currently being held
-* Level(?): Attribute, the level of the enemy
-* Range(?): Attribute, how far the character can attack
-* Hitbox(?): Attribute, from how far the character can be hit from
+* Level: Attribute, the level of the GameCharacter
 
 ### Collaborators
 Player, Enemy, Defender
@@ -242,6 +240,8 @@ Weapon
   * Inputs from some `InputManager` stored as a `ControlsState`
 * Responsible for what happens upon certain inputs
   * moveCharacter: update character's position
+  * depleteHealth: decreases characters health when they take damage
+  * increaseLevel: increases the level of enemies after completing a wave
   * useItem: method, activates an inventory item
   * addInventory(item): add item to inventory
   * removeInventory(item): remove item from inventory
