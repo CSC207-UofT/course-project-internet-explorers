@@ -240,6 +240,8 @@ Weapon
   * Inputs from some `InputManager` stored as a `ControlsState`
 * Responsible for what happens upon certain inputs
   * moveCharacter: update character's position
+  * depleteHealth: decreases characters health when they take damage
+  * increaseLevel: increases the level of enemies after completing a wave
   * useItem: method, activates an inventory item
   * addInventory(item): add item to inventory
   * removeInventory(item): remove item from inventory
