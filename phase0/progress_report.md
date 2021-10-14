@@ -15,18 +15,18 @@ Internet explorers uses CRC cards to design individual classes and delineate how
 the classes into three layers of architecture: entity classes, use case classes and controller classes. The classes 
 interact effectively by implementing interfaces and inheriting from abstracted classes. 
 
-Specifically, the entity classes core to our model are World, mapSystem.Map, Tower, mapSystem.Tile, GameCharacter<Abstract>, and 
+Specifically, the entity classes core to our model are game.World, game.mapSystem.Map, Tower, game.mapSystem.Tile, GameCharacter<Abstract>, and 
 Weapon<Abstract>. To ensure minimum dependency on lower level code, and to amalgamate uniform behaviors and 
-characteristics, the entity classes may choose to implement interfaces: WorldEntity and Collidable. A class that 
-implements WorldEntity would be able to store its position and shape. A Collidable class would instantiate an object 
+characteristics, the entity classes may choose to implement interfaces: game.WorldEntity and Collidable. A class that 
+implements game.WorldEntity would be able to store its position and shape. A Collidable class would instantiate an object 
 that is unable to exist in the same place at the same time as another Collidable object without consequence. The 
 consequence and nature of collision is determined by the child interfaces implemented by the class. DamagableCollidable 
 and DamagingCollidable are interfaces that extend Collidable and quantify the extent to which an object can take and/or 
 deal damage. 
 
-The World class holds the positions of all WorldEntities in the game and the mapSystem.Map class holds the layout of tiles 
+The game.World class holds the positions of all WorldEntities in the game and the game.mapSystem.Map class holds the layout of tiles 
 instantiated. The Tower class holds information about the current state of the tower including its health, whilst 
-implementing the WorldEntity and DamagableCollidable interfaces. The GameCharacter class is extended by the 
+implementing the game.WorldEntity and DamagableCollidable interfaces. The GameCharacter class is extended by the 
 Player, Enemy, and Defender subclasses and includes common attributes such as Health, Position, and Inventory. Notably,
 the enemy object is instantiated with a path that it will follow in the game. All characters are WorldEntities and
 Collidable. The Weapon abstract class instantiates different kinds of DamagingCollidable objects with information of
@@ -41,7 +41,7 @@ spawning an enemy or object. The Menu classes store positions of key buttons tha
 # Sample Walk-Through
 
 In order to test the design of our system, our team designed a typical scenario in the game. The game would begin
-with the main menu, wherein the user would be able to select the new game button. A tower, set of Tiles, mapSystem.Map, and World
+with the main menu, wherein the user would be able to select the new game button. A tower, set of Tiles, game.mapSystem.Map, and game.World
 objects would be instantiated. A Player would be instantiated with the ability to reposition, attack, deplete, and 
 access their inventory through the InputHandler and CharacterManager. The inventory may include multiple Weapon and 
 Defender objects which can be used with the SpawnController. Eventually, the SpawnController instantiates multiple

@@ -10,7 +10,7 @@ theme: gaia
 
 ---
 
-# `Interface WorldEntity`
+# `Interface game.WorldEntity`
 
 ### Responsibilities
 * Position: Attribute, double[x,y], continuous coordinates for where the entity is located
@@ -77,17 +77,17 @@ GameCharacter, Player, Enemy, Map, DamageableCollidable
   * spawn_point: boolean, is this a spawn point for the enemies
 
 ### Collaborators
-World, Map
+game.World, Map
 
 ---
 
-# `class TileEntity implements WorldEntity`
+# `class TileEntity implements game.WorldEntity`
 
 ### Responsibilities
-* WorldEntity representing map Tiles in-game.
+* game.WorldEntity representing map Tiles in-game.
 
 ### Collaborators
-World
+game.World
 
 ---
 
@@ -99,18 +99,18 @@ World
 
 
 ### Collaborators
-Enemy, World, Tiles
+Enemy, game.World, Tiles
 
 ---
 
-# `class World`
+# `class game.World`
 
 ### Responsibilities
 * entities: holds all WorldEntities
 
 
 ### Collaborators
-Map, WorldEntity
+Map, game.WorldEntity
 
 ---
 
@@ -187,11 +187,11 @@ KeyboardInputHandler, GameCharacter
   * Duration
   * Which/When/How many enemies spawn
 * Can also store dynamic information about a level being played
-  * World
+  * game.World
   * Time passed
 
 ### Collaborators
-World, Map, GameCharacter
+game.World, Map, GameCharacter
 
 ---
 
@@ -272,8 +272,8 @@ Player, Enemy, Defender, Map
 # `class LevelManager`
 
 ### Responsibilities
-* Initialize level's `World`
-  * convert `Map` into `TileEntity` objects to add to the `World`
+* Initialize level's `game.World`
+  * convert `Map` into `TileEntity` objects to add to the `game.World`
   * invoke `SpawnController` for the `Player` and other `GameCharacters`
 * Query level state
 * Reset level to certain `LevelState`
@@ -281,7 +281,7 @@ Player, Enemy, Defender, Map
 
 
 ### Collaborators
-GameManager, LevelState, World, WorldEntity, Map
+GameManager, LevelState, game.World, game.WorldEntity, Map
 
 ---
 
@@ -351,7 +351,7 @@ Player, Enemy, Map
 # `abstract class MenuScreen`
 
 ### Responsibilities
-* handle menus with clickable buttons, text fields, etc. 
+* handle game.menus with clickable buttons, text fields, etc. 
 * position of elements, what happens when clicked, etc.
 
 ### Collaborators
@@ -373,7 +373,7 @@ MenuScreen
 
 ---
 
-# `class PauseMenu extends MenuScreen`
+# `class game.menus.PauseMenu extends MenuScreen`
 
 ### Responsibilities
 * buttons for
