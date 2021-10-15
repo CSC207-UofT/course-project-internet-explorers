@@ -83,13 +83,14 @@ our class structure to delegate more functionality to controllers and use case c
 with assessing the scope of the game as we lack the understanding to evaluate potential additional features.
   
 # Individual Progress
-  
-Akshay:
-Wei Qi:
-Ian:
-Roy:
-Philip-Nicolas:
-Michael-Anthony: Implemented GameCharacter abstract class, along with Player, Defender and Enemy classes. Also added the base level implementation of the CharacterManager use case class and basic rendering to put characters on the screen. Going forward, will continue to flesh out CharacterManager use case class and refine subclasses of GameCharacter.
+<ul> 
+<li>Akshay:</li>
+<li>Wei Qi:</li>
+<li>Ian:</li>
+<li>Roy:</li>
+<li>Philip-Nicolas:</li>
+<li>Michael-Anthony: Implemented GameCharacter abstract class, along with Player, Defender and Enemy classes. Also added the base level implementation of the CharacterManager use case class and basic rendering to put characters on the screen. Going forward, will continue to flesh out CharacterManager use case class and refine subclasses of GameCharacter.</li>
+</ul>  
   
 # Open Questions
   
