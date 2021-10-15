@@ -51,7 +51,12 @@ able to pause the game at any point to read instructions, quit, or resume throug
 is destroyed, its health is depleted to 0 and the GameManager informs the user that they have lost. In the case that
 all the spawned enemies are eliminated, the GameManager informs the user that they have won. 
 
-# Skeleton Program
+# Skeleton Code
+
+The skeleton code is where we begin to bring our ideas to life. At the moment, it simply entails the main menu, which
+is rendered using the MainMenu class. From there, the user can enter the game, where it currently utilizes the classes:
+World, WorldEntity, Player, Map, CharacterManager, SpawnController, and GameManager. In the game screen, the player can
+only  move their character around for now.
 
 Our skeleton program revolves around rendering our key GameCharacter objects and being able to reposition the Player. We
 created our abstract GameCharacter class and Player, Defender, Enemy subclasses. We also created a CharacterSprite class
@@ -64,9 +69,9 @@ leveraged in implementing our skeleton program.
 Our 6 group members synergized to efficiently complete the planning stage of our project. Although we collaborated
 heavily on designing our CRC cards, we delegated most our remaining deliverables for the current phase. All final
 deliverables were also reviewed collaboratively. [TODO Everyone] 
-Alongside reviewing our CRC cards based on TA feedback, Akshay summarized our key deliverables and reflection for the 
-progress report. Having begun working on the Level_System, he plans to continue working on implementing an efficient 
-system for describing / storing progress on game levels and enemy spawn scheduling. 
+Alongside reviewing our CRC cards, Akshay summarized our deliverables and reflection for the progress report. 
+Having begun working on the Level_System, he plans to continue working on implementing an efficient system for 
+describing / storing progress on game levels and enemy spawn scheduling. 
 
 An aspect of our design that has realized value while implementing code is our decision to abstract to GameCharacter. So
 far, this has truly allowed us to simplify the Player, Defender, and Enemy objects for rendering and mutating. Our 
