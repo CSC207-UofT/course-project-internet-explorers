@@ -18,50 +18,23 @@ theme: gaia
 
 
 ### Collaborators
-Player, Enemy, Defender
+GameCharacter
 
 ---
 
-# `abstract class GameCharacter`
+# `class GameCharacter implements WorldEntity`
 
 ### Responsibilities
-* Health: Attribute, int, denotes the total amount of health the individual has
-* Position: Attribute, array with x, y, where on the map the IC is currently located
-* Inventory: Attribute, ArrayList, items currently being held
-* Level: Attribute, the level of the GameCharacter
+* Instantiates character objects such as Player, Defender, Enemy and Tower
+  * Position: Attribute, double[x,y], continuous coordinates for where the character is located
+  * Shape: Attribute, the outline of the entity
+  * Kind: Attribute, determine if Player, Defender, Enemy or Tower 
+  * Health: Attribute, int, denotes the total amount of health the individual has
+  * Inventory: Attribute, ArrayList, items currently being held
+  * Level: Attribute, the level of the GameCharacter
 
 ### Collaborators
-Player, Enemy, Defender
-
----
-
-# `class Player extends GameCharacter implements DamageableCollidable`
-
-### Responsibilities
-* represents the `GameCharacter` controlled by the player
-
-### Collaborators
-Player, Enemy, Defender, Collidable, GameCharacter
-
----
-
-# `class Enemy extends GameCharacter implements DamageableCollidable`
-
-### Responsibilities
-* represents enemy GameCharacters which attack the Player's castle and defenders
-
-### Collaborators
-GameCharacter, Player, Defender, Map, DamageableCollidable
-
----
-
-# `class Defender extends GameCharacter`
-
-### Responsibilities
-* represents friendly GameCharacters which attack enemies
-
-### Collaborators
-GameCharacter, Player, Enemy, Map, DamageableCollidable
+WorldEntity, game.World, Map
 
 ---
 
@@ -75,7 +48,7 @@ GameCharacter, Player, Enemy, Map, DamageableCollidable
   * spawn_point: boolean, is this a spawn point for the enemies
 
 ### Collaborators
-game.World, Map
+Map
 
 ---
 
@@ -85,7 +58,7 @@ game.World, Map
 * game.WorldEntity representing map Tiles in-game.
 
 ### Collaborators
-game.World
+game.World, WorldEntity
 
 ---
 
@@ -97,18 +70,44 @@ game.World
 
 
 ### Collaborators
-Enemy, game.World, Tiles
+GameCharacter, game.World, Tiles
 
 ---
 
-# `class game.World`
+# `abstract interface Item`
 
 ### Responsibilities
-* entities: holds all WorldEntities
-
+* store information about an Item
+  * texture
+  * name
+  * metadata: misc. information not common to all `Item`s
+* has an `ItemUsageDelegate` which determines the behaviour of this item when used
 
 ### Collaborators
-Map, game.WorldEntity
+ItemUsageDelegate
+
+---
+
+# `abstract class Weapon implements Item`
+
+### Responsibilities
+* texture: Attribute, from interface
+* name: Attribute, from interface
+* metadata: Attribute, from interface
+* behaviour determined by `WeaponUsageDelegate`
+* level: item metadata, current upgrade level of weapon
+* static dict with attributes for each level
+  * damage
+  * range
+  * attack speed (?)
+
+### Collaborators
+GameCharacter, Item
+
+---
+
+<!-- _class: lead -->
+# Use Case Classes
 
 ---
 
@@ -121,9 +120,8 @@ Map, game.WorldEntity
 * (If necessary) label system to ignore collisions with certain objects
 
 
-
 ### Collaborators
-Player, Enemy, Defender
+CharacterManager, Weapon
 
 ---
 
@@ -134,8 +132,7 @@ Player, Enemy, Defender
 
 
 ### Collaborators
-Player, Enemy, Defender
-
+Weapon
 
 ---
 
@@ -146,33 +143,7 @@ Player, Enemy, Defender
 
 
 ### Collaborators
-Player, Enemy, Defender
-
----
-
-# `abstract class Weapon implements Item`
-
-### Responsibilities
-* behaviour determined by `WeaponUsageDelegate`
-* level: item metadata, current upgrade level of weapon
-* static dict with attributes for each level
-  * damage
-  * range
-  * attack speed (?)
-
-### Collaborators
-Player, Enemy, Defender, DamagingCollidable
-
----
-
-# `class ControlsState`
-
-### Responsibilities
-* is the common language representing states of a GameCharacter's input device (keyboard, controller, etc.)
-* uses `double` attributes for Up/Down, Left/Right, and other inputs
-
-### Collaborators
-KeyboardInputHandler, GameCharacter
+CharacterManager
 
 ---
 
@@ -189,26 +160,18 @@ KeyboardInputHandler, GameCharacter
   * Time passed
 
 ### Collaborators
-game.World, Map, GameCharacter
+game.World, Map, GameCharacter, LevelManager
 
 ---
 
-# `abstract interface Item`
+# `class game.World`
 
 ### Responsibilities
-* store information about an Item
-  * texture
-  * name
-  * metadata: misc. information not common to all `Item`s 
-* has an `ItemUsageDelegate` which determines the behaviour of this item when used
+* entities: holds all WorldEntities
+
 
 ### Collaborators
-ItemUsageDelegate
-
----
-
-<!-- _class: lead -->
-# Use Case Classes
+Map, game.WorldEntity
 
 ---
 
@@ -219,21 +182,20 @@ ItemUsageDelegate
 * `use` does nothing by default
 
 ### Collaborators
-Item, GameCharacter
+Item, CharacterManager
 
 ---
 
-# `class WeaponUsageDelegate implements ItemUsageDelegate`
+# `class WeaponUsageDelegate implements ItemUsageDelegate, DamagingCollidable`
 
 ### Responsibilities
 * spawns in a DamagingCollidable which actually inflicts the damage for the weapon used
 
 ### Collaborators
-Weapon
+Weapon, DamagingCollidable, CharacterManager
 
 ---
-
-# `class CharacterManager`
+# `class CharacterManager implements DamageableCollidable`
 
 ### Responsibilities
 * Animate the character based on inputs
@@ -246,9 +208,10 @@ Weapon
   * addInventory(item): add item to inventory
   * removeInventory(item): remove item from inventory
   * openInventory: method, returns inventory contents (use presenter to display)
+  * OnCollision: method, Collidable interface
 
 ### Collaborators
-Player, Enemy, Defender, Collidable 
+GameCharacter, Collidable, ControlsState, Item 
 
 ---
 
@@ -260,7 +223,7 @@ Player, Enemy, Defender, Collidable
 
 
 ### Collaborators
-Player, Enemy, Defender, Map
+GameCharacter, Map, LevelManager
 
 ---
 
@@ -274,19 +237,25 @@ Player, Enemy, Defender, Map
 ### Responsibilities
 * Initialize level's `game.World`
   * convert `Map` into `TileEntity` objects to add to the `game.World`
-  * invoke `SpawnController` for the `Player` and other `GameCharacters`
+  * invoke `SpawnController` for `GameCharacter`
 * Query level state
 * Reset level to certain `LevelState`
 * pause/play/Progress the level
 
 
 ### Collaborators
-GameManager, LevelState, game.World, game.WorldEntity, Map
+GameManager, LevelState, game.World, SpawnController
 
 ---
 
-<!-- _class: lead -->
-# Controller Classes
+# `class ControlsState`
+
+### Responsibilities
+* is the common language representing states of a GameCharacter's input device (keyboard, controller, etc.)
+* uses `double` attributes for Up/Down, Left/Right, and other inputs
+
+### Collaborators
+KeyboardInputHandler, CharacterManager
 
 ---
 
@@ -295,7 +264,7 @@ GameManager, LevelState, game.World, game.WorldEntity, Map
 * Get input from any source and return a `ControlsState` representing the input.
 
 ### Collaborators
-ControlsState, GameCharacter
+ControlsState
 
 ---
 
@@ -314,10 +283,7 @@ ControlsState, GameCharacter
   + `keyAttack` attack with weapon
 
 ### Collaborators
-Player, CharacterManager
-
-<!-- How does key input for main menu work? Would that be in a main menu class? -->
-<!-- Should there be a keyEscape for pause? Is that also in some main class instead? -->
+ControlsState
 
 ---
 # `class AIInputHandler extends inputHandler`
@@ -328,7 +294,7 @@ Player, CharacterManager
   * Or, the AI inputs generator could itself implement `InputHandler`
 
 ### Collaborators
-Defender, Enemy, CharacterManager
+ControlsState
 
 ---
 
@@ -339,7 +305,7 @@ Defender, Enemy, CharacterManager
 * spawn(spawnLocation), method, spawn player/enemy at spawn location
 
 ### Collaborators
-Player, Enemy, Map
+LevelManager
 
 ---
 
@@ -385,8 +351,7 @@ MenuScreen
 ### Collaborators
 MenuScreen
 
-<style>
-:root {
+<style>:root {
   font-size: 24px;
 }
 </style>
