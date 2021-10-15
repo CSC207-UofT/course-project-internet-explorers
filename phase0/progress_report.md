@@ -76,3 +76,18 @@ One aspect of clean architecture that our group has struggled with is the role o
 was over-weighed on Entity classes. Since these Entity classes were not all core business properties, we have readjusted
 our class structure to delegate more functionality to controllers and use case classes. However, we continue to struggle
 with assessing the scope of the game as we lack the understanding to evaluate potential additional features.
+  
+# Individual Progress
+  
+Akshay:
+Wei Qi:
+Ian:
+Roy:
+Philip-Nicolas:
+Michael-Anthony: Implemented GameCharacter abstract class, along with Player, Defender and Enemy classes. Also added the base level implementation of the CharacterManager use case class and basic rendering to put characters on the screen. Going forward, will continue to flesh out CharacterManager use case class and refine subclasses of GameCharacter.
+  
+# Open Questions
+  
+  <ol>
+    <li>What is the best way to implement the leveling system within the game to make it in line with SOLID design principles?</li>
+  </ol>
