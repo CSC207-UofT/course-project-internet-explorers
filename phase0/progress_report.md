@@ -50,3 +50,10 @@ able to take and/or deal damage. The GameManager ensures that characters with 0 
 able to pause the game at any point to read instructions, quit, or resume through the Pause Menu class. If the Tower
 is destroyed, its health is depleted to 0 and the GameManager informs the user that they have lost. In the case that
 all the spawned enemies are eliminated, the GameManager informs the user that they have won. 
+
+# Skeleton Code
+
+The skeleton code is where we begin to bring our ideas to life. At the moment, it simply entails the main menu, which
+is rendered using the MainMenu class. From there, the user can enter the game, where it currently utilizes the classes:
+World, WorldEntity, Player, Map, CharacterManager, SpawnController, and GameManager. In the game screen, the player can 
+only  move their character around for now. 
