@@ -50,3 +50,29 @@ able to take and/or deal damage. The GameManager ensures that characters with 0 
 able to pause the game at any point to read instructions, quit, or resume through the Pause Menu class. If the Tower
 is destroyed, its health is depleted to 0 and the GameManager informs the user that they have lost. In the case that
 all the spawned enemies are eliminated, the GameManager informs the user that they have won. 
+
+# Skeleton Program
+
+Our skeleton program revolves around rendering our key GameCharacter objects and being able to reposition the Player. We
+created our abstract GameCharacter class and Player, Defender, Enemy subclasses. We also created a CharacterSprite class
+which instantiates our character objects and renders their sprites with an image file. [TO ADD ANDY's CONTROL PART] 
+Finally, the DesktopLauncher instantiates an instance of the GdxGame which was configured. LibGDX was a key library 
+leveraged in implementing our skeleton program. 
+
+# Reflection
+
+Our 6 group members synergized to efficiently complete the planning stage of our project. Although we collaborated
+heavily on designing our CRC cards, we delegated most our remaining deliverables for the current phase. All final
+deliverables were also reviewed collaboratively. [TODO Everyone] 
+Alongside reviewing our CRC cards based on TA feedback, Akshay summarized our key deliverables and reflection for the 
+progress report. Having begun working on the Level_System, he plans to continue working on implementing an efficient 
+system for describing / storing progress on game levels and enemy spawn scheduling. 
+
+An aspect of our design that has realized value while implementing code is our decision to abstract to GameCharacter. So
+far, this has truly allowed us to simplify the Player, Defender, and Enemy objects for rendering and mutating. Our 
+architecture also lends itself to intuitive package structures which enhances collaborative productivity. 
+
+One aspect of clean architecture that our group has struggled with is the role of Entity classes. Our initial structure
+was over-weighed on Entity classes. Since these Entity classes were not all core business properties, we have readjusted
+our class structure to delegate more functionality to controllers and use case classes. However, we continue to struggle
+with assessing the scope of the game as we lack the understanding to evaluate potential additional features.
