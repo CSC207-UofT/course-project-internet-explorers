@@ -1,7 +1,7 @@
 package core.screens;
 
 import com.badlogic.gdx.Screen;
-import core.sprites.CharacterSprite;
+import core.characters.CharacterSprite;
 
 public class SpritesDemoScreen implements Screen {
 
@@ -32,5 +32,7 @@ public class SpritesDemoScreen implements Screen {
     public void hide() {}
 
     @Override
-    public void dispose() {}
+    public void dispose() {
+        sprites.dispose();
+    }
 }

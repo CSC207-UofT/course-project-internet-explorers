@@ -1,8 +1,7 @@
 package core;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import core.screens.MainMenuScreen;
+import core.screens.menus.MainMenuScreen;
 
 public class GdxGame extends Game {
 

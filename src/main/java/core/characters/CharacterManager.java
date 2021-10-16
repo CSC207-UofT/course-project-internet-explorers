@@ -1,6 +1,5 @@
-package drivers;
+package core.characters;
 
-import game_characters.*;
 import java.util.ArrayList;
 
 // Need to import InputManager and ControlState

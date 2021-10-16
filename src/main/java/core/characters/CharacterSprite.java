@@ -1,11 +1,10 @@
-package core.sprites;
+package core.characters;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import java.util.ArrayList;
 
 // Following documentation from: https://www.codeandweb.com/texturepacker/tutorials/libgdx-physics
 
@@ -19,7 +18,7 @@ public class CharacterSprite {
 
     public void createCharacter() {
         // Creates instances of the 3 main characters on the screen
-        ArrayList<String> playerItems = new ArrayList<String>();
+        // ArrayList<String> playerItems = new ArrayList<String>();
         //        Player protagonist = new Player(100, 1,
         //                playerItems, "Square");
         //        NPC defender = new NPC("Defender", 100, 1, "Circle");

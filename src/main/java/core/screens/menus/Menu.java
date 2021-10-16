@@ -1,4 +1,4 @@
-package core.screens;
+package core.screens.menus;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
