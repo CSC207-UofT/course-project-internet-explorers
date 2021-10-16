@@ -1,6 +1,5 @@
 package game.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
@@ -11,6 +10,7 @@ import game.GdxGame;
 public class MainMenuScreen implements Screen {
 
     GdxGame game;
+
 
     Texture exitButtonActive;
     Texture exitButtonInActive;
@@ -29,10 +29,10 @@ public class MainMenuScreen implements Screen {
 
     public MainMenuScreen(GdxGame game) {
         this.game = game;
-        playButtonActive = new Texture("tiles/grass.png");
-        playButtonInActive = new Texture("tiles/path.png");
-        exitButtonActive = new Texture("tiles/grass.png");
-        exitButtonInActive = new Texture("tiles/wall.png");
+        playButtonActive = new Texture("buttons/play_button_active.png");
+        playButtonInActive = new Texture("buttons/play_button_inactive.png");
+        exitButtonActive = new Texture("buttons/exit_button_active.png");
+        exitButtonInActive = new Texture("buttons/exit_button_inactive.png");
     }
 
     @Override
