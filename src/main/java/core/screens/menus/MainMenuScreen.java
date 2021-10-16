@@ -1,13 +1,17 @@
 package core.screens.menus;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.GdxGame;
 import core.screens.GameScreen;
+import core.screens.SpritesDemoScreen;
 
 public class MainMenuScreen extends Menu {
 
@@ -22,8 +26,28 @@ public class MainMenuScreen extends Menu {
 
     public MainMenuScreen(GdxGame game) {
         super(game);
+        stage.addActor(createSpriteDemoButton());
         stage.addActor(createPlayButton());
         stage.addActor(createExitButton());
+    }
+
+    private TextButton createSpriteDemoButton() {
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = new BitmapFont();
+        style.overFontColor = Color.BLACK;
+        TextButton button = new TextButton("Sprites Demo", style);
+
+        button.setPosition(500, 600);
+
+        button.addListener(
+            new ClickListener() {
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    game.setScreen(new SpritesDemoScreen());
+                }
+            }
+        );
+        return button;
     }
 
     private ImageButton createPlayButton() {
