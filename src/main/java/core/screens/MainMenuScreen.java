@@ -1,19 +1,25 @@
 package core.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.GdxGame;
 
 public class MainMenuScreen implements Screen {
 
-    GdxGame game;
-
-    Texture exitButtonActive;
-    Texture exitButtonInActive;
-    Texture playButtonActive;
-    Texture playButtonInActive;
+    private final Game game;
+    private final Stage stage;
 
     private static final int EXIT_BUTTON_WIDTH = 300;
     private static final int EXIT_BUTTON_HEIGHT = 150;
@@ -24,12 +30,56 @@ public class MainMenuScreen implements Screen {
     private static final int PLAY_BUTTON_X = GdxGame.WIDTH / 2 - PLAY_BUTTON_WIDTH / 2;
     private static final int PLAY_BUTTON_Y = 300;
 
+    private ImageButton createPlayButton() {
+        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
+        style.up = new TextureRegionDrawable(new Texture("buttons/play_button_inactive.png"));
+        style.over = new TextureRegionDrawable(new Texture("buttons/play_button_active.png"));
+
+        ImageButton button = new ImageButton(style);
+        button.setPosition(PLAY_BUTTON_X, PLAY_BUTTON_Y);
+        button.setSize(PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);
+
+        button.addListener(
+            new ClickListener() {
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    game.setScreen(new GameScreen());
+                }
+            }
+        );
+
+        return button;
+    }
+
+    private ImageButton createExitButton() {
+        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
+        style.up = new TextureRegionDrawable(new Texture("buttons/exit_button_inactive.png"));
+        style.over = new TextureRegionDrawable(new Texture("buttons/exit_button_active.png"));
+
+        ImageButton button = new ImageButton(style);
+        button.setPosition(EXIT_BUTTON_X, EXIT_BUTTON_Y);
+        button.setSize(EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT);
+
+        button.addListener(
+            new ClickListener() {
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    Gdx.app.exit();
+                }
+            }
+        );
+
+        return button;
+    }
+
     public MainMenuScreen(GdxGame game) {
         this.game = game;
-        playButtonActive = new Texture("buttons/play_button_active.png");
-        playButtonInActive = new Texture("buttons/play_button_inactive.png");
-        exitButtonActive = new Texture("buttons/exit_button_active.png");
-        exitButtonInActive = new Texture("buttons/exit_button_inactive.png");
+
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
+
+        stage.addActor(createPlayButton());
+        stage.addActor(createExitButton());
     }
 
     @Override
@@ -38,40 +88,10 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 0, 0, 1);
+
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        game.batch.begin();
-
-        if (
-            Gdx.input.getX() < EXIT_BUTTON_X + EXIT_BUTTON_WIDTH &&
-            Gdx.input.getX() > EXIT_BUTTON_X &&
-            GdxGame.HEIGHT - Gdx.input.getY() < EXIT_BUTTON_Y + EXIT_BUTTON_HEIGHT &&
-            GdxGame.HEIGHT - Gdx.input.getY() > EXIT_BUTTON_Y
-        ) {
-            game.batch.draw(exitButtonActive, EXIT_BUTTON_X, EXIT_BUTTON_Y, EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT);
-            if (Gdx.input.isTouched()) {
-                Gdx.app.exit();
-            }
-        } else {
-            game.batch.draw(exitButtonInActive, EXIT_BUTTON_X, EXIT_BUTTON_Y, EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT);
-        }
-
-        if (
-            Gdx.input.getX() < PLAY_BUTTON_X + PLAY_BUTTON_WIDTH &&
-            Gdx.input.getX() > PLAY_BUTTON_X &&
-            GdxGame.HEIGHT - Gdx.input.getY() < PLAY_BUTTON_Y + PLAY_BUTTON_HEIGHT &&
-            GdxGame.HEIGHT - Gdx.input.getY() > PLAY_BUTTON_Y
-        ) {
-            game.batch.draw(playButtonActive, PLAY_BUTTON_X, PLAY_BUTTON_Y, PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);
-            if (Gdx.input.isTouched()) {
-                this.dispose();
-                game.setScreen(new GameScreen());
-            }
-        } else {
-            game.batch.draw(playButtonInActive, PLAY_BUTTON_X, PLAY_BUTTON_Y, PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);
-        }
-
-        game.batch.end();
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
@@ -87,5 +107,7 @@ public class MainMenuScreen implements Screen {
     public void hide() {}
 
     @Override
-    public void dispose() {}
+    public void dispose() {
+        stage.dispose();
+    }
 }

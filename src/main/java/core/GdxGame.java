@@ -6,7 +6,6 @@ import core.screens.MainMenuScreen;
 
 public class GdxGame extends Game {
 
-    public SpriteBatch batch;
     public static final int WIDTH = 1024;
     public static final int HEIGHT = 768;
 
@@ -21,7 +20,5 @@ public class GdxGame extends Game {
     }
 
     @Override
-    public void dispose() {
-        batch.dispose();
-    }
+    public void dispose() {}
 }
