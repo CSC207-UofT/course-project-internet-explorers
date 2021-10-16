@@ -19,10 +19,6 @@ public class CharacterManager {
         this.character = character;
     }
 
-    public void getInput() {
-        // Takes inputs from the InputManager and stores them as a ControlState
-    }
-
     public void moveCharacter() {
         // Updates the characters position
     }
@@ -37,7 +33,7 @@ public class CharacterManager {
     public void increaseLevel() {
         /*
         * Increases the level of enemies by 1 following each wave of enemies.
-        * Need to check instance of enemies
+        * Need to check if character.team == "Enemy"
         * */
         this.character.level += 1;
     }
@@ -77,5 +73,9 @@ public class CharacterManager {
         // Update to show on display
         return this.character.inventory;
     }
+
+     public void onCollision() {
+        // What happens when a character collides with something
+     }
 
 }

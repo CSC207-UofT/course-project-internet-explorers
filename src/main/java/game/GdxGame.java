@@ -13,12 +13,15 @@ public class GdxGame extends Game {
     public SpriteBatch batch;
     public static final int WIDTH = 1024;
     public static final int HEIGHT = 768;
+
+    // The in-game character sprites
     CharacterSprite sprites = new CharacterSprite();
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         this.setScreen(new MainMenuScreen(this));
+
 
         sprites.createCharacter();
 

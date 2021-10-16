@@ -2,7 +2,6 @@ package game.sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -26,9 +25,9 @@ public class CharacterSprite {
         // Creates instances of the 3 main characters on the screen
         ArrayList<String> playerItems = new ArrayList<String>();
         Player protagonist = new Player(100, 1,
-                playerItems);
-        Defender defender = new Defender(100, 1);
-        Enemy enemy = new Enemy(100, 1);
+                playerItems, "Square");
+        NPC defender = new NPC("Defender", 100, 1, "Circle");
+        NPC enemy = new NPC("Enemy", 100, 1, "Circle");
 
         // Creates the instances of the texture atlas
         textureAtlas = new TextureAtlas("characters/sprites.txt");
