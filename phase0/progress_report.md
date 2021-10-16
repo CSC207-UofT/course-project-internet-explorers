@@ -58,9 +58,9 @@ all the spawned enemies are eliminated, the GameManager informs the user that th
 # Skeleton Code
 
 The skeleton code is where we begin to bring our ideas to life. At the moment, it simply entails the main menu, which
-is rendered using the MainMenu class. From there, the user can enter the game, where it currently utilizes the classes:
-World, WorldEntity, Player, Map, CharacterManager, SpawnController, and GameManager. In the game screen, the player can
-only  move their character around for now.
+is rendered using the MainMenuScreen class. From there, the user can enter the game, where it currently utilizes the classes:
+GameScreen, MainMenuScreen, World, WorldEntity, Player, and Map. In the game screen, the player can
+only move their character around for now.
 
 Our skeleton program revolves around rendering our key GameCharacter objects and being able to reposition the Player. We
 created our GameCharacter class. We also created a CharacterSprite class which instantiates our character objects and 
@@ -87,7 +87,10 @@ with assessing the scope of the game as we lack the understanding to evaluate po
 <li>Akshay: Summarized deliverables and reflection for the progress report. Began implementing the Level_System with the LevelState use class. Plan to continue working on implementing an efficient system for describing / storing progress on game levels and enemy spawn scheduling. 
 <li>Wei Qi:</li>
 <li>Ian:</li>
-<li>Roy:</li>
+<li>Roy: Refactored the screen components of the GdxGame class into GameScreen and implemented the MainMenuScreen with the libGDX library.
+Connected the two screens together so that you can click start on the MainMenuScreen to enter the GameScreen. For the next
+phase, I plan on working on the Inventory class that GameCharacters will be carrying.
+</li>
 <li>Philip-Nicolas:</li>
 <li>Michael-Anthony: Implemented GameCharacter abstract class, along with Player, Defender and Enemy classes. Also added the base level implementation of the CharacterManager use case class and basic rendering to put characters on the screen. Going forward, will continue to flesh out CharacterManager use case class and refine subclasses of GameCharacter.</li>
 </ul>  
