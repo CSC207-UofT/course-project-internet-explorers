@@ -1,3 +1,3 @@
-package game;
+package core;
 
 public class WorldEntity {}

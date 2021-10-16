@@ -1,3 +1,3 @@
-package game.screens;
+package core.screens;
 
 public class PauseMenu {}

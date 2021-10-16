@@ -1,4 +1,4 @@
-package game.mapSystem;
+package core.mapSystem;
 
 public class Map {
 
