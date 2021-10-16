@@ -1,7 +1,48 @@
 # Project Specification
 
+When the game is first launched, players are greeted with the main menu which has 4 options: 
+start game, which allows them to begin a new game, load game, which allows them to continue
+from where they left off during a previous session, help, which directs them to a screen with
+fixes for common issues and finally the ability to quit the game. 
+
+When players starts or loads a game, an instance of player will be spawned on a map which can be controlled 
+using the keyboard. Additionally, a tower will be spawned which the player needs to defend.
+To defend the tower, the player will be able to move around the map and build defenses. Enemies 
+will then spawn in waves of varying lengths and difficulty with the goal of destroying the tower.
+Ultimately, the goal of the game is to survive for as long as possible. When the player is defeated,
+an end game menu will be shown with the option to restart or return to the main menu.
+
+### Entity Classes
+
+<code>GameCharacter</code>: Abstract class that holds attributes common to main game entities:
+Player, Enemy and Defense.
+
+<code>Player</code>: Controllable character placed on the map when game is first
+started; ability to alter the map by placing defenses.
+
+<code>Defense</code>: Non player character that is able to be placed on the map by 
+<code>Player</code> to defend <code>Tower</code>.
+
+<code>Tower</code>: The central objective of the game, must survive for the player to continue the
+game.
+
+<code>Enemy</code>: Spawns in waves and follows a set path along the map towards the <code>Tower</code>, 
+taking damage from <code>Defense</code>.
+
+### Use Case Classes
+
+<code>CharacterManager</code>: Allows instances of <code>GameCharacter</code> to move around the map,
+attack objects within their range and take damage if attacked.
+
+<code>GameManager</code>: Handles the ability to begin and end a game.
+### Controller Classes
+
+<code>KeyboardInputHandler</code>: Gets inputs from the keyboard.
+
+## Additional details and specifics
+
 ### Minimum Viable Prototype & More
-* Main Menu
+* Main game.menus.Menu
   * Selectable Buttons
   * Start Game
   * Load game (if we have time to do it)
@@ -11,7 +52,7 @@
 
 * Start Game
   * Load Game Scene
-  * Generate a specific Map (if there’s time, we could consider add maps)
+  * Generate a specific game.mapSystem.Map (if there’s time, we could consider add maps)
   * Play a quick comic scene
   * Spawn A Player
 
@@ -37,7 +78,7 @@
       * Maybe range
     * Different kind of towers (dragons :D)
     * Option to remove (if there’s time)
-  * In game Menu (pause menu)
+  * In game game.menus.Menu (pause menu)
     * Pause the game
     * Help
     * Quit the game
@@ -51,14 +92,14 @@
 * End game menu
   * WASTED screen (+ the comic scene)
   * Restart button
-  * Main Menu button
+  * Main game.menus.Menu button
 
 * Maps
   * Tiles
   * Grass (background)
   * Path (background)
   * Wall (collidable)
-  * Map Edge (collidable)
+  * game.mapSystem.Map Edge (collidable)
   * Spawn points (data)
 
 
