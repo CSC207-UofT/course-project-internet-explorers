@@ -14,32 +14,12 @@ import core.GdxGame;
 
 public class GameScreen implements Screen {
 
-    private float zoom;
-    private float physicsStep;
-    private float cameraX;
-    private float cameraY;
-
-    Texture img;
-    AssetManager assetManager;
     private TiledMapRenderer renderer;
     private OrthographicCamera camera;
     private float x;
     private float y;
 
-    GdxGame game;
-
-    Texture exitButtonActive;
-    Texture exitButtonInActive;
-    Texture playButtonActive;
-    Texture playButtonInActive;
-
-    public GameScreen(GdxGame game) {
-        this.game = game;
-        playButtonActive = new Texture("tiles/grass.png");
-        playButtonInActive = new Texture("tiles/path.png");
-        exitButtonActive = new Texture("tiles/grass.png");
-        exitButtonInActive = new Texture("tiles/wall.png");
-    }
+    public GameScreen() {}
 
     @Override
     public void show() {
@@ -49,7 +29,6 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, w, h);
 
-        img = new Texture("tiles/grass.png");
         renderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load("basic.tmx"), 0.5f);
         x = 0;
         y = 0;
@@ -109,8 +88,5 @@ public class GameScreen implements Screen {
     public void hide() {}
 
     @Override
-    public void dispose() {
-        game.batch.dispose();
-        img.dispose();
-    }
+    public void dispose() {}
 }

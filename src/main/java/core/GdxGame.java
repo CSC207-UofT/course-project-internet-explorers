@@ -12,7 +12,6 @@ public class GdxGame extends Game {
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
         this.setScreen(new MainMenuScreen(this));
     }
 
@@ -22,5 +21,7 @@ public class GdxGame extends Game {
     }
 
     @Override
-    public void dispose() {}
+    public void dispose() {
+        batch.dispose();
+    }
 }
