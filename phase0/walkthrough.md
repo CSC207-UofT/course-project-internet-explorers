@@ -32,10 +32,10 @@ If the player is able to kill all the enemies, the currentLevel will be updated 
 
 - Shows current score and currency (maybe)
 - One enemy spawns in after 20 seconds
-  - The enemy follows a specific path
-  - If enemy reaches the end of the path then game ends and show score
-  - If enemy is killed (after two hits from the defendant), then score + 10 and a new one (maybe two and then three) will spawn after 10 seconds
-  - After three enemies spawned, the fourth one will have unkillable health and the player will lose and game ends showing the player’s final score
+- The enemy follows a specific path
+- If enemy reaches the end of the path then game ends and show score
+- If enemy is killed (after two hits from the defendant), then score + 10 and a new one (maybe two and then three) will spawn after 10 seconds
+- After three enemies spawned, the fourth one will have unkillable health and the player will lose and game ends showing the player’s final score
 
 ## In-Game Pause game.menus.Menu
 
