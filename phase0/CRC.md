@@ -10,10 +10,10 @@ theme: gaia
 
 ---
 
-# `Interface game.WorldEntity`
+# `abstract class WorldEntity`
 
 ### Responsibilities
-* Position: Attribute, double[x,y], continuous coordinates for where the entity is located
+* Position: Attribute, float[x,y], continuous coordinates for where the entity is located
 * Shape: Attribute, the outline of the entity
 
 
@@ -22,19 +22,19 @@ GameCharacter
 
 ---
 
-# `class GameCharacter implements WorldEntity`
+# `class GameCharacter extends WorldEntity`
 
 ### Responsibilities
-* Instantiates character objects such as Player, Defender, Enemy and Tower
-  * Position: Attribute, double[x,y], continuous coordinates for where the character is located
-  * Shape: Attribute, the outline of the entity
-  * Kind: Attribute, determine if Player, Defender, Enemy or Tower 
+* Instantiates character objects such as Player, Defender, Enemy
+  * Position and shape inherited from WorldEntity
+  * Team: Attribute, determine if Defender, Enemy (who damages who)
   * Health: Attribute, int, denotes the total amount of health the individual has
   * Inventory: Attribute, ArrayList, items currently being held
   * Level: Attribute, the level of the GameCharacter
 
+
 ### Collaborators
-WorldEntity, game.World, Map
+WorldEntity, World, Map
 
 ---
 
@@ -46,31 +46,20 @@ WorldEntity, game.World, Map
   * isCollidable: boolean, can other entities collide with this tile
 * has dict for metadata specific to certain tiles
   * spawn_point: boolean, is this a spawn point for the enemies
+  * base: boolean, the base that the player is protecting from the enemies
 
 ### Collaborators
 Map
 
 ---
 
-# `class TileEntity implements game.WorldEntity`
+# `class TileEntity extends WorldEntity`
 
 ### Responsibilities
-* game.WorldEntity representing map Tiles in-game.
+* WorldEntity representing map Tiles in-game.
 
 ### Collaborators
-game.World, WorldEntity
-
----
-
-# `class Map`
-
-### Responsibilities
-* `tiles`: `Tile` objects used in this `Map`
-* `layout`: Attribute, 2d array of tiles
-
-
-### Collaborators
-GameCharacter, game.World, Tiles
+World, WorldEntity
 
 ---
 
@@ -164,18 +153,18 @@ game.World, Map, GameCharacter, LevelManager
 
 ---
 
-# `class game.World`
+# `class Map`
 
 ### Responsibilities
-* entities: holds all WorldEntities
-
+* `tiles`: `Tile` objects used in this `Map`
+* `layout`: Attribute, 2d array of tiles
 
 ### Collaborators
-Map, game.WorldEntity
+GameCharacter, World, Tiles
 
 ---
 
-# `class ItemUsageDelegate`
+# `interface ItemUsageDelegate`
 
 ### Responsibilities
 * `ItemUsageDelegate`s must implement a `use` method which takes an `Item` and the `GameCharacter` that used it.
@@ -195,6 +184,7 @@ Item, CharacterManager
 Weapon, DamagingCollidable, CharacterManager
 
 ---
+
 # `class CharacterManager implements DamageableCollidable`
 
 ### Responsibilities
@@ -204,7 +194,7 @@ Weapon, DamagingCollidable, CharacterManager
   * moveCharacter: update character's position
   * depleteHealth: decreases characters health when they take damage
   * increaseLevel: increases the level of enemies after completing a wave
-  * useItem: method, activates an inventory item
+  * useItem: method, invokes the use method of ItemUsageDelegate
   * addInventory(item): add item to inventory
   * removeInventory(item): remove item from inventory
   * openInventory: method, returns inventory contents (use presenter to display)
@@ -220,10 +210,10 @@ GameCharacter, Collidable, ControlsState, Item
 ### Responsibilities
 * beginGame: trigger process to begin a game
 * deleteCharacter: removes a character from the map when health = 0
-
+* world: list of all WorldEntities
 
 ### Collaborators
-GameCharacter, Map, LevelManager
+GameCharacter, Map, LevelManager, WorldEntity
 
 ---
 
@@ -235,7 +225,7 @@ GameCharacter, Map, LevelManager
 # `class LevelManager`
 
 ### Responsibilities
-* Initialize level's `game.World`
+* Initialize level's `World`
   * convert `Map` into `TileEntity` objects to add to the `game.World`
   * invoke `SpawnController` for `GameCharacter`
 * Query level state
