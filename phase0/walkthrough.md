@@ -13,7 +13,7 @@ Each defendant is "equipped" with a weapon that determine the amount of damage i
 If the player fails to kill the enemies and they reach the castle, the game ends and the ending screen with the stored high score is presented. 
 If the player is able to kill all the enemies, the currentLevel will be updated and a new wave of enemy will spawn.
 
-### appendix
+### appendix 
 
 ## Start Game
 
