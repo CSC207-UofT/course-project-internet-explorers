@@ -85,13 +85,13 @@ with assessing the scope of the game as we lack the understanding to evaluate po
 # Individual Progress
 <ul> 
 <li>Akshay: Summarized deliverables and reflection for the progress report. Began implementing the Level_System with the LevelState use class. Plan to continue working on implementing an efficient system for describing / storing progress on game levels and enemy spawn scheduling. 
-<li>Wei Qi:</li>
-<li>Ian:</li>
+<li>Wei Qi: Write up with the scenario walkthrough corresponding to the CRC model and implement the movement of character with keyboards into the sprite demo, plan on integrating the same function into the main game. </li>
+<li>Ian: Came up with the use cases testings for the game</li>
 <li>Roy: Refactored the screen components of the GdxGame class into GameScreen and implemented the MainMenuScreen with the libGDX library.
 Connected the two screens together so that you can click start on the MainMenuScreen to enter the GameScreen. For the next
 phase, I plan on working on the Inventory class that GameCharacters will be carrying.
 </li>
-<li>Philip-Nicolas:</li>
+<li>Philip-Nicolas: Implemented the gdx game class that initialize the game, manage the project progression and integration of branches. Refractored the MainMenuScreen to use button from the gdx library, implemented the initial in-came screen with movable camera views</li>
 <li>Michael-Anthony: Implemented GameCharacter abstract class, along with Player, Defender and Enemy classes. Also added the base level implementation of the CharacterManager use case class and basic rendering to put characters on the screen. Going forward, will continue to flesh out CharacterManager use case class and refine subclasses of GameCharacter.</li>
 </ul>  
   
