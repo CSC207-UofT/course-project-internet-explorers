@@ -20,14 +20,11 @@ public class GameCharacter {
     public int level;
     // Need to change type to Item when implemented
     public ArrayList<String> inventory;
-    public float[] position;
-    private final String shape;
 
-    public GameCharacter(String team, int health, int level, ArrayList<String> inventory, String shape) {
+    public GameCharacter(String team, int health, int level, ArrayList<String> inventory) {
         this.team = team;
         this.health = health;
         this.level = level;
-        this.inventory = new ArrayList<String>();
-        this.shape = shape;
+        this.inventory = inventory;
     }
 }
