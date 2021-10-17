@@ -1,4 +1,4 @@
-## 1-2 Paragraph Version
+## 1-2 Paragraph Scenario Walkthrough
 
 The game starts at the main menu page with the option to start or quit. 
 After the player press the start button, the game launched as the InputHandler receives the message and uses GameManager and the levelManager to launch the game and reset the level. 
@@ -13,7 +13,7 @@ Each defendant is "equipped" with a weapon that determine the amount of damage i
 If the player fails to kill the enemies and they reach the castle, the game ends and the ending screen with the stored high score is presented. 
 If the player is able to kill all the enemies, the currentLevel will be updated and a new wave of enemy will spawn.
 
-### appendix 
+### appendix (what the scenario look like for the player)
 
 ## Start Game
 
