@@ -27,4 +27,8 @@ public class GameCharacter {
         this.level = level;
         this.inventory = inventory;
     }
+
+    public GameCharacter(String team, int health, int level) {
+        this(team, health, level, new ArrayList<String>());
+    }
 }
