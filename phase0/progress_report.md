@@ -91,7 +91,7 @@ with assessing the scope of the game as we lack the understanding to evaluate po
 Connected the two screens together so that you can click start on the MainMenuScreen to enter the GameScreen. For the next
 phase, I plan on working on the Inventory class that GameCharacters will be carrying.
 </li>
-<li>Philip-Nicolas: Implemented the gdx game class that initialize the game, manage the project progression and integration of branches. Refractored the MainMenuScreen to use button from the gdx library, implemented the initial in-came screen with movable camera views</li>
+<li>Philip-Nicolas: Set up the project environment and basic structure for working with libgdx. Wrote a script to keep code style consistent using Prettier. Helped team collaborate effectively by managing project organization and taking initiative on planning. Refractored the MainMenuScreen to use libgdx's scene2d implementation. implemented the initial in-game screen with map and movable camera. Integrated separate teammember's work into the skeleton program. Plans to work on implementing the collisions system up next.</li>
 <li>Michael-Anthony: Implemented GameCharacter abstract class, along with Player, Defender and Enemy classes. Also added the base level implementation of the CharacterManager use case class and basic rendering to put characters on the screen. Going forward, will continue to flesh out CharacterManager use case class and refine subclasses of GameCharacter.</li>
 </ul>  
   
