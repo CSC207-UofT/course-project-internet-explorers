@@ -1,12 +1,8 @@
-package game;
-
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import game.GdxGame;
+import core.GdxGame;
 
 class DesktopLauncher {
-
-
 
     public static void main(String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();

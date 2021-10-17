@@ -1,9 +1,8 @@
-package game.screens;
+package core.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,37 +10,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import game.GdxGame;
+import core.GdxGame;
+import core.characters.CharacterSprite;
 
-public class GameScreen implements Screen{
+public class GameScreen implements Screen {
 
-    private float zoom;
-    private float physicsStep;
-    private float cameraX;
-    private float cameraY;
-
-
-    Texture img;
-    AssetManager assetManager;
     private TiledMapRenderer renderer;
     private OrthographicCamera camera;
+//    private CharacterSprite sprites;
     private float x;
     private float y;
 
-    GdxGame game;
-
-    Texture exitButtonActive;
-    Texture exitButtonInActive;
-    Texture playButtonActive;
-    Texture playButtonInActive;
-
-    public GameScreen (GdxGame game){
-        this.game = game;
-        playButtonActive = new Texture("tiles/grass.png");
-        playButtonInActive = new Texture("tiles/path.png");
-        exitButtonActive = new Texture("tiles/grass.png");
-        exitButtonInActive = new Texture("tiles/wall.png");
-    }
+    public GameScreen() {}
 
     @Override
     public void show() {
@@ -51,19 +31,18 @@ public class GameScreen implements Screen{
         camera = new OrthographicCamera();
         camera.setToOrtho(false, w, h);
 
-
-        img = new Texture("tiles/grass.png");
         renderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load("basic.tmx"), 0.5f);
         x = 0;
         y = 0;
         camera.position.set(x, y, 1f);
         camera.update();
-
+//        sprites = new CharacterSprite();
+//        sprites.createCharacter();
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0.7f, 0.7f, 0.7f, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -72,20 +51,21 @@ public class GameScreen implements Screen{
 
         renderer.setView(camera);
         renderer.render();
+        //sprites.renderCharacter();
     }
 
     private void handleUserInput() {
         float inc = 10 * camera.zoom;
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             x -= inc;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             x += inc;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             y -= inc;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             y += inc;
         }
 
@@ -101,9 +81,7 @@ public class GameScreen implements Screen{
     }
 
     @Override
-    public void resize(int width, int height) {
-
-    }
+    public void resize(int width, int height) {}
 
     @Override
     public void pause() {}
@@ -115,8 +93,5 @@ public class GameScreen implements Screen{
     public void hide() {}
 
     @Override
-    public void dispose() {
-        game.batch.dispose();
-        img.dispose();
-    }
+    public void dispose() {}
 }

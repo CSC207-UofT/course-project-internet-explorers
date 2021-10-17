@@ -11,3 +11,8 @@
    `npm install prettier prettier-plugin-java --save-dev`
 3. Set the Git Hooks directory using \
    `git config --local core.hookspath .\git-hooks\`
+
+
+### Running
+
+Simply run the Gradle task `:run` to launch the game. Dependencies are automatically installed as necessary.
