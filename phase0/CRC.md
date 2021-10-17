@@ -145,11 +145,11 @@ CharacterManager
   * Duration
   * Which/When/How many enemies spawn
 * Can also store dynamic information about a level being played
-  * game.World
+  * World
   * Time passed
 
 ### Collaborators
-game.World, Map, GameCharacter, LevelManager
+World, Map, GameCharacter, LevelManager
 
 ---
 
@@ -226,7 +226,7 @@ GameCharacter, Map, LevelManager, WorldEntity
 
 ### Responsibilities
 * Initialize level's `World`
-  * convert `Map` into `TileEntity` objects to add to the `game.World`
+  * convert `Map` into `TileEntity` objects to add to the `World`
   * invoke `SpawnController` for `GameCharacter`
 * Query level state
 * Reset level to certain `LevelState`
@@ -234,7 +234,7 @@ GameCharacter, Map, LevelManager, WorldEntity
 
 
 ### Collaborators
-GameManager, LevelState, game.World, SpawnController
+GameManager, LevelState, World, SpawnController
 
 ---
 
@@ -307,7 +307,7 @@ LevelManager
 # `abstract class MenuScreen`
 
 ### Responsibilities
-* handle game.menus with clickable buttons, text fields, etc. 
+* handle menus with clickable buttons, text fields, etc. 
 * position of elements, what happens when clicked, etc.
 
 ### Collaborators
@@ -329,7 +329,7 @@ MenuScreen
 
 ---
 
-# `class game.menus.PauseMenu extends MenuScreen`
+# `class menus.PauseMenu extends MenuScreen`
 
 ### Responsibilities
 * buttons for
