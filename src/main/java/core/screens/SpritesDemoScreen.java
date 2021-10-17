@@ -1,5 +1,7 @@
 package core.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import core.characters.CharacterSprite;
 
@@ -13,6 +15,7 @@ public class SpritesDemoScreen implements Screen {
         sprites = new CharacterSprite();
         sprites.createCharacter();
     }
+
 
     @Override
     public void render(float delta) {

@@ -1,7 +1,11 @@
 package core;
 
 import com.badlogic.gdx.Game;
+import core.characters.CharacterSprite;
+import core.characters.GameCharacter;
 import core.screens.menus.MainMenuScreen;
+
+import java.util.ArrayList;
 
 public class GdxGame extends Game {
 

@@ -11,11 +11,13 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import core.GdxGame;
+import core.characters.CharacterSprite;
 
 public class GameScreen implements Screen {
 
     private TiledMapRenderer renderer;
     private OrthographicCamera camera;
+//    private CharacterSprite sprites;
     private float x;
     private float y;
 
@@ -34,11 +36,13 @@ public class GameScreen implements Screen {
         y = 0;
         camera.position.set(x, y, 1f);
         camera.update();
+//        sprites = new CharacterSprite();
+//        sprites.createCharacter();
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0.7f, 0.7f, 0.7f, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -47,20 +51,21 @@ public class GameScreen implements Screen {
 
         renderer.setView(camera);
         renderer.render();
+        //sprites.renderCharacter();
     }
 
     private void handleUserInput() {
         float inc = 10 * camera.zoom;
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             x -= inc;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             x += inc;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             y -= inc;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             y += inc;
         }
 

@@ -1,6 +1,7 @@
 package core.characters;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,6 +16,8 @@ public class CharacterSprite {
     Sprite playerSprite;
     Sprite defenderSprite;
     Sprite enemySprite;
+    int player_x;
+    int player_y;
 
     public void createCharacter() {
         // Creates instances of the 3 main characters on the screen
@@ -31,9 +34,10 @@ public class CharacterSprite {
         playerSprite = textureAtlas.createSprite("demo_player");
         defenderSprite = textureAtlas.createSprite("demo_defense");
         enemySprite = textureAtlas.createSprite("demo_enemy");
-
+        player_x = 0;
+        player_y = 0;
         playerSprite.setSize(100, 100);
-        playerSprite.setPosition(0, 0);
+        playerSprite.setPosition(player_x, player_y);
         defenderSprite.setSize(100, 100);
         defenderSprite.setPosition(100, 100);
         enemySprite.setSize(100, 100);
@@ -45,6 +49,11 @@ public class CharacterSprite {
     public void renderCharacter() {
         Gdx.gl.glClearColor(0.57f, 0.77f, 0.85f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if(Gdx.input.isKeyPressed(Input.Keys.A)) this.player_x -= 10;
+        if(Gdx.input.isKeyPressed(Input.Keys.D)) this.player_x += 10;
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) this.player_y += 10;
+        if(Gdx.input.isKeyPressed(Input.Keys.S)) this.player_y -= 10;
+        this.playerSprite.setPosition(player_x, player_y);
         batch.begin();
         playerSprite.draw(batch);
         defenderSprite.draw(batch);
