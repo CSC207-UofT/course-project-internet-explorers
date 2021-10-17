@@ -329,7 +329,7 @@ MenuScreen
 
 ---
 
-# `class menus.PauseMenu extends MenuScreen`
+# `class PauseMenu extends MenuScreen`
 
 ### Responsibilities
 * buttons for

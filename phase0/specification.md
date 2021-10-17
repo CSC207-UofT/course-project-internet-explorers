@@ -42,7 +42,7 @@ attack objects within their range and take damage if attacked.
 ## Additional details and specifics
 
 ### Minimum Viable Prototype & More
-* Main menus.Menu
+* Main Menu
   * Selectable Buttons
   * Start Game
   * Load game (if we have time to do it)
@@ -78,7 +78,7 @@ attack objects within their range and take damage if attacked.
       * Maybe range
     * Different kind of towers (dragons :D)
     * Option to remove (if there’s time)
-  * In game menus.Menu (pause menu)
+  * In game Menu (pause menu)
     * Pause the game
     * Help
     * Quit the game
@@ -92,14 +92,14 @@ attack objects within their range and take damage if attacked.
 * End game menu
   * WASTED screen (+ the comic scene)
   * Restart button
-  * Main menus.Menu button
+  * Main Menu button
 
 * Maps
   * Tiles
   * Grass (background)
   * Path (background)
   * Wall (collidable)
-  * mapSystem.Map Edge (collidable)
+  * Map Edge (collidable)
   * Spawn points (data)
 
 
