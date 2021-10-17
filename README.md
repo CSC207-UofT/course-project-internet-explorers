@@ -17,4 +17,4 @@
 
 Simply run the Gradle task `:run` to launch the game. Dependencies are automatically installed as necessary.
 
-In the map screen, `wasd` and arrow keys move the camera, while `o` and `l` allow zooming in and out, respectively.
+In the map screen, the arrow keys move the camera, while `o` and `l` allow zooming in and out, respectively.
