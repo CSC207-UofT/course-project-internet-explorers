@@ -44,6 +44,7 @@ public class MainMenuScreen extends Menu {
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     game.setScreen(new SpritesDemoScreen());
+                    MainMenuScreen.super.dispose();
                 }
             }
         );
@@ -64,6 +65,7 @@ public class MainMenuScreen extends Menu {
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     game.setScreen(new GameScreen());
+                    MainMenuScreen.super.dispose();
                 }
             }
         );
