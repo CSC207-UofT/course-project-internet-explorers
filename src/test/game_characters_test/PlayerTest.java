@@ -1,13 +1,13 @@
 package game_characters_test;
 
 
-import static org.junit.Assert.assertEquals;
+import game_characters.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import game_characters.Player;
+import static org.junit.Assert.assertEquals;
 
 public class PlayerTest {
 
