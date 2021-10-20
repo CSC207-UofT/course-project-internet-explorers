@@ -2,7 +2,9 @@ package core.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -12,6 +14,7 @@ public class GameScreen implements Screen {
 
     private TiledMapRenderer renderer;
     private CameraManager cameraManager;
+    private ShapeRenderer shapeRenderer;
 
     public GameScreen() {}
 
@@ -27,6 +30,8 @@ public class GameScreen implements Screen {
         cameraManager = new CameraManager(unitScale);
         cameraManager.enterDebugFreecamMode();
 
+        shapeRenderer = new ShapeRenderer();
+
         renderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load("basic.tmx"), unitScale);
     }
 
@@ -40,6 +45,12 @@ public class GameScreen implements Screen {
         renderer.setView(cameraManager.getCamera());
 
         renderer.render();
+
+        shapeRenderer.setProjectionMatrix(cameraManager.getCamera().combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.circle(cameraManager.getSubjectPosition().x, cameraManager.getSubjectPosition().y, 0.1f, 16);
+        shapeRenderer.end();
     }
 
     @Override
