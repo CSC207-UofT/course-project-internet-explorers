@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import core.GdxGame;
 import core.characters.CharacterSprite;
+import core.screens.HUD.Hud;
 
 public class GameScreen implements Screen {
 
@@ -21,7 +22,14 @@ public class GameScreen implements Screen {
     private float x;
     private float y;
 
-    public GameScreen() {}
+    private final Hud hud;
+    private final GdxGame game;
+    private boolean displayInventory = false;
+
+    public GameScreen(GdxGame game) {
+        this.hud = new Hud(game.batch);
+        this.game = game;
+    }
 
     @Override
     public void show() {
@@ -49,8 +57,19 @@ public class GameScreen implements Screen {
         handleUserInput();
         camera.update();
 
+
+
         renderer.setView(camera);
         renderer.render();
+
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        if (displayInventory){
+            hud.stage.draw();
+        }
+
+
+
+
         //sprites.renderCharacter();
     }
 
@@ -68,6 +87,12 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             y += inc;
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)){
+            System.out.println("pressed I");
+            displayInventory = !displayInventory;
+        }
+
+
 
         camera.translate((x * 2f - camera.position.x) * 0.1f, (y * 2f - camera.position.y) * 0.1f);
 
