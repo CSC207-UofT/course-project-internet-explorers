@@ -32,7 +32,7 @@ public class GameScreen implements Screen {
 
         shapeRenderer = new ShapeRenderer();
 
-        renderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load("basic.tmx"), unitScale);
+        renderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load("maps/demo.tmx"), unitScale);
     }
 
     @Override
