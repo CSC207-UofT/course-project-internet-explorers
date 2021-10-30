@@ -23,9 +23,12 @@ public class MainMenuScreen extends Menu {
     private static final int EXIT_BUTTON_Y = 100;
     private static final int PLAY_BUTTON_X = GdxGame.WIDTH / 2 - PLAY_BUTTON_WIDTH / 2;
     private static final int PLAY_BUTTON_Y = 300;
+    private final GdxGame game;
+
 
     public MainMenuScreen(GdxGame game) {
         super(game);
+        this.game = game;
         stage.addActor(createSpriteDemoButton());
         stage.addActor(createPlayButton());
         stage.addActor(createExitButton());
@@ -64,7 +67,7 @@ public class MainMenuScreen extends Menu {
             new ClickListener() {
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    game.setScreen(new GameScreen());
+                    game.setScreen(new GameScreen(game));
                     MainMenuScreen.super.dispose();
                 }
             }
