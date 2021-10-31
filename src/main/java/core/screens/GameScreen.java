@@ -3,21 +3,17 @@ package core.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import core.GdxGame;
-import core.characters.CharacterSprite;
 
 public class GameScreen implements Screen {
 
     private TiledMapRenderer renderer;
     private OrthographicCamera camera;
-//    private CharacterSprite sprites;
+    //    private CharacterSprite sprites;
     private float x;
     private float y;
 
@@ -36,8 +32,8 @@ public class GameScreen implements Screen {
         y = 0;
         camera.position.set(x, y, 1f);
         camera.update();
-//        sprites = new CharacterSprite();
-//        sprites.createCharacter();
+        //        sprites = new CharacterSprite();
+        //        sprites.createCharacter();
     }
 
     @Override
