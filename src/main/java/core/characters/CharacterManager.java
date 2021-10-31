@@ -1,6 +1,7 @@
 package core.characters;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 // Need to import InputManager and ControlState
 
@@ -20,6 +21,7 @@ public class CharacterManager {
     }
 
     public void moveCharacter() {
+
         // Updates the characters position
     }
 
@@ -38,21 +40,26 @@ public class CharacterManager {
         this.character.level += 1;
     }
 
-    public boolean useItem() {
+    public boolean useItem(String item) {
         /*
          * Checks if the item is in the characters inventory and then allows them to use it.
          * This will only be available to the player class, will check insanceof Player.
          * Returns true iff the player uses the item, false otherwise.
          * */
-
-        return true;
+        for (String i : this.character.inventory) {
+            if (Objects.equals(i, item)) {
+                //TODO: Add in the call to ItemUsageDelegate
+                return true;
+            }
+        }
+        return false;
     }
 
     public void addInventory(String item) {
         /*
          * Adds item to the inventory
-         * Only valid for the player class, will check insanceof Player.
          * */
+        this.character.inventory.add(item);
     }
 
     public boolean removeInventory(String item) {
@@ -62,7 +69,13 @@ public class CharacterManager {
          * Returns True if item successfully removed
          * */
 
-        return true;
+        for (String i : this.character.inventory) {
+            if (Objects.equals(i, item)) {
+                this.character.inventory.remove(item);
+                return true;
+            }
+        }
+        return false;
     }
 
     public ArrayList<String> openInventory() {
