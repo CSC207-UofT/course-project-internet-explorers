@@ -4,13 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import core.camera.CameraManager;
 import core.levels.LevelManager;
-import core.levels.LevelState;
+import core.world.WorldEntity;
+import core.world.WorldEntityManager;
+import core.world.WorldManager;
 
 /**
  * Runs the gameplay of a Level.
@@ -24,11 +25,23 @@ public class LevelGameplayController implements Screen {
     public LevelGameplayController(LevelManager levelManager) {
         this.levelManager = levelManager;
         cameraManager = new CameraManager(levelManager.getUnitScale());
+
+        WorldEntity player = new WorldEntity();
+        player.setPosition(new Vector2(0, 0));
+        player.setSize(new Vector2(1, 1));
+
+        WorldEntityManager playerManager = new WorldEntityManager(player);
+        playerManager.setSprite(new TextureAtlas("characters/sprites.txt").createSprite("demo_player"));
+
+        WorldManager wm = levelManager.getWorldManager();
+        wm.addEntityToWorld(playerManager);
+
+        cameraManager.enterDebugFreecamMode();
+        cameraManager.setSubjectPosition(playerManager.getEntity().getPosition());
     }
 
     @Override
     public void show() {
-        cameraManager.enterDebugFreecamMode();
         shapeRenderer = new ShapeRenderer();
     }
 
@@ -40,6 +53,7 @@ public class LevelGameplayController implements Screen {
 
         cameraManager.update(dt);
         levelManager.renderMap(cameraManager.getCamera());
+        levelManager.renderWorld(cameraManager.getCamera());
 
         shapeRenderer.setProjectionMatrix(cameraManager.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);

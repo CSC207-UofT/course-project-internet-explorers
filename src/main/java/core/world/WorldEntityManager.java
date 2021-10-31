@@ -1,24 +1,36 @@
 package core.world;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.World;
 
 public class WorldEntityManager {
 
     private WorldEntity entity;
+    private Body body;
+    private Sprite sprite;
 
-    public void addToWorld(World world) {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(entity.getPosition());
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-
-        addToWorld(world, bodyDef);
+    public WorldEntityManager(WorldEntity entity) {
+        this.entity = entity;
     }
 
-    public void addToWorld(World world, BodyDef bodyDef) {
-        Body body = world.createBody(bodyDef);
-        body.setUserData(entity);
-        entity.position = body.getPosition();
+    public WorldEntity getEntity() {
+        return entity;
+    }
+
+    protected void setBody(Body body) {
+        this.body = body;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
+
+    public void draw(SpriteBatch batch) {
+        if (sprite != null) {
+            sprite.setPosition(entity.position.x, entity.position.y);
+            sprite.setSize(entity.size.x, entity.size.y);
+            sprite.draw(batch);
+        }
     }
 }
