@@ -3,16 +3,14 @@ package core.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import core.GdxGame;
-import core.characters.CharacterSprite;
 import core.screens.HUD.Hud;
+import core.screens.HUD.InventoryWindow;
 
 public class GameScreen implements Screen {
 
@@ -25,10 +23,12 @@ public class GameScreen implements Screen {
     private final Hud hud;
     private final GdxGame game;
     private boolean displayInventory = false;
+    private InventoryWindow inventory;
 
     public GameScreen(GdxGame game) {
         this.hud = new Hud(game.batch);
         this.game = game;
+        this.inventory = new InventoryWindow();
     }
 
     @Override
@@ -63,11 +63,8 @@ public class GameScreen implements Screen {
         renderer.render();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        if (displayInventory){
-            hud.stage.draw();
-        }
 
-
+        hud.stage.draw();
 
 
         //sprites.renderCharacter();
@@ -88,8 +85,12 @@ public class GameScreen implements Screen {
             y += inc;
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)){
-            System.out.println("pressed I");
             displayInventory = !displayInventory;
+            if (displayInventory){
+                hud.openInventory(inventory);
+            }else{
+                hud.closeInventory(inventory);
+            }
         }
 
 
@@ -118,5 +119,7 @@ public class GameScreen implements Screen {
     public void hide() {}
 
     @Override
-    public void dispose() {}
+    public void dispose() {
+        hud.dispose();
+    }
 }
