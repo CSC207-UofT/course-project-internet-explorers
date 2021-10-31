@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class InventoryUI implements Disposable {
+public class HudManager implements Disposable {
 
     public Stage stage;
     private Viewport viewport;
@@ -27,7 +27,7 @@ public class InventoryUI implements Disposable {
     private Label countdownLabel, timeLabel, linkLabel;
     private static Label scoreLabel;
 
-    public InventoryUI(SpriteBatch sb) {
+    public HudManager(SpriteBatch sb) {
         //define tracking variables
         worldTimer = 250;
         timeCount = 0;
@@ -56,9 +56,18 @@ public class InventoryUI implements Disposable {
         table.add(scoreLabel).expandX();
         table.add(countdownLabel).expandX();
 
+
         //add table to the stage
         stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
+    }
 
+    public void openInventory(InventoryWindow inventory){
+        stage.addActor(inventory);
+    }
+
+    public void closeInventory(InventoryWindow inventory){
+        inventory.remove();
     }
 
     public void update(float dt) {
