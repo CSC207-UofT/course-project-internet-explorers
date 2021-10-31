@@ -15,13 +15,13 @@ import core.levels.LevelState;
 /**
  * Runs the gameplay of a Level.
  */
-public class GameScreen implements Screen {
+public class LevelGameplayController implements Screen {
 
     private final CameraManager cameraManager;
     private ShapeRenderer shapeRenderer;
     private final LevelManager levelManager;
 
-    public GameScreen(LevelManager levelManager) {
+    public LevelGameplayController(LevelManager levelManager) {
         this.levelManager = levelManager;
         cameraManager = new CameraManager(levelManager.getUnitScale());
     }
