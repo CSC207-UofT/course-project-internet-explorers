@@ -9,7 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import core.GdxGame;
-import core.screens.HUD.Hud;
+import core.screens.HUD.HudManager;
 import core.screens.HUD.InventoryWindow;
 
 public class GameScreen implements Screen {
@@ -20,13 +20,13 @@ public class GameScreen implements Screen {
     private float x;
     private float y;
 
-    private final Hud hud;
+    private final HudManager hud;
     private final GdxGame game;
     private boolean displayInventory = false;
     private InventoryWindow inventory;
 
     public GameScreen(GdxGame game) {
-        this.hud = new Hud(game.batch);
+        this.hud = new HudManager(game.batch);
         this.game = game;
         this.inventory = new InventoryWindow();
     }
