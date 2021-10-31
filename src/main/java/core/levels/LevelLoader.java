@@ -7,6 +7,7 @@ public class LevelLoader {
 
     public static LevelState getLevel1() {
         LevelState lvl = new LevelState("maps/demo.tmx");
+        lvl.setUnitScale(1 / 32f);
         lvl.world = new World(new Vector2(0, 0), true);
 
         return lvl;

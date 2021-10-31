@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import core.camera.CameraManager;
+import core.levels.LevelManager;
 import core.levels.LevelState;
 
 /**
@@ -16,30 +17,19 @@ import core.levels.LevelState;
  */
 public class GameScreen implements Screen {
 
-    private TiledMapRenderer renderer;
-    private CameraManager cameraManager;
+    private final CameraManager cameraManager;
     private ShapeRenderer shapeRenderer;
-    private LevelState level;
+    private final LevelManager levelManager;
 
-    public GameScreen(LevelState level) {
-        this.level = level;
+    public GameScreen(LevelManager levelManager) {
+        this.levelManager = levelManager;
+        cameraManager = new CameraManager(levelManager.getUnitScale());
     }
 
     @Override
     public void show() {
-        // unitScale measured in m/px
-        // represents in-game size of map tiles
-        // current conventions
-        //  * 1 map tile is 1m by 1m
-        //  * tiles are 32px by 32px
-        float unitScale = 1 / 32f;
-
-        cameraManager = new CameraManager(unitScale);
         cameraManager.enterDebugFreecamMode();
-
         shapeRenderer = new ShapeRenderer();
-
-        renderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load(level.getMapPath()), unitScale);
     }
 
     @Override
@@ -49,9 +39,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         cameraManager.update(dt);
-        renderer.setView(cameraManager.getCamera());
-
-        renderer.render();
+        levelManager.renderMap(cameraManager.getCamera());
 
         shapeRenderer.setProjectionMatrix(cameraManager.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -75,5 +63,7 @@ public class GameScreen implements Screen {
     public void hide() {}
 
     @Override
-    public void dispose() {}
+    public void dispose() {
+        levelManager.dispose();
+    }
 }
