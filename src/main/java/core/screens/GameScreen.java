@@ -9,14 +9,21 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import core.camera.CameraManager;
+import core.levels.LevelState;
 
+/**
+ * Runs the gameplay of a Level.
+ */
 public class GameScreen implements Screen {
 
     private TiledMapRenderer renderer;
     private CameraManager cameraManager;
     private ShapeRenderer shapeRenderer;
+    private LevelState level;
 
-    public GameScreen() {}
+    public GameScreen(LevelState level) {
+        this.level = level;
+    }
 
     @Override
     public void show() {
@@ -32,7 +39,7 @@ public class GameScreen implements Screen {
 
         shapeRenderer = new ShapeRenderer();
 
-        renderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load("maps/demo.tmx"), unitScale);
+        renderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load(level.getMapPath()), unitScale);
     }
 
     @Override

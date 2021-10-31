@@ -12,4 +12,8 @@ public class LevelState {
     protected LevelState(String mapPath) {
         this.mapPath = mapPath;
     }
+
+    public String getMapPath() {
+        return mapPath;
+    }
 }
