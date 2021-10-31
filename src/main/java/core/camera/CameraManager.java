@@ -3,6 +3,7 @@ package core.camera;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import java.util.function.Function;
 
@@ -10,16 +11,16 @@ public class CameraManager {
 
     protected OrthographicCamera camera;
     protected float unitScale;
-    private Vector3 subjectPosition;
+    private Vector2 subjectPosition;
     private boolean debugFreecam;
 
     public CameraManager(float unitScale) {
         this.unitScale = unitScale;
-        this.subjectPosition = new Vector3().setZero();
+        this.subjectPosition = new Vector2();
         this.camera = new OrthographicCamera();
         this.debugFreecam = false;
 
-        camera.position.set(subjectPosition);
+        camera.position.set(subjectPosition.x, subjectPosition.y, 0);
         camera.zoom = unitScale;
     }
 
@@ -37,8 +38,7 @@ public class CameraManager {
             handleFreecamInput(dt);
         }
 
-        camera.position.z = subjectPosition.z;
-        Vector3 dp = subjectPosition.cpy().sub(camera.position);
+        Vector3 dp = new Vector3(subjectPosition.x, subjectPosition.y, 0).sub(camera.position);
         Function<Float, Float> f = x -> (float) Math.round((x - Math.tanh(x) + 0.1 * Math.tanh(10 * x)) / unitScale * 2) * unitScale / 2;
         camera.translate(dp.scl(f.apply(dp.len2()) * 60 * dt));
     }
@@ -50,7 +50,7 @@ public class CameraManager {
     }
 
     public void enterDebugFreecamMode() {
-        subjectPosition = new Vector3().set(camera.position);
+        subjectPosition = new Vector2(camera.position.x, camera.position.y);
         debugFreecam = true;
     }
 
@@ -65,7 +65,7 @@ public class CameraManager {
         // m/s
         float speed = 10;
         float zoomFactor = unitScale / camera.zoom;
-        subjectPosition.add(new Vector3(dx, dy, 0).nor().scl(speed * dt / zoomFactor));
+        subjectPosition.add(new Vector2(dx, dy).nor().scl(speed * dt / zoomFactor));
 
         if (Gdx.input.isKeyPressed(Input.Keys.O) && camera.zoom > 0.5 * unitScale) {
             camera.zoom *= 0.97f;
@@ -80,11 +80,11 @@ public class CameraManager {
         return camera;
     }
 
-    public void setSubjectPosition(Vector3 position) {
+    public void setSubjectPosition(Vector2 position) {
         this.subjectPosition = position;
     }
 
-    public Vector3 getSubjectPosition() {
+    public Vector2 getSubjectPosition() {
         return subjectPosition;
     }
 }
