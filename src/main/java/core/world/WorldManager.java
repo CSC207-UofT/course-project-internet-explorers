@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public class WorldManager {
 
-    private World world;
+    private final World world;
     private SpriteBatch batch;
 
     public WorldManager(World world) {
