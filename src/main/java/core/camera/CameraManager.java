@@ -49,11 +49,22 @@ public class CameraManager {
         camera.update();
     }
 
+    /**
+     * Enable freely controlling the camera FOR DEBUG PURPOSES ONLY
+     * Detaches camera from current subject by setting `subjectPosition` to a new vector.
+     * Enables `debugFreecam` mode on this CameraManager, which tells it to handle user input for moving the camera.
+     *
+     * TODO replace with a separate class so that user input is handled elsewhere.
+     */
     public void enterDebugFreecamMode() {
         subjectPosition = new Vector2(camera.position.x, camera.position.y);
         debugFreecam = true;
     }
 
+    /**
+     * Handles user input to move the camera when `debugFreecam` is enabled on this CameraManager
+     * @param dt time in seconds since last frame
+     */
     private void handleFreecamInput(float dt) {
         int dx = 0;
         dx += Gdx.input.isKeyPressed(Input.Keys.RIGHT) ? 1 : 0;
@@ -80,8 +91,13 @@ public class CameraManager {
         return camera;
     }
 
+    /**
+     * Tells this CameraManager to track a new position vector, and snaps the camera to that position.
+     * @param position the new position Vector2 to track.
+     */
     public void setSubjectPosition(Vector2 position) {
         this.subjectPosition = position;
+        this.camera.position.set(subjectPosition.x, subjectPosition.y, 0);
     }
 
     public Vector2 getSubjectPosition() {

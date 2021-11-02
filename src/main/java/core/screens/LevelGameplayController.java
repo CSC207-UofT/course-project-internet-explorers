@@ -26,17 +26,19 @@ public class LevelGameplayController implements Screen {
         this.levelManager = levelManager;
         cameraManager = new CameraManager(levelManager.getUnitScale());
 
+        // TODO handle spawning the player via the spawn system once implemented
         WorldEntity player = new WorldEntity();
-        player.setPosition(new Vector2(0, 0));
+        player.setPosition(new Vector2(2, 2));
         player.setSize(new Vector2(1, 1));
-
         WorldEntityManager playerManager = new WorldEntityManager(player);
         playerManager.setSprite(new TextureAtlas("characters/sprites.txt").createSprite("demo_player"));
-
         WorldManager wm = levelManager.getWorldManager();
         wm.addEntityToWorld(playerManager);
 
+        // not the proper way to control stuff on-screeen, this is just for debugging
+        // TODO remove following line – player position should be mutated by the PlayerManager
         cameraManager.enterDebugFreecamMode();
+        // TODO should pass in the Player WorldEntity's ID and the WorldEntity Manager once ID-based system is implemented
         cameraManager.setSubjectPosition(playerManager.getEntity().getPosition());
     }
 
@@ -55,6 +57,8 @@ public class LevelGameplayController implements Screen {
         levelManager.renderMap(cameraManager.getCamera());
         levelManager.renderWorld(cameraManager.getCamera());
 
+        // TODO move following code to the CameraManager
+        // draw a red dot which marks the spot tracked by the camera (for debugging)
         shapeRenderer.setProjectionMatrix(cameraManager.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.RED);
