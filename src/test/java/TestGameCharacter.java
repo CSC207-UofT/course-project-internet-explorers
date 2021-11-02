@@ -14,7 +14,7 @@ public class TestGameCharacter {
         ArrayList<String> items = new ArrayList<>();
         items.add("Sword");
         items.add("Defender: Archer");
-        test_player = new GameCharacter("defenders", 100, 1, items);
+        test_player = new GameCharacter("square", "player", 100, 1, items);
     }
 
     @Test
