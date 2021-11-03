@@ -1,6 +1,5 @@
 package core.characters;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -54,12 +53,12 @@ public class CharacterManager {
     }
 
     public void moveCharacter(int id, float newX, float newY) {
-        //Updates the position of the character
-        for (var i : this.characterEntities.entrySet()) {
-            if (i.getKey() == id) {
-                i.getValue().position[0] = newX;
-                i.getValue().position[1] = newY;
-            }
+        /*
+        * Updates the position of the character
+        * */
+        if (verifyId(id)) {
+            this.characterEntities.get(id).position[0] = newX;
+            this.characterEntities.get(id).position[1] = newY;
         }
     }
 
@@ -67,22 +66,17 @@ public class CharacterManager {
         /*
          * Decreases character health by damage
          * */
-        for (var i : this.characterEntities.entrySet()) {
-            if (i.getKey() == id) {
-                i.getValue().health -= damage;
-            }
+        if (verifyId(id)) {
+            this.characterEntities.get(id).health -= damage;
         }
     }
 
     public void increaseLevel(int id) {
         /*
-         * Increases the level of enemies by 1 following each wave of enemies.
-         * Need to check if character.team == "Enemy"
+         * Increases the level of a character following the completion of a wave
          * */
-        for (var i : this.characterEntities.entrySet()) {
-            if (i.getKey() == id) {
-                i.getValue().level += 1;
-            }
+        if (verifyId(id)) {
+            this.characterEntities.get(id).level += 1;
         }
     }
 
@@ -91,13 +85,8 @@ public class CharacterManager {
          * Checks if the item is in the characters inventory and then returns true if it is.
          * Ensures that there are no issues when controller class calls a child of itemUsageDelegate
          * */
-
-        for (var i : this.characterEntities.entrySet()) {
-            if (i.getKey() == id) {
-                if (i.getValue().inventory.contains(item)) {
-                    return true;
-                }
-            }
+        if (verifyId(id)) {
+            return this.characterEntities.get(id).inventory.contains(item);
         }
         return false;
     }
@@ -106,10 +95,8 @@ public class CharacterManager {
         /*
          * Adds item to the inventory
          * */
-        for (var i : this.characterEntities.entrySet()) {
-            if (i.getKey() == id) {
-                i.getValue().inventory.add(item);
-            }
+        if (verifyId(id)) {
+            this.characterEntities.get(id).inventory.add(item);
         }
     }
 
@@ -118,13 +105,10 @@ public class CharacterManager {
          * Checks if item is in inventory, then removes if it is
          * Returns True if item successfully removed, false if not
          * */
-
-        for (var i : this.characterEntities.entrySet()) {
-            if (i.getKey() == id) {
-                if (i.getValue().inventory.contains(item)) {
-                    i.getValue().inventory.remove(item);
-                    return true;
-                }
+        if (verifyId(id)) {
+            if (this.characterEntities.get(id).inventory.contains(item)) {
+                this.characterEntities.get(id).inventory.remove(item);
+                return true;
             }
         }
         return false;
@@ -135,11 +119,19 @@ public class CharacterManager {
          * Returns inventory contents and displays them
          * Returns null if character id cannot be found
          * */
-        for (var i : this.characterEntities.entrySet()) {
-            if (i.getKey() == id) {
-                return i.getValue().inventory;
-            }
+        if (verifyId(id)) {
+            return this.characterEntities.get(id).inventory;
         }
         return null;
+    }
+
+    private boolean verifyId(int id) {
+        // Loops through hashmap to ensure we aren't looking up ids that don't exist
+        for (var i : this.characterEntities.entrySet()) {
+            if (i.getKey() == id) {
+                return true;
+            }
+        }
+        return false;
     }
 }
