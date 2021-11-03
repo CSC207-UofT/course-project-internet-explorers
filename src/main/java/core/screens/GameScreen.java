@@ -17,7 +17,7 @@ public class GameScreen implements Screen {
 
     private TiledMapRenderer renderer;
     private OrthographicCamera camera;
-//    private CharacterSprite sprites;
+    //    private CharacterSprite sprites;
     private float x;
     private float y;
 
@@ -36,8 +36,8 @@ public class GameScreen implements Screen {
         y = 0;
         camera.position.set(x, y, 1f);
         camera.update();
-//        sprites = new CharacterSprite();
-//        sprites.createCharacter();
+        //        sprites = new CharacterSprite();
+        //        sprites.createCharacter();
     }
 
     @Override
