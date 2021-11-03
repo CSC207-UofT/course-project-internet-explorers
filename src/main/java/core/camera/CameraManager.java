@@ -26,6 +26,7 @@ public class CameraManager {
 
     /**
      * Moves camera as needed to track the subject, then update the camera.
+     *
      * @param dt time since last frame in seconds
      */
     public void update(float dt) {
@@ -39,7 +40,8 @@ public class CameraManager {
         }
 
         Vector3 dp = new Vector3(subjectPosition.x, subjectPosition.y, 0).sub(camera.position);
-        Function<Float, Float> f = x -> (float) Math.round((x - Math.tanh(x) + 0.1 * Math.tanh(10 * x)) / unitScale * 2) * unitScale / 2;
+        Function<Float, Float> f = x ->
+            (float) Math.round((x - Math.tanh(x) + 0.1 * Math.tanh(10 * x)) / unitScale * 1.5f) * unitScale / 1.5f;
         camera.translate(dp.scl(f.apply(dp.len2()) * 60 * dt));
     }
 
@@ -53,7 +55,7 @@ public class CameraManager {
      * Enable freely controlling the camera FOR DEBUG PURPOSES ONLY
      * Detaches camera from current subject by setting `subjectPosition` to a new vector.
      * Enables `debugFreecam` mode on this CameraManager, which tells it to handle user input for moving the camera.
-     *
+     * <p>
      * TODO replace with a separate class so that user input is handled elsewhere.
      */
     public void enterDebugFreecamMode() {
@@ -63,6 +65,7 @@ public class CameraManager {
 
     /**
      * Handles user input to move the camera when `debugFreecam` is enabled on this CameraManager
+     *
      * @param dt time in seconds since last frame
      */
     private void handleFreecamInput(float dt) {
@@ -93,6 +96,7 @@ public class CameraManager {
 
     /**
      * Tells this CameraManager to track a new position vector, and snaps the camera to that position.
+     *
      * @param position the new position Vector2 to track.
      */
     public void setSubjectPosition(Vector2 position) {

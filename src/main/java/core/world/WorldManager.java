@@ -1,72 +1,69 @@
 package core.world;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
-/**
- * Use-case class for box2d World.
- * Implements methods for rendering the World and stepping the simulation.
- * <p>
- * The WorldEntity objects living in this World are stored as the UserData of the internal Box2D World.
- */
 public class WorldManager {
 
-    private final World world;
-    private SpriteBatch batch;
+    private Map<UUID, WorldEntity> entities;
+    private World world;
 
     public WorldManager(World world) {
         this.world = world;
-        batch = new SpriteBatch();
+        this.entities = new HashMap<>();
     }
 
-    public void draw(OrthographicCamera camera) {
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        for (WorldEntityManager manager : getWorldEntityManagers()) {
-            manager.draw(batch);
+    public WorldEntity createEntity(BodyDef def) {
+        WorldEntity entity = new WorldEntity(world.createBody(def));
+        this.entities.put(entity.id, entity);
+        return entity;
+    }
+
+    public WorldEntity getEntity(UUID id) {
+        return entities.get(id);
+    }
+
+    /**
+     * Steps the physics simulation of the World.
+     *
+     * @param dt time delta to simulate (seconds) (capped at .5 in case computer is too slow)
+     */
+    public void step(float dt) {
+        world.step(Math.min(dt, 0.5f), 6, 2);
+    }
+
+    /**
+     * Draw all the entities on the screen.
+     *
+     * @param batch a SpriteBatch which is already drawing (batch.begin() has been called)
+     */
+    public void draw(SpriteBatch batch) {
+        entities.forEach((id, e) -> {
+            updateEntitySprite(e);
+            e.getSprite().draw(batch);
+        });
+    }
+
+    public static void updateEntitySprite(WorldEntity e) {
+        Sprite sprite = e.getSprite();
+        if (sprite == null) {
+            return;
         }
-        batch.end();
-    }
 
-    /**
-     * Returns the WorldEntities that have been added to the World.
-     */
-    public WorldEntityManager[] getWorldEntityManagers() {
-        Array<Body> bodies = new Array<>();
-        world.getBodies(bodies);
+        // Set sprite rotation origin and angle
+        Vector2 origin = e.body.getLocalCenter();
+        sprite.setOrigin(origin.x, origin.y);
+        sprite.setRotation(e.body.getAngle() * 6.2832f);
 
-        return Arrays.stream(bodies.toArray(Body.class)).map(b -> (WorldEntityManager) b.getUserData()).toArray(WorldEntityManager[]::new);
-    }
-
-    /**
-     * Adds a WorldEntity to the World as a DynamicBody.
-     * The WorldEntity's `position` property is reassigned to the resulting Body's position.
-     *
-     * @param entityManager The WorldEntityManager of the WorldEntity to be added.
-     */
-    public void addEntityToWorld(WorldEntityManager entityManager) {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(entityManager.getEntity().getPosition());
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-
-        addEntityToWorld(entityManager, bodyDef);
-    }
-
-    /**
-     * Adds a WorldEntity to the World, and reassigns its `position` property to the box2d Body's position.
-     *
-     * @param entityManager The WorldEntityManager of the WorldEntity to be added.
-     * @param bodyDef       Box2D Body configuration.
-     */
-    public void addEntityToWorld(WorldEntityManager entityManager, BodyDef bodyDef) {
-        Body body = world.createBody(bodyDef);
-        body.setUserData(entityManager);
-        entityManager.getEntity().position = body.getPosition();
-        entityManager.setBody(body);
+        // Set sprite position and dimensions
+        Vector2 pos = e.body.getPosition().add(e.getOffset());
+        Vector2 size = e.getSize();
+        sprite.setBounds(pos.x, pos.y, size.x, size.y);
     }
 }

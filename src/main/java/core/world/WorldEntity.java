@@ -1,6 +1,9 @@
 package core.world;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import java.util.UUID;
 
 /**
  * Represents an entity within a level's World.
@@ -12,13 +15,16 @@ import com.badlogic.gdx.math.Vector2;
 public class WorldEntity {
 
     /**
-     * The position of this WorldEntity's origin.
+     * The Box2D Body representing this WorldEntity in the World.
+     * The Body's position is also the position of this WorldEntity.
      */
-    protected Vector2 position;
+    protected final Body body;
+
     /**
      * The x and y dimensions of this WorldEntity.
      */
-    protected Vector2 size;
+    private Vector2 size;
+
     /**
      * The offset between this WorldEntity's origin and one of its corners.
      * <p>
@@ -26,24 +32,32 @@ public class WorldEntity {
      * position + offset
      * position + offset + size
      */
-    protected Vector2 offset;
+    private Vector2 offset;
 
-    public WorldEntity() {
-        this.position = new Vector2();
+    private Sprite sprite;
+
+    public final UUID id;
+
+    public WorldEntity(Body body) {
+        this.body = body;
+        body.setUserData(this);
+
         this.size = new Vector2();
         this.offset = new Vector2();
+
+        this.id = UUID.randomUUID();
     }
 
     public Vector2 getPosition() {
-        return position.cpy();
+        return this.body.getPosition();
     }
 
     public void setPosition(Vector2 position) {
-        this.position.set(position);
+        this.body.getPosition().set(position);
     }
 
     public Vector2 getSize() {
-        return size.cpy();
+        return size;
     }
 
     public void setSize(Vector2 size) {
@@ -51,10 +65,22 @@ public class WorldEntity {
     }
 
     public Vector2 getOffset() {
-        return offset.cpy();
+        return offset;
     }
 
     public void setOffset(Vector2 offset) {
         this.offset.set(offset);
+    }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
+
+    public Body getBody() {
+        return body;
     }
 }
