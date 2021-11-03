@@ -17,7 +17,7 @@ public class GameScreen implements Screen {
 
     private TiledMapRenderer renderer;
     private OrthographicCamera camera;
-//    private CharacterSprite sprites;
+    private CharacterSprite sprites;
     private float x;
     private float y;
 
@@ -27,17 +27,18 @@ public class GameScreen implements Screen {
     public void show() {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-
         camera = new OrthographicCamera();
         camera.setToOrtho(false, w, h);
+
+        sprites = new CharacterSprite();
+        sprites.createCharacter();
 
         renderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load("basic.tmx"), 0.5f);
         x = 0;
         y = 0;
         camera.position.set(x, y, 1f);
         camera.update();
-//        sprites = new CharacterSprite();
-//        sprites.createCharacter();
+
     }
 
     @Override
@@ -45,13 +46,11 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0.7f, 0.7f, 0.7f, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        sprites.renderCharacter();
         handleUserInput();
         camera.update();
-
         renderer.setView(camera);
         renderer.render();
-        //sprites.renderCharacter();
     }
 
     private void handleUserInput() {
