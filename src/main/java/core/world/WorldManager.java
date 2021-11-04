@@ -4,10 +4,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class WorldManager {
 
@@ -19,10 +20,27 @@ public class WorldManager {
         this.entities = new HashMap<>();
     }
 
-    public WorldEntity createEntity(BodyDef def) {
-        WorldEntity entity = new WorldEntity(world.createBody(def));
+    public WorldEntity createEntity(BodyDef bodyDef, FixtureDef... fixtureDefs) {
+        WorldEntity entity = new WorldEntity(world.createBody(bodyDef));
         this.entities.put(entity.id, entity);
+        createFixtures(entity, fixtureDefs);
         return entity;
+    }
+
+    /**
+     * Adds Box2D fixtures to the specified WorldEntity's Box2D Body.
+     *
+     * @param entityId The target entity's id
+     * @param defs details of fixtures to add
+     */
+    public void createFixtures(UUID entityId, FixtureDef... defs) {
+        createFixtures(getEntity(entityId), defs);
+    }
+
+    private void createFixtures(WorldEntity entity, FixtureDef... defs) {
+        for (FixtureDef def : defs) {
+            entity.body.createFixture(def);
+        }
     }
 
     public WorldEntity getEntity(UUID id) {
