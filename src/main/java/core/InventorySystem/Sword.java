@@ -11,6 +11,7 @@ public class Sword extends Weapon {
     private int level;
     private int range;
     private int damage;
+    private boolean held = false;
 
     public Sword(String name, String texture, String meta, int size, String shape, int level, int range, int damage) {
         this.name = name;
@@ -47,6 +48,9 @@ public class Sword extends Weapon {
     public String getShape() {
         return shape;
     }
+
+    @Override
+    public Boolean held() {return held;}
 
     @Override
     public int getLevel() {

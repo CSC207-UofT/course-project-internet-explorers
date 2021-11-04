@@ -6,4 +6,5 @@ public abstract interface Item {
     String getMeta();
     int getSize();
     String getShape();
+    Boolean held();
 }

@@ -1,6 +1,6 @@
 package core.InventorySystem;
 
 public interface ItemUsageDelegate {
-    public void hold();
-    public void use();
+    public boolean hold(Item item);
+    public void use(Item item);
 }

@@ -9,6 +9,7 @@ public abstract class Weapon implements Item, DamagingCollidable {
     private int level;
     private int damage;
     private int range;
+    private boolean held;
     public abstract int getDamage();
     public abstract String getName();
     public abstract String getTexture();
