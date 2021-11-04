@@ -40,6 +40,7 @@ public class CameraManager {
         }
 
         Vector3 dp = new Vector3(subjectPosition.x, subjectPosition.y, 0).sub(camera.position);
+        // movement smoothing function – decide how far to move camera based on how far the subject is
         Function<Float, Float> f = x ->
             (float) Math.round((x - Math.tanh(x) + 0.1 * Math.tanh(10 * x)) / unitScale * 1.5f) * unitScale / 1.5f;
         camera.translate(dp.scl(f.apply(dp.len2()) * 60 * dt));
