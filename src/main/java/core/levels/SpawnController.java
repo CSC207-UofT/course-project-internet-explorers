@@ -6,8 +6,6 @@ import core.world.WorldEntity;
 /**
  * Controller class for spawning entities within the game
  */
-
-
 public class SpawnController {
 
     /**
@@ -15,6 +13,7 @@ public class SpawnController {
      */
     private Vector2 spawnLocation;
 
+    // TODO: Figure out SpawnController so it can just take in WorldEntity
     public SpawnController(Vector2 spawnLocation){
         this.spawnLocation = spawnLocation;
     }

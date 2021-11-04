@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import core.world.WorldEntity;
 import core.world.WorldManager;
 
 /**
@@ -44,6 +45,11 @@ public class LevelManager {
         batch.end();
     }
 
+    // TODO: Configure changes from SpawnController
+    public void spawnEntity(WorldEntity worldEntity, SpawnController spawnController){
+        spawnController.spawn(worldEntity);
+    }
+
     public float getUnitScale() {
         return level.getUnitScale();
     }
@@ -55,4 +61,6 @@ public class LevelManager {
     public void dispose() {
         map.dispose();
     }
+
+
 }

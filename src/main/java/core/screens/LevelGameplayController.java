@@ -28,10 +28,11 @@ public class LevelGameplayController implements Screen {
         cameraManager = new CameraManager(levelManager.getUnitScale());
         WorldManager wm = levelManager.getWorldManager();
 
-        // TODO handle spawning the player via the spawn system once implemented
+        // TODO handle spawning the player via the spawn system once implemented (line 35, not fully figured out yet)
         BodyDef playerDef = new BodyDef();
         playerDef.type = BodyDef.BodyType.DynamicBody;
         playerDef.position.set(new Vector2(2, 2));
+        // levelManager.spawnEntity(playerDef, some-spawn-controller);
 
         player = wm.createEntity(playerDef);
 
