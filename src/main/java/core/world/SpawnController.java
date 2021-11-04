@@ -1,4 +1,4 @@
-package core.levels;
+package core.world;
 
 import com.badlogic.gdx.math.Vector2;
 import core.world.WorldEntity;
@@ -14,12 +14,11 @@ public class SpawnController {
     private Vector2 spawnLocation;
 
     // TODO: Figure out SpawnController so it can just take in WorldEntity
-    public SpawnController(Vector2 spawnLocation){
+    public SpawnController(Vector2 spawnLocation) {
         this.spawnLocation = spawnLocation;
     }
 
-    public void spawn(WorldEntity worldEntity){
+    public void spawn(WorldEntity worldEntity) {
         worldEntity.setPosition(this.spawnLocation);
     }
-
 }
