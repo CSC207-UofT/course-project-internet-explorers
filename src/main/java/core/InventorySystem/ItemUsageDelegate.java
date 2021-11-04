@@ -1,6 +1,7 @@
 package core.InventorySystem;
 
+import core.characters.GameCharacter;
+
 public interface ItemUsageDelegate {
-    public boolean hold(Item item);
-    public void use(Item item);
+
 }

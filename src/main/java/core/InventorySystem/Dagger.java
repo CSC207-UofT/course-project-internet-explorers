@@ -4,18 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.files.*;
 
-public class Sword extends Weapon {
+public class Dagger extends Weapon {
     private String name;
-    private Texture texture = new Texture(Gdx.files.internal("java/resources/weapons/sword.png"));
+    private Texture texture = new Texture(Gdx.files.internal("java/resources/weapons/dagger.png"));
     private String meta;
-    private int size = 2;
-    private String shape = "Rectangle";
+    private int size = 1;
+    private String shape = "Triangle";
     private int level;
-    private int range = 2;
+    private int range = 1;
     private int damage;
     private boolean held = false;
 
-    public Sword(String name, String meta, int level, int damage) {
+    public Dagger(String name, String meta, int level, int damage) {
         this.name = name;
         this.meta = meta;
         //how many times weapon can be used

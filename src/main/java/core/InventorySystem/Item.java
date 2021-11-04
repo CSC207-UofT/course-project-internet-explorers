@@ -1,10 +1,13 @@
 package core.InventorySystem;
 
+import com.badlogic.gdx.graphics.Texture;
+
 public abstract interface Item {
     String getName();
-    String getTexture();
+    Texture getTexture();
     String getMeta();
     int getSize();
     String getShape();
-    Boolean held();
+    Boolean getHeld();
+    void setHeld();
 }
