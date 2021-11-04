@@ -19,12 +19,12 @@ public class TestGameCharacter {
 
     @Test
     void testHealthAttribute() {
-        assertEquals(100, test_player.health);
+        assertEquals(100, test_player.getHealth());
     }
 
     @Test
     void testLevelAttribute() {
-        assertEquals(1, test_player.level);
+        assertEquals(1, test_player.getLevel());
     }
 
     @Test
@@ -32,6 +32,6 @@ public class TestGameCharacter {
         ArrayList<String> test_items = new ArrayList<>();
         test_items.add("Sword");
         test_items.add("Defender: Archer");
-        assertEquals(test_items, test_player.inventory);
+        assertEquals(test_items, test_player.getInventory());
     }
 }

@@ -3,130 +3,109 @@ package core.characters;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.UUID;
 
 public class CharacterManager {
 
     /*
      * Use case class that handles updating instances of GameCharacter based on inputs from the InputHandler
-     * @param character: An instance of GameCharacter being updated
-     * @param type: Either Player or AI so the input handler can distinguish between usages
+     * @param characterEntities: Hashmap storing characters as values with their UUID as keys
      * TODO: Change item to type Item when implemented
      * */
 
-    public HashMap<Integer, GameCharacter> characterEntities;
-    private ArrayList<Integer> keylist;
+    public HashMap<UUID, GameCharacter> characterEntities;
 
     public CharacterManager() {
-        this.characterEntities = new HashMap<Integer, GameCharacter>();
-        this.keylist = new ArrayList<Integer>();
+        this.characterEntities = new HashMap<UUID, GameCharacter>();
     }
 
     public void addCharacter(GameCharacter character) {
         /*
-        * Player will always be hashed as 0
-        * Defenders will be hashed as even ints
-        * Enemies will be hashed as odd ints
-        * TODO: Refactor
+        * Generates a unique id for each character when added
         * */
-        int maxElement = this.keylist.get(this.keylist.size() - 1);
-
-        if (Objects.equals(character.team, "player")) {
-            this.characterEntities.put(0, character);
-            this.keylist.add(0);
-        } else if (Objects.equals(character.team, "defender")) {
-            if (maxElement % 2 == 0) {
-                this.characterEntities.put(maxElement + 2, character);
-                this.keylist.add(maxElement + 2);
-            } else {
-                this.characterEntities.put(maxElement + 1, character);
-                this.keylist.add(maxElement + 1);
-            }
-        } else {
-            if (maxElement % 2 == 0) {
-                this.characterEntities.put(maxElement + 1, character);
-                this.keylist.add(maxElement + 1);
-            } else {
-                this.characterEntities.put(maxElement + 2, character);
-                this.keylist.add(maxElement + 2);
-            }
-        }
+        this.characterEntities.put(character.getId(), character);
     }
 
-    public void moveCharacter(int id, float newX, float newY) {
+    public void updateCharacterPosition(UUID id, float newX, float newY) {
         /*
         * Updates the position of the character
+        * TODO: Update to use setPosition when worldEntity merged
         * */
         if (verifyId(id)) {
-            this.characterEntities.get(id).position[0] = newX;
-            this.characterEntities.get(id).position[1] = newY;
+            this.characterEntities.get(id).position[0] += newX;
+            this.characterEntities.get(id).position[1] += newY;
+        }
+        if (verifyId(id)) {
+            this.characterEntities.get(id).position[0] += newX;
+            this.characterEntities.get(id).position[1] += newY;
         }
     }
 
-    public void depleteHealth(int id, int damage) {
+    public void depleteHealth(UUID id, int damage) {
         /*
          * Decreases character health by damage
          * */
         if (verifyId(id)) {
-            this.characterEntities.get(id).health -= damage;
+            this.characterEntities.get(id).setHealth(this.characterEntities.get(id).getHealth() - damage);
         }
     }
 
-    public void increaseLevel(int id) {
+    public void increaseLevel(UUID id) {
         /*
          * Increases the level of a character following the completion of a wave
          * */
         if (verifyId(id)) {
-            this.characterEntities.get(id).level += 1;
+            this.characterEntities.get(id).setLevel(this.characterEntities.get(id).getLevel() + 1);
         }
     }
 
-    public boolean canUseItem(int id, String item) {
+    public boolean canUseItem(UUID id, String item) {
         /*
          * Checks if the item is in the characters inventory and then returns true if it is.
          * Ensures that there are no issues when controller class calls a child of itemUsageDelegate
          * */
         if (verifyId(id)) {
-            return this.characterEntities.get(id).inventory.contains(item);
+            return this.characterEntities.get(id).getInventory().contains(item);
         }
         return false;
     }
+//    TODO: Move inventory stuff to separate inventory manager class
+//    public void addInventory(UUID id, String item) {
+//        /*
+//         * Adds item to the inventory
+//         * */
+//        if (verifyId(id)) {
+//            this.characterEntities.get(id).inventory.add(item);
+//        }
+//    }
+//
+//    public boolean removeInventory(UUID id, String item) {
+//        /*
+//         * Checks if item is in inventory, then removes if it is
+//         * Returns True if item successfully removed, false if not
+//         * */
+//        if (verifyId(id)) {
+//            if (this.characterEntities.get(id).inventory.contains(item)) {
+//                this.characterEntities.get(id).inventory.remove(item);
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    public Object openInventory(UUID id) {
+//        /*
+//         * Returns inventory contents and displays them
+//         * Returns null if character id cannot be found
+//         * */
+//        if (verifyId(id)) {
+//            return this.characterEntities.get(id).inventory;
+//        }
+//        return null;
+//    }
 
-    public void addInventory(int id, String item) {
-        /*
-         * Adds item to the inventory
-         * */
-        if (verifyId(id)) {
-            this.characterEntities.get(id).inventory.add(item);
-        }
-    }
-
-    public boolean removeInventory(int id, String item) {
-        /*
-         * Checks if item is in inventory, then removes if it is
-         * Returns True if item successfully removed, false if not
-         * */
-        if (verifyId(id)) {
-            if (this.characterEntities.get(id).inventory.contains(item)) {
-                this.characterEntities.get(id).inventory.remove(item);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Object openInventory(int id) {
-        /*
-         * Returns inventory contents and displays them
-         * Returns null if character id cannot be found
-         * */
-        if (verifyId(id)) {
-            return this.characterEntities.get(id).inventory;
-        }
-        return null;
-    }
-
-    private boolean verifyId(int id) {
-        // Loops through hashmap to ensure we aren't looking up ids that don't exist
+    private boolean verifyId(UUID id) {
+        // Loops through hashmap to ensure .get doesn't return null
         for (var i : this.characterEntities.entrySet()) {
             if (i.getKey() == id) {
                 return true;
