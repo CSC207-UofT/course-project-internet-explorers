@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import core.camera.CameraManager;
 import core.levels.LevelManager;
+import core.world.EntitySpawner;
 import core.world.WorldEntity;
 import core.world.WorldManager;
 
@@ -23,22 +24,36 @@ public class LevelGameplayController implements Screen {
     private final LevelManager levelManager;
     private final WorldEntity player;
 
+    // TODO put this in the level definition once we have a full spawn system
+    public EntitySpawner getPlayerSpawner() {
+        EntitySpawner spawner = new EntitySpawner();
+
+        spawner.setBodyDefSupplier(() -> {
+            BodyDef def = new BodyDef();
+            def.type = BodyDef.BodyType.DynamicBody;
+            return def;
+        });
+
+        spawner.geometrySupplier(() -> {
+            EntitySpawner.WorldEntityGeometry geometry = new EntitySpawner.WorldEntityGeometry();
+            geometry.position = new Vector2(2, 2);
+            geometry.size = new Vector2(2, 2);
+            geometry.offset = geometry.size.cpy().scl(-.5f);
+            return geometry;
+        });
+
+        spawner.setSpriteSupplier(() -> new TextureAtlas("characters/sprites.txt").createSprite("demo_player"));
+
+        return spawner;
+    }
+
     public LevelGameplayController(LevelManager levelManager) {
         this.levelManager = levelManager;
         cameraManager = new CameraManager(levelManager.getUnitScale());
-        WorldManager wm = levelManager.getWorldManager();
 
-        // TODO handle spawning the player via the spawn system once implemented (line 35, not fully figured out yet)
-        BodyDef playerDef = new BodyDef();
-        playerDef.type = BodyDef.BodyType.DynamicBody;
-        playerDef.position.set(new Vector2(2, 2));
-        // levelManager.spawnEntity(playerDef, some-spawn-controller);
-
-        player = wm.createEntity(playerDef);
-
-        player.setSize(new Vector2(2, 2));
-        player.setOffset(player.getSize().cpy().scl(-.5f));
-        player.setSprite(new TextureAtlas("characters/sprites.txt").createSprite("demo_player"));
+        EntitySpawner playerSpawner = getPlayerSpawner();
+        playerSpawner.setWorldManager(levelManager.getWorldManager());
+        player = playerSpawner.spawn();
 
         // not the proper way to control stuff on-screeen, this is just for debugging
         // TODO remove following line – player position should be mutated by the PlayerManager
