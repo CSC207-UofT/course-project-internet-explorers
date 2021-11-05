@@ -1,12 +1,10 @@
 package core.world;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -66,6 +64,17 @@ public class WorldManager {
             updateEntitySprite(e);
             e.getSprite().draw(batch);
         });
+    }
+
+    /**
+     * Invoke `render` on a Box2DDebugRenderer to draw the physics going on in this world.
+     * Used for debugging.
+     *
+     * @param renderer
+     * @param camera
+     */
+    public void drawPhysics(Box2DDebugRenderer renderer, OrthographicCamera camera) {
+        renderer.render(world, camera.combined);
     }
 
     public static void updateEntitySprite(WorldEntity e) {

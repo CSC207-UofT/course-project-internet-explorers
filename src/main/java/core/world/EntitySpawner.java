@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import java.util.function.Supplier;
 
 /**
@@ -38,6 +39,21 @@ public class EntitySpawner {
             this.size = size;
             this.offset = offset;
         }
+    }
+
+    /**
+     * Creates a rectangular box shaped fixture using the passed in size as width/height.
+     */
+    public static Supplier<FixtureDef[]> createRectangularFixtureDefSupplier(Vector2 size) {
+        return () -> {
+            FixtureDef def = new FixtureDef();
+            PolygonShape rectangle = new PolygonShape();
+            rectangle.setAsBox(size.x / 2, size.y / 2);
+
+            def.shape = rectangle;
+
+            return new FixtureDef[] { def };
+        };
     }
 
     public EntitySpawner() {
