@@ -30,6 +30,7 @@ public class LevelManager {
         this.batch = new SpriteBatch();
     }
 
+    // TODO seems redundant, reevaluate if needed
     public void step(float dt) {
         worldManager.step(dt);
     }

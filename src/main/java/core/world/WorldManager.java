@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
+/**
+ * Use-case class managing WorldEntities and their Box2D representation.
+ */
 public class WorldManager {
 
     private Map<UUID, WorldEntity> entities;
@@ -22,6 +24,7 @@ public class WorldManager {
         WorldEntity entity = new WorldEntity(world.createBody(bodyDef));
         this.entities.put(entity.id, entity);
         createFixtures(entity, fixtureDefs);
+        // TODO maybe just return ID
         return entity;
     }
 
@@ -29,7 +32,7 @@ public class WorldManager {
      * Adds Box2D fixtures to the specified WorldEntity's Box2D Body.
      *
      * @param entityId The target entity's id
-     * @param defs details of fixtures to add
+     * @param defs     details of fixtures to add
      */
     public void createFixtures(UUID entityId, FixtureDef... defs) {
         createFixtures(getEntity(entityId), defs);
@@ -61,8 +64,9 @@ public class WorldManager {
      */
     public void draw(SpriteBatch batch) {
         entities.forEach((id, e) -> {
-            updateEntitySprite(e);
-            e.getSprite().draw(batch);
+            if (updateEntitySprite(e)) {
+                e.getSprite().draw(batch);
+            }
         });
     }
 
@@ -77,10 +81,15 @@ public class WorldManager {
         renderer.render(world, camera.combined);
     }
 
-    public static void updateEntitySprite(WorldEntity e) {
+    /**
+     * Sync a WorldEntity's sprite geometry to its currently stored geometry.
+     *
+     * @param e
+     */
+    public static boolean updateEntitySprite(WorldEntity e) {
         Sprite sprite = e.getSprite();
         if (sprite == null) {
-            return;
+            return false;
         }
 
         // Set sprite rotation origin and angle
@@ -92,5 +101,8 @@ public class WorldManager {
         Vector2 pos = e.body.getPosition().add(e.getOffset());
         Vector2 size = e.getSize();
         sprite.setBounds(pos.x, pos.y, size.x, size.y);
+        return true;
     }
+    // TODO check with ben if we should make WorldEntity properties protected
+    //      and only have public getters/setters in WorldManager
 }

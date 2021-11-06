@@ -83,6 +83,7 @@ public class LevelGameplayController implements Screen {
         shapeRenderer.circle(cameraManager.getSubjectPosition().x, cameraManager.getSubjectPosition().y, 0.1f, 16);
         shapeRenderer.end();
 
+        // TODO only do this in debug mode
         levelManager.getWorldManager().drawPhysics(box2DDebugRenderer, cameraManager.getCamera());
     }
 

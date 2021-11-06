@@ -11,6 +11,8 @@ import java.util.UUID;
  * A WorldEntity has a position and a rectangular bounding box,
  * expressed as its dimensions and that box's offset relative
  * to the position.
+ *
+ * TODO explore whether this should extend Body
  */
 public class WorldEntity {
 
@@ -38,7 +40,7 @@ public class WorldEntity {
 
     public final UUID id;
 
-    public WorldEntity(Body body) {
+    protected WorldEntity(Body body) {
         this.body = body;
         body.setUserData(this);
 
@@ -48,6 +50,7 @@ public class WorldEntity {
         this.id = UUID.randomUUID();
     }
 
+    // TODO copy returned vector to keep our vector private
     public Vector2 getPosition() {
         return this.body.getPosition();
     }
@@ -56,6 +59,7 @@ public class WorldEntity {
         this.body.getPosition().set(position);
     }
 
+    // TODO copy returned vector to keep our vector private
     public Vector2 getSize() {
         return size;
     }
@@ -64,6 +68,7 @@ public class WorldEntity {
         this.size.set(size);
     }
 
+    // TODO copy returned vector to keep our vector private
     public Vector2 getOffset() {
         return offset;
     }
