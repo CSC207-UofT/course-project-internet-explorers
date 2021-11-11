@@ -1,6 +1,7 @@
 package core.screens.HUD;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -14,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class HudManager implements Disposable {
 
-    public Stage stage;
+    private Stage stage;
     private Viewport viewport;
 
     //score && time tracking variables
@@ -23,18 +24,30 @@ public class HudManager implements Disposable {
     private static Integer score;
     private boolean timeUp;
 
-    //Scene2D Widgets
+    //Labels for displaying game info on the overlay
     private Label countdownLabel, timeLabel, linkLabel;
     private static Label scoreLabel;
 
-    public HudManager(SpriteBatch sb) {
+    private boolean inventoryIsOpen;
+    private InventoryWindow playerInventory;
+
+    private SpriteBatch sb;
+
+    public HudManager() {
         //define tracking variables
+        sb = new SpriteBatch();
+        // TODO: Get this data from LevelManager
         worldTimer = 250;
         timeCount = 0;
         score = 0;
 
+        // TODO: Get inventory info from PlayerManager instead of instantiating it here
+        playerInventory = new InventoryWindow();
+
         //setup the HUD viewport using a new camera seperate from gamecam
         //define stage using that viewport and games spritebatch
+
+        // TODO: use the camera from CameraManager
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
@@ -62,47 +75,52 @@ public class HudManager implements Disposable {
         Gdx.input.setInputProcessor(stage);
     }
 
-    public void openInventory(InventoryWindow inventory){
-        stage.addActor(inventory);
+    /***
+     * Draws the overlay
+     */
+    public void draw(){
+        sb.setProjectionMatrix(getCamera().combined);
+        stage.draw();
     }
 
-    public void closeInventory(InventoryWindow inventory){
-        inventory.remove();
+    /***
+     * TODO: use the camera from cameraManager
+     * @return the camera used for the HUD
+     */
+    public Camera getCamera(){
+        return stage.getCamera();
     }
 
-    public void update(float dt) {
-        timeCount += dt;
-        if (timeCount >= 1) {
-            if (worldTimer > 0) {
-                worldTimer--;
-            } else {
-                timeUp = true;
-            }
-            countdownLabel.setText(String.format("%03d", worldTimer));
-            timeCount = 0;
-        }
-    }
-
-    public static void addScore(int value) {
-        score += value;
-        scoreLabel.setText(String.format("%06d", score));
-    }
-
+    /***
+     * Disposes all HUD related elements (e.g. used when you move to a different screen)
+     */
     @Override
     public void dispose() {
         stage.dispose();
     }
 
-    public boolean isTimeUp() {
-        return timeUp;
+    /***
+     * Toggles the inventory window by adding or removing it to/from the stage
+     */
+    public void toggleInventory(){
+        if (inventoryIsOpen){
+            playerInventory.remove();
+        } else {
+            stage.addActor(playerInventory);
+        }
+        inventoryIsOpen = !inventoryIsOpen;
     }
 
-
-    public static Label getScoreLabel() {
-        return scoreLabel;
-    }
-
-    public static Integer getScore() {
-        return score;
-    }
+    // These methods are unused at the moment, but may be useful later
+//    public boolean isTimeUp() {
+//        return timeUp;
+//    }
+//
+//    public static Label getScoreLabel() {
+//        return scoreLabel;
+//    }
+//
+//    public static Integer getScore() {
+//        return score;
+//    }
 }

@@ -16,19 +16,18 @@ public class GameScreen implements Screen {
 
     private TiledMapRenderer renderer;
     private OrthographicCamera camera;
-//    private CharacterSprite sprites;
+
     private float x;
     private float y;
 
     private final HudManager hud;
+
+    // will be used for changing screens
     private final GdxGame game;
-    private boolean displayInventory = false;
-    private InventoryWindow inventory;
 
     public GameScreen(GdxGame game) {
-        this.hud = new HudManager(game.batch);
+        this.hud = new HudManager();
         this.game = game;
-        this.inventory = new InventoryWindow();
     }
 
     @Override
@@ -44,8 +43,7 @@ public class GameScreen implements Screen {
         y = 0;
         camera.position.set(x, y, 1f);
         camera.update();
-//        sprites = new CharacterSprite();
-//        sprites.createCharacter();
+
     }
 
     @Override
@@ -62,14 +60,15 @@ public class GameScreen implements Screen {
         renderer.setView(camera);
         renderer.render();
 
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+//        game.batch.setProjectionMatrix(hud.getCamera().combined);
 
-        hud.stage.draw();
+        hud.draw();
 
 
-        //sprites.renderCharacter();
     }
 
+
+    // TODO: move input handling method to more appropriate class like PlayerManager
     private void handleUserInput() {
         float inc = 10 * camera.zoom;
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
@@ -85,12 +84,7 @@ public class GameScreen implements Screen {
             y += inc;
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)){
-            displayInventory = !displayInventory;
-            if (displayInventory){
-                hud.openInventory(inventory);
-            }else{
-                hud.closeInventory(inventory);
-            }
+            hud.toggleInventory();
         }
 
 

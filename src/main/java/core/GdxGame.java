@@ -12,12 +12,12 @@ public class GdxGame extends Game {
 
     public static final int WIDTH = 1024;
     public static final int HEIGHT = 768;
-    public SpriteBatch batch;
+//    public SpriteBatch batch;
 
     @Override
     public void create() {
 
-        this.batch = new SpriteBatch();
+//        this.batch = new SpriteBatch();
 
         this.setScreen(new MainMenuScreen(this));
     }
