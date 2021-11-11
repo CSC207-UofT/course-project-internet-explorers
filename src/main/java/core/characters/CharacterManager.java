@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 // Need to import InputManager and ControlState
 
+/**
+ * TODO – the PlayerManager should inherit from here
+ */
 public class CharacterManager {
 
     /*

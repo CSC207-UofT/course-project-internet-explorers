@@ -20,6 +20,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 
+//    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.1'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-params:5.8.1'
+
     // LibGDX
     // Uncomment dependencies as required
 
@@ -32,7 +35,7 @@ dependencies {
 
     // LibGDX Core
     implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
-//    implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
 //    implementation "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
 //    implementation "com.badlogicgames.gdx:gdx-ai:$aiVersion"
 //    implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
@@ -42,7 +45,7 @@ dependencies {
     // LibGDX Desktop
     implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-//    implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+    implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
 //    implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 //    implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
 //    implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
