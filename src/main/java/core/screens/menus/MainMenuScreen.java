@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import core.GdxGame;
-import core.screens.GameScreen;
+import core.ScreenManager;
+import core.screens.LevelGameplayController;
 import core.screens.SpritesDemoScreen;
 
 public class MainMenuScreen extends Menu {
@@ -19,14 +19,13 @@ public class MainMenuScreen extends Menu {
     private static final int EXIT_BUTTON_HEIGHT = 150;
     private static final int PLAY_BUTTON_WIDTH = 300;
     private static final int PLAY_BUTTON_HEIGHT = 150;
-    private static final int EXIT_BUTTON_X = GdxGame.WIDTH / 2 - EXIT_BUTTON_WIDTH / 2;
+    private static final int EXIT_BUTTON_X = ScreenManager.WIDTH / 2 - EXIT_BUTTON_WIDTH / 2;
     private static final int EXIT_BUTTON_Y = 100;
-    private static final int PLAY_BUTTON_X = GdxGame.WIDTH / 2 - PLAY_BUTTON_WIDTH / 2;
+    private static final int PLAY_BUTTON_X = ScreenManager.WIDTH / 2 - PLAY_BUTTON_WIDTH / 2;
     private static final int PLAY_BUTTON_Y = 300;
-    private final GdxGame game;
+    private final ScreenManager game;
 
-
-    public MainMenuScreen(GdxGame game) {
+    public MainMenuScreen(ScreenManager game) {
         super(game);
         this.game = game;
         stage.addActor(createSpriteDemoButton());
@@ -67,7 +66,7 @@ public class MainMenuScreen extends Menu {
             new ClickListener() {
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    game.setScreen(new GameScreen(game));
+                    game.setScreen(new LevelGameplayController(game));
                     MainMenuScreen.super.dispose();
                 }
             }

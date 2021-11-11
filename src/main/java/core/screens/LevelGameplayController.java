@@ -8,11 +8,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import core.GdxGame;
+import core.ScreenManager;
 import core.screens.HUD.HudManager;
-import core.screens.HUD.InventoryWindow;
 
-public class GameScreen implements Screen {
+public class LevelGameplayController implements Screen {
 
     private TiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -23,9 +22,9 @@ public class GameScreen implements Screen {
     private final HudManager hud;
 
     // will be used for changing screens
-    private final GdxGame game;
+    private final ScreenManager game;
 
-    public GameScreen(GdxGame game) {
+    public LevelGameplayController(ScreenManager game) {
         this.hud = new HudManager();
         this.game = game;
     }
@@ -43,7 +42,6 @@ public class GameScreen implements Screen {
         y = 0;
         camera.position.set(x, y, 1f);
         camera.update();
-
     }
 
     @Override
@@ -55,18 +53,13 @@ public class GameScreen implements Screen {
         handleUserInput();
         camera.update();
 
-
-
         renderer.setView(camera);
         renderer.render();
 
-//        game.batch.setProjectionMatrix(hud.getCamera().combined);
+        //        game.batch.setProjectionMatrix(hud.getCamera().combined);
 
         hud.draw();
-
-
     }
-
 
     // TODO: move input handling method to more appropriate class like PlayerManager
     private void handleUserInput() {
@@ -83,11 +76,9 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             y += inc;
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.I)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
             hud.toggleInventory();
         }
-
-
 
         camera.translate((x * 2f - camera.position.x) * 0.1f, (y * 2f - camera.position.y) * 0.1f);
 

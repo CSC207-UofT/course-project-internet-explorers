@@ -6,14 +6,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import core.GdxGame;
+import core.ScreenManager;
 
 public abstract class Menu implements Screen {
 
     protected final Game game;
     protected final Stage stage;
 
-    public Menu(GdxGame game) {
+    public Menu(ScreenManager game) {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
