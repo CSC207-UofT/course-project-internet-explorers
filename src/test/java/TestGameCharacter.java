@@ -10,12 +10,12 @@ public class TestGameCharacter {
     GameCharacter test_player;
 
     @BeforeEach
-    void setup() {
-        ArrayList<String> items = new ArrayList<>();
-        items.add("Sword");
-        items.add("Defender: Archer");
-        test_player = new GameCharacter("square", "player", 100, 1, items);
-    }
+//    void setup() {
+//        ArrayList<String> items = new ArrayList<>();
+//        items.add("Sword");
+//        items.add("Defender: Archer");
+//        test_player = new GameCharacter("square", "player", 100, 1, items);
+//    } TODO Need to update shape body
 
     @Test
     void testHealthAttribute() {

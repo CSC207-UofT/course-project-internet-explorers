@@ -1,5 +1,9 @@
 package core.characters;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -29,18 +33,28 @@ public class CharacterManager {
         this.characterEntities.put(character.getId(), character);
     }
 
-    public void updateCharacterPosition(UUID id, float newX, float newY) {
+    /***
+     *This is the use case that sets the velocity for the character with the specific id and moves the character
+     * @param id character id
+     * @param dx change in x from inputHandler
+     * @param dy change in y from inputHandler
+     */
+    public void updateCharacterPosition(UUID id, float dx, float dy) {
+
         /*
         * Updates the position of the character
         * TODO: Update to use setPosition when worldEntity merged
         * */
-        if (verifyId(id)) {
-            this.characterEntities.get(id).position[0] += newX;
-            this.characterEntities.get(id).position[1] += newY;
-        }
-        if (verifyId(id)) {
-            this.characterEntities.get(id).position[0] += newX;
-            this.characterEntities.get(id).position[1] += newY;
+//        if (verifyId(id)) {
+//            this.characterEntities.get(id).position[0] += newX;
+//            this.characterEntities.get(id).position[1] += newY;
+//        }
+//        if (verifyId(id)) {
+//            this.characterEntities.get(id).position[0] += newX;
+//            this.characterEntities.get(id).position[1] += newY;
+//        }
+        if (verifyId(id)){
+            this.characterEntities.get(id).move(new Vector2(dx, dy));
         }
     }
 
