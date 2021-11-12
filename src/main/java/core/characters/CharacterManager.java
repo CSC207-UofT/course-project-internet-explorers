@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * TODO – the PlayerManager should inherit from here
+ */
 public class CharacterManager {
 
     /*

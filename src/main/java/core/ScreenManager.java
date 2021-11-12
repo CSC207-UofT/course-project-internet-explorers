@@ -1,13 +1,13 @@
 package core;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.characters.CharacterSprite;
 import core.characters.GameCharacter;
 import core.screens.menus.MainMenuScreen;
-
 import java.util.ArrayList;
 
-public class GdxGame extends Game {
+public class ScreenManager extends Game {
 
     public static final int WIDTH = 1024;
     public static final int HEIGHT = 768;
