@@ -17,23 +17,19 @@ public class GameCharacter extends WorldEntity {
      * @param team: either player, defense or enemy to denote enemies and allies
      * @param inventory: The Items the GameCharacter is able to use at a given point in the game
      * TODO: Change type of ArrayList to Item
-     * TODO: Remove shape & merge when WorldEntity class is updated
      * */
 
     private final String team;
     private int health;
     private int level;
     private ArrayList<String> inventory;
-    private final UUID id;
 
-    public GameCharacter(Body body, String team, int health, int level,
-                         ArrayList<String> inventory) {
+    public GameCharacter(Body body) {
         super(body);
-        this.team = team;
-        this.health = health;
-        this.level = level;
-        this.inventory = inventory;
-        this.id = UUID.randomUUID();
+        this.team = "";
+        this.health = 0;
+        this.level = 0;
+        this.inventory = new ArrayList<>();
     }
 
     public UUID getId() {
