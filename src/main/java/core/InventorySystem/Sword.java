@@ -2,30 +2,24 @@ package core.InventorySystem;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.files.*;
+
+import java.util.UUID;
 
 public class Sword extends Weapon {
-    private String name;
     private Texture texture = new Texture(Gdx.files.internal("java/resources/weapons/sword.png"));
-    private String meta;
-    private int size = 2;
-    private String shape = "Rectangle";
+    private int size;
     private int level;
-    private int range = 2;
+    private int range;
     private int damage;
+    public UUID id;
     private boolean held = false;
 
-    public Sword(String name, String meta, int level, int damage) {
-        this.name = name;
-        this.meta = meta;
-        //how many times weapon can be used
+    public Sword(int level) {
         this.level = level;
-        this.damage = damage;
-    }
-
-    @Override
-    public String getName() {
-        return name;
+        this.size = this.level * 1;
+        this.range = this.level * 2;
+        this.damage = this.level * 3;
+        this.id = UUID.randomUUID();
     }
 
     @Override
@@ -34,18 +28,8 @@ public class Sword extends Weapon {
     }
 
     @Override
-    public String getMeta() {
-        return meta;
-    }
-
-    @Override
     public int getSize() {
         return size;
-    }
-
-    @Override
-    public String getShape() {
-        return shape;
     }
 
     @Override
@@ -67,6 +51,11 @@ public class Sword extends Weapon {
     @Override
     public int getRange() {
         return range;
+    }
+
+    @Override
+    public UUID getID() {
+        return id;
     }
 
     @Override

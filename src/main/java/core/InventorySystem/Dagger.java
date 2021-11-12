@@ -3,49 +3,46 @@ package core.InventorySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.files.*;
+import java.util.UUID;
 
 public class Dagger extends Weapon {
-    private String name;
+    /*
+     * Dagger weapon object stored in inventory for use
+     * @param name: name of dagger
+     * @param texture: Either Player or AI so the input handler can distinguish between usages
+     * @param size: Either Player or AI so the input handler can distinguish between usages
+     * @param level: Either Player or AI so the input handler can distinguish between usages
+     * @param range: Either Player or AI so the input handler can distinguish between usages
+     * @param damage: Either Player or AI so the input handler can distinguish between usages
+     * @param held: Either Player or AI so the input handler can distinguish between usages
+     * */
     private Texture texture = new Texture(Gdx.files.internal("java/resources/weapons/dagger.png"));
-    private String meta;
-    private int size = 1;
-    private String shape = "Triangle";
+    private int size;
     private int level;
-    private int range = 1;
+    private int range;
     private int damage;
+    public UUID id;
     private boolean held = false;
 
-    public Dagger(String name, String meta, int level, int damage) {
-        this.name = name;
-        this.meta = meta;
+    public Dagger(int level) {
         //how many times weapon can be used
         this.level = level;
-        this.damage = damage;
+        this.size = this.level * 1;
+        this.range = this.level * 1;
+        this.damage = this.level * 2;
+        this.id = UUID.randomUUID();
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
 
     @Override
     public Texture getTexture() {
         return texture;
     }
 
-    @Override
-    public String getMeta() {
-        return meta;
-    }
 
     @Override
     public int getSize() {
         return size;
-    }
-
-    @Override
-    public String getShape() {
-        return shape;
     }
 
     @Override
@@ -67,6 +64,11 @@ public class Dagger extends Weapon {
     @Override
     public int getRange() {
         return range;
+    }
+
+    @Override
+    public UUID getID() {
+        return id;
     }
 
     @Override

@@ -14,16 +14,6 @@ public class WeaponUsageDelegate implements ItemUsageDelegate {
     }
     //Ensures character is holding the most recent selected item iff item is in character's inventory
 
-    public boolean hold(Weapon weapon) {
-        if (this.character.inventory.contains(weapon)){
-            weapon.setHeld();
-        }
-        else {
-            return false;
-        }
-        return true;
-    }
-
     //Use the weapon on a GameCharacter
     public void use(Weapon weapon, GameCharacter character) {
         if (weapon.getHeld()){
