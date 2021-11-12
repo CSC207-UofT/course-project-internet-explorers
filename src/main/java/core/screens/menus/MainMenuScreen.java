@@ -10,7 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.ScreenManager;
-import core.screens.GameScreen;
+import core.levels.LevelLoader;
+import core.levels.LevelManager;
+import core.screens.LevelGameplayController;
 import core.screens.SpritesDemoScreen;
 
 public class MainMenuScreen extends Menu {
@@ -23,15 +25,21 @@ public class MainMenuScreen extends Menu {
     private static final int EXIT_BUTTON_Y = 100;
     private static final int PLAY_BUTTON_X = ScreenManager.WIDTH / 2 - PLAY_BUTTON_WIDTH / 2;
     private static final int PLAY_BUTTON_Y = 300;
-    private final ScreenManager game;
 
+    public MainMenuScreen(ScreenManager screenManager) {
+        super(screenManager);
+    }
 
-    public MainMenuScreen(ScreenManager game) {
-        super(game);
-        this.game = game;
+    @Override
+    public void show() {
         stage.addActor(createSpriteDemoButton());
         stage.addActor(createPlayButton());
         stage.addActor(createExitButton());
+    }
+
+    @Override
+    public void hide() {
+        stage.dispose();
     }
 
     private TextButton createSpriteDemoButton() {
@@ -42,15 +50,7 @@ public class MainMenuScreen extends Menu {
 
         button.setPosition(500, 600);
 
-        button.addListener(
-            new ClickListener() {
-                @Override
-                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    game.setScreen(new SpritesDemoScreen());
-                    MainMenuScreen.super.dispose();
-                }
-            }
-        );
+        button.addListener(createExitButtonListener(new SpritesDemoScreen()));
         return button;
     }
 
@@ -63,15 +63,7 @@ public class MainMenuScreen extends Menu {
         button.setPosition(PLAY_BUTTON_X, PLAY_BUTTON_Y);
         button.setSize(PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);
 
-        button.addListener(
-            new ClickListener() {
-                @Override
-                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    game.setScreen(new GameScreen(game));
-                    MainMenuScreen.super.dispose();
-                }
-            }
-        );
+        button.addListener(createExitButtonListener(new LevelGameplayController(new LevelManager(LevelLoader.getLevel1()))));
 
         return button;
     }
