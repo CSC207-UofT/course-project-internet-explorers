@@ -65,6 +65,8 @@ public class EntitySpawner {
         fixtureDefsSupplier = () -> new FixtureDef[] {};
         geometrySupplier = WorldEntityGeometry::new;
         spriteSupplier = () -> null;
+
+        spawnCallback = e -> {};
     }
 
     public WorldEntity spawn() {
