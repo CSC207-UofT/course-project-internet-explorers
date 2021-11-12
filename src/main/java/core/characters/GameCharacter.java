@@ -1,5 +1,9 @@
 package core.characters;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import core.world.WorldEntity;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -21,9 +25,9 @@ public class GameCharacter extends WorldEntity {
     private ArrayList<String> inventory;
     private final UUID id;
 
-    public GameCharacter(String shape, String team, int health, int level,
+    public GameCharacter(Body body, String team, int health, int level,
                          ArrayList<String> inventory) {
-        super(shape);
+        super(body);
         this.team = team;
         this.health = health;
         this.level = level;
@@ -48,6 +52,11 @@ public class GameCharacter extends WorldEntity {
     public ArrayList<String> getInventory() { return this.inventory; }
 
     public void setInventory(ArrayList<String> inventory) { this.inventory = inventory;}
+
+
+    public void move(Vector2 velocity){
+        this.getBody().setLinearVelocity(velocity);
+    }
 }
 
 
