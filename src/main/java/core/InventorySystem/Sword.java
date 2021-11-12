@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 import java.util.UUID;
 
-public class Sword extends Weapon {
+public class Sword extends Weapon { //TODO make Dagger and Sword in sub-package for item_types
     private Texture texture = new Texture(Gdx.files.internal("java/resources/weapons/sword.png"));
     private int size;
     private int level;

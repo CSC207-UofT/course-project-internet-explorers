@@ -3,7 +3,7 @@ package core.InventorySystem;
 import java.util.UUID;
 import java.util.ArrayList;
 
-public class Inventory {
+public class Inventory { //TODO change to manager class that takes in character ID
     /*
      * Each character has its own inventory object, instantiated as an ArrayList of items
      * */
@@ -41,7 +41,7 @@ public class Inventory {
         else {
             return false;
         }
-        return true;
+        return true; //TODO replace Select method - throwables
     }
 
     public int getItemcount(){
