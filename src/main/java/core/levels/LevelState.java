@@ -1,13 +1,17 @@
 package core.levels;
 
 import com.badlogic.gdx.physics.box2d.World;
-import java.util.Date;
 
+/**
+    Entity class that stores information of the level
+ */
 public class LevelState {
 
     private String mapPath;
     protected World world;
-    protected Date startTime;
+    protected boolean levelPaused;
+    protected float currentTime;
+    protected int score;
 
     // unitScale measured in m/px
     // represents in-game size of map tiles
@@ -18,6 +22,8 @@ public class LevelState {
 
     protected LevelState(String mapPath) {
         this.mapPath = mapPath;
+        this.currentTime = 0;
+        this.levelPaused = false;
     }
 
     protected void setUnitScale(float unitScale) {
@@ -31,4 +37,12 @@ public class LevelState {
     public String getMapPath() {
         return mapPath;
     }
+
+    public boolean getLevelPaused(){ return levelPaused;}
+
+    public void setLevelPaused(boolean set){this.levelPaused = set;}
+
+    public float getCurrentTime(){ return currentTime;}
+
+    public void setCurrentTime(float currentTime){ this.currentTime = currentTime;}
 }

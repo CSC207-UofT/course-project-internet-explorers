@@ -3,6 +3,7 @@ package core.screens;
 import static core.world.DemoSpawners.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -51,7 +52,7 @@ public class LevelGameplayController implements Screen {
         mapBorderSpawner.spawn();
 
         // not the proper way to control stuff on-screen, this is just for debugging
-        // TODO remove following line – player position should be mutated by the PlayerManager
+        // TODO remove following line: player position should be mutated by the PlayerManager
         //      should pass in the Player WorldEntity's ID and the WorldEntity Manager once ID-based system is implemented
         cameraManager.enterDebugFreecamMode();
     }
@@ -74,6 +75,8 @@ public class LevelGameplayController implements Screen {
         levelManager.step(dt);
         levelManager.renderMap(cameraManager.getCamera());
         levelManager.renderWorld(cameraManager.getCamera());
+        levelManager.elapseTime();
+
 
         // TODO move following code to the CameraManager
         // draw a red dot which marks the spot tracked by the camera (for debugging)
@@ -92,10 +95,10 @@ public class LevelGameplayController implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {levelManager.pause();}
 
     @Override
-    public void resume() {}
+    public void resume() { levelManager.resume();}
 
     @Override
     public void hide() {}
