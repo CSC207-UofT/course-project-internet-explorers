@@ -6,6 +6,7 @@ import core.world.WorldEntity;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import core.world.WorldEntity;
 
 public class GameCharacter extends WorldEntity {
 
@@ -19,7 +20,7 @@ public class GameCharacter extends WorldEntity {
      * TODO: Remove shape & merge when WorldEntity class is updated
      * */
 
-    private String team;
+    private final String team;
     private int health;
     private int level;
     private ArrayList<String> inventory;
