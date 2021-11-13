@@ -9,7 +9,9 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
-
+/**
+ * TODO – the PlayerManager should inherit from here
+ */
 public class CharacterManager {
 
     /*
@@ -41,6 +43,7 @@ public class CharacterManager {
 
         /*
         * Updates the position of the character
+        * TODO: Update to use setPosition when worldEntity merged
         * */
 
         if (verifyId(id)){
@@ -76,6 +79,51 @@ public class CharacterManager {
         }
         return false;
     }
+
+    //TODO: Need to find a way to select the item being used
+    public void useItem(UUID id){
+        if (canUseItem(id, "item")){
+            this.characterEntities.get(id).useItem();
+        }
+    }
+    //TODO: should prob have something that checks to make sure the character is a player before using thiese function
+    public void openInventory(UUID id){
+        this.characterEntities.get(id).openInventory();
+    }
+//    TODO: Move inventory stuff to separate inventory manager class
+//    public void addInventory(UUID id, String item) {
+//        /*
+//         * Adds item to the inventory
+//         * */
+//        if (verifyId(id)) {
+//            this.characterEntities.get(id).inventory.add(item);
+//        }
+//    }
+//
+//    public boolean removeInventory(UUID id, String item) {
+//        /*
+//         * Checks if item is in inventory, then removes if it is
+//         * Returns True if item successfully removed, false if not
+//         * */
+//        if (verifyId(id)) {
+//            if (this.characterEntities.get(id).inventory.contains(item)) {
+//                this.characterEntities.get(id).inventory.remove(item);
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    public Object openInventory(UUID id) {
+//        /*
+//         * Returns inventory contents and displays them
+//         * Returns null if character id cannot be found
+//         * */
+//        if (verifyId(id)) {
+//            return this.characterEntities.get(id).inventory;
+//        }
+//        return null;
+//    }
 
     private boolean verifyId(UUID id) {
         // Loops through hashmap to ensure .get doesn't return null
