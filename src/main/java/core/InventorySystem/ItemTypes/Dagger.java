@@ -1,8 +1,10 @@
-package core.InventorySystem;
+package core.InventorySystem.ItemTypes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.files.*;
+import core.InventorySystem.Weapon;
+
 import java.util.UUID;
 
 public class Dagger extends Weapon {
@@ -22,7 +24,6 @@ public class Dagger extends Weapon {
     private int range;
     private int damage;
     public UUID id;
-    private boolean held = false;
 
     public Dagger(int level) {
         //how many times weapon can be used
@@ -39,17 +40,10 @@ public class Dagger extends Weapon {
         return texture;
     }
 
-
     @Override
     public int getSize() {
         return size;
     }
-
-    @Override
-    public Boolean getHeld() {return held;}
-
-    @Override
-    public void setHeld() {held = !held;}
 
     @Override
     public int getLevel() {

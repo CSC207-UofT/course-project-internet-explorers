@@ -7,7 +7,5 @@ import java.util.UUID;
 public abstract interface Item {
     Texture getTexture();
     int getSize();
-    Boolean getHeld();
-    void setHeld();
     UUID getID();
 }

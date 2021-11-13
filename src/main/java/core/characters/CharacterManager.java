@@ -1,8 +1,10 @@
 package core.characters;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Objects;
+import core.InventorySystem.*;
 
 /**
  * TODO – the PlayerManager should inherit from here
@@ -13,7 +15,6 @@ public class CharacterManager {
      * Use case class that handles updating instances of GameCharacter based on inputs from the InputHandler
      * @param character: An instance of GameCharacter being updated
      * @param type: Either Player or AI so the input handler can distinguish between usages
-     * TODO: Change item to type Item when implemented
      * */
 
     public HashMap<Integer, GameCharacter> characterEntities;
@@ -83,10 +84,10 @@ public class CharacterManager {
         }
     }
 
-    public boolean canUseItem(int id, String item) {
+    public boolean canUseItem(int id, Item item) {
         /*
          * Checks if the item is in the characters inventory and then returns true if it is.
-         * Ensures that there are no issues when controller class calls a child of itemUsageDelegate
+         * Ensures that there are no issues when controller class calls a UsageDelegate
          * */
         if (verifyId(id)) {
             return this.characterEntities.get(id).inventory.contains(item);
@@ -94,7 +95,7 @@ public class CharacterManager {
         return false;
     }
 
-    public void addInventory(int id, String item) {
+    public void addInventory(int id, Item item) {
         /*
          * Adds item to the inventory
          * */
@@ -103,7 +104,7 @@ public class CharacterManager {
         }
     }
 
-    public boolean removeInventory(int id, String item) {
+    public boolean removeInventory(int id, Item item) {
         /*
          * Checks if item is in inventory, then removes if it is
          * Returns True if item successfully removed, false if not
@@ -114,6 +115,21 @@ public class CharacterManager {
                 return true;
             }
         }
+        return false;
+    }
+
+    public boolean selectItem(int id, Item item) {
+        /*
+         * Checks if item is in inventory, then moves it to the first index at which item would be used
+         * Returns True if item successfully selected, false if not
+         * */
+        if (verifyId(id)) {
+            if (this.characterEntities.get(id).inventory.contains(item)) {
+                Collections.swap(this.characterEntities.get(id).inventory, 0,
+                        this.characterEntities.get(id).inventory.indexOf(item));
+                    return true;
+                }
+            }
         return false;
     }
 
@@ -137,4 +153,15 @@ public class CharacterManager {
         }
         return false;
     }
-}
+
+    private void acceptInput(int id, boolean use) {
+        /*
+         * calls methods depending on InputController actions //TODO merge with repositioning side of functionality
+         * */
+        if (use) {
+            WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
+            usageDelegate.use((Weapon) this.characterEntities.get(id).inventory.get(0));
+            }
+        }
+    }
+

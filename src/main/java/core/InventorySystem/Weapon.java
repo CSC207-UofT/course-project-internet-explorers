@@ -10,8 +10,6 @@ public abstract class Weapon implements Item {
     private int damage;
     private int range;
     public UUID id;
-    public abstract Boolean getHeld();
-    public abstract void setHeld();
     public abstract int getDamage();
     public abstract Texture getTexture();
     public abstract int getSize();

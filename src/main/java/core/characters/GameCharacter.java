@@ -1,6 +1,7 @@
 package core.characters;
 
 import java.util.ArrayList;
+import core.InventorySystem.*;
 
 public class GameCharacter extends WorldEntity {
 
@@ -16,10 +17,10 @@ public class GameCharacter extends WorldEntity {
     public String team;
     public int health;
     public int level;
-    public ArrayList<String> inventory;
+    public ArrayList<Item> inventory;
 
     public GameCharacter(String shape, String team, int health, int level,
-                         ArrayList<String> inventory) {
+                         ArrayList<Item> inventory) {
         super(shape);
         this.team = team;
         this.health = health;
