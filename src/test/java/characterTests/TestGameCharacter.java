@@ -1,5 +1,4 @@
 import static org.junit.jupiter.api.Assertions.*;
-
 import core.InventorySystem.Item;
 import core.InventorySystem.ItemTypes.*;
 import core.characters.GameCharacter;
@@ -12,21 +11,21 @@ public class TestGameCharacter {
     GameCharacter test_player;
 
     @BeforeEach
-    void setup() {
-        ArrayList<Item> items = new ArrayList<>();
-        items.add((Item) new Sword(2));
-        items.add((Item) new Dagger(1));
-        test_player = new GameCharacter("square", "player", 100, 1, items);
-    }
+//    void setup() {
+//        ArrayList<Item> items = new ArrayList<>();
+//        items.add((Item) new Sword(2));
+//        items.add((Item) new Dagger(1));
+//        test_player = new GameCharacter("square", "player", 100, 1, items);
+//    } TODO Need to update shape body
 
     @Test
     void testHealthAttribute() {
-        assertEquals(100, test_player.health);
+        assertEquals(100, test_player.getHealth());
     }
 
     @Test
     void testLevelAttribute() {
-        assertEquals(1, test_player.level);
+        assertEquals(1, test_player.getLevel());
     }
 
     @Test
