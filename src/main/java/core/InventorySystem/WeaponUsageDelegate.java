@@ -1,11 +1,16 @@
 package core.InventorySystem;
+import java.util.UUID;
 
 
 public class WeaponUsageDelegate {
+    /*
+     * Dagger weapon object stored in inventory for use
+     * @param id: id of character who owns the UsageDelegate
+     * */
 
-    private int id;
+    private UUID id;
 
-    public WeaponUsageDelegate(int id) {
+    public WeaponUsageDelegate(UUID id) {
         this.id = id;
     }
 
@@ -14,6 +19,4 @@ public class WeaponUsageDelegate {
         //Placeholder use method
         System.out.println("Weapon is used");
             }
-            //TODO when used demo item, print something on console
-            //TODO in CharacterManager - acceptInput(boolean use)
         }

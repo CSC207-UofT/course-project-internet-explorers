@@ -1,3 +1,5 @@
+package characterTests;
+
 import static org.junit.jupiter.api.Assertions.*;
 import core.InventorySystem.Item;
 import core.InventorySystem.ItemTypes.*;
@@ -33,6 +35,6 @@ public class TestGameCharacter {
         ArrayList<Item> test_items = new ArrayList<>();
         test_items.add((Item) new Sword(2));
         test_items.add((Item) new Dagger(1));
-        assertEquals(test_items, test_player.inventory);
+        assertEquals(test_items, test_player.getInventory());
     }
 }

@@ -7,6 +7,15 @@ import core.InventorySystem.Weapon;
 import java.util.UUID;
 
 public class Sword extends Weapon {
+    /*
+     * Sword weapon object stored in inventory for use
+     * @param texture: texture of Sword
+     * @param size: size of Sword
+     * @param level: level of Sword
+     * @param range: range of Sword
+     * @param damage: damage of Sword
+     * */
+
     private Texture texture = new Texture(Gdx.files.internal("java/resources/weapons/sword.png"));
     private int size;
     private int level;

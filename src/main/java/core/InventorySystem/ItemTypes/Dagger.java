@@ -10,14 +10,13 @@ import java.util.UUID;
 public class Dagger extends Weapon {
     /*
      * Dagger weapon object stored in inventory for use
-     * @param name: name of dagger
-     * @param texture: Either Player or AI so the input handler can distinguish between usages
-     * @param size: Either Player or AI so the input handler can distinguish between usages
-     * @param level: Either Player or AI so the input handler can distinguish between usages
-     * @param range: Either Player or AI so the input handler can distinguish between usages
-     * @param damage: Either Player or AI so the input handler can distinguish between usages
-     * @param held: Either Player or AI so the input handler can distinguish between usages
+     * @param texture: texture of Dagger
+     * @param size: size of Dagger
+     * @param level: level of Dagger
+     * @param range: range of Dagger
+     * @param damage: damage of Dagger
      * */
+
     private Texture texture = new Texture(Gdx.files.internal("java/resources/weapons/dagger.png"));
     private int size;
     private int level;
@@ -26,7 +25,6 @@ public class Dagger extends Weapon {
     public UUID id;
 
     public Dagger(int level) {
-        //how many times weapon can be used
         this.level = level;
         this.size = this.level * 1;
         this.range = this.level * 1;
