@@ -10,10 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.ScreenManager;
-import core.ScreenManager;
 import core.levels.LevelLoader;
 import core.levels.LevelManager;
-import core.screens.LevelGameplayController;
 import core.screens.LevelGameplayController;
 import core.screens.SpritesDemoScreen;
 
