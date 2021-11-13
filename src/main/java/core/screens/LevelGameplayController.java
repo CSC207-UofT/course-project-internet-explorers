@@ -3,19 +3,17 @@ package core.screens;
 import static core.world.DemoSpawners.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import core.camera.CameraManager;
 import core.levels.LevelManager;
+import core.screens.HUD.HudManager;
 import core.world.EntitySpawner;
 import core.world.WorldEntity;
-import core.world.WorldManager;
 
 /**
  * Runs the gameplay of a Level.
@@ -27,6 +25,7 @@ public class LevelGameplayController implements Screen {
     private final LevelManager levelManager;
     private final WorldEntity player;
     private final Box2DDebugRenderer box2DDebugRenderer;
+    private HudManager hud;
 
     public LevelGameplayController(LevelManager levelManager) {
         this.levelManager = levelManager;
@@ -58,6 +57,7 @@ public class LevelGameplayController implements Screen {
 
     @Override
     public void show() {
+        this.hud = new HudManager();
         shapeRenderer = new ShapeRenderer();
     }
 
@@ -68,6 +68,10 @@ public class LevelGameplayController implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         cameraManager.update(dt);
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
+            hud.toggleInventory();
+        }
         // TODO change to proper system, currently set velocity such that player position stays in sync with camera subject position
         player.getBody().setLinearVelocity(cameraManager.getSubjectPosition().cpy().sub(player.getPosition()).scl(1 / dt));
 
@@ -85,6 +89,8 @@ public class LevelGameplayController implements Screen {
 
         // TODO only do this in debug mode
         levelManager.getWorldManager().drawPhysics(box2DDebugRenderer, cameraManager.getCamera());
+
+        hud.draw();
     }
 
     @Override
@@ -104,5 +110,6 @@ public class LevelGameplayController implements Screen {
     @Override
     public void dispose() {
         levelManager.dispose();
+        hud.dispose();
     }
 }
