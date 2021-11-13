@@ -69,6 +69,7 @@ public class LevelGameplayController implements Screen {
 
         cameraManager.update(dt);
 
+        // TODO: move to userInput class
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
             hud.toggleInventory();
         }
