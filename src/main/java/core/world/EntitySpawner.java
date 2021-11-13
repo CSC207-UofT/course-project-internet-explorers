@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -18,6 +20,8 @@ public class EntitySpawner {
     private Supplier<FixtureDef[]> fixtureDefsSupplier;
     private Supplier<WorldEntityGeometry> geometrySupplier;
     private Supplier<Sprite> spriteSupplier;
+
+    private Consumer<WorldEntity> spawnCallback;
 
     /**
      * Utility class used to specify position, size, and offset for new WorldEntities.
@@ -75,6 +79,8 @@ public class EntitySpawner {
         entity.setOffset(geometry.offset);
         entity.setSprite(spriteSupplier.get());
 
+        spawnCallback.accept(entity);
+
         return entity;
     }
 
@@ -97,5 +103,9 @@ public class EntitySpawner {
 
     public void setSpriteSupplier(Supplier<Sprite> supplier) {
         this.spriteSupplier = supplier;
+    }
+
+    public void setSpawnCallback(Consumer<WorldEntity> callback) {
+        this.spawnCallback = callback;
     }
 }

@@ -89,23 +89,28 @@ public class DemoSpawners {
         // map vertices
         Vector2[] mapVertices = new Vector2[] { new Vector2(0, 0), new Vector2(0, 10), new Vector2(30, 10), new Vector2(30, 0) };
 
-        spawner.setFixtureDefsSupplier(() -> {
-            int vertices = mapVertices.length;
-            FixtureDef[] edges = new FixtureDef[vertices];
+        int vertices = mapVertices.length;
+        FixtureDef[] fixtureDefs = new FixtureDef[vertices];
 
-            for (int i = 0; i < vertices; i++) {
-                edges[i] = new FixtureDef();
+        for (int i = 0; i < vertices; i++) {
+            fixtureDefs[i] = new FixtureDef();
 
-                EdgeShape edge = new EdgeShape();
-                edge.setVertex0(mapVertices[i]);
-                edge.set(mapVertices[(i + 1) % vertices], mapVertices[(i + 2) % vertices]);
-                edge.setVertex3(mapVertices[(i + 3) % vertices]);
+            EdgeShape edge = new EdgeShape();
+            edge.setVertex0(mapVertices[i]);
+            edge.set(mapVertices[(i + 1) % vertices], mapVertices[(i + 2) % vertices]);
+            edge.setVertex3(mapVertices[(i + 3) % vertices]);
 
-                edges[i].shape = edge;
-                edges[i].restitution = 0.2f;
+            fixtureDefs[i].shape = edge;
+            fixtureDefs[i].restitution = 0.2f;
+        }
+
+        spawner.setFixtureDefsSupplier(() -> fixtureDefs);
+
+        // dispose of shapes used for fixtures *after* entity has been spawned
+        spawner.setSpawnCallback(e -> {
+            for (FixtureDef def : fixtureDefs) {
+                def.shape.dispose();
             }
-
-            return edges;
         });
 
         spawner.setSpriteSupplier(() -> new TextureAtlas("characters/sprites.txt").createSprite("demo_defense"));
