@@ -12,7 +12,9 @@ import java.util.UUID;
 
 
 public class InputHandler {
-    private final CharacterManager manager;
+
+    protected final CharacterManager manager;
+
     public InputHandler (CharacterManager manager){
         this.manager = manager;
     }
@@ -24,11 +26,11 @@ public class InputHandler {
      */
     public void checkInputMovement(UUID id){
         int dx = 0;
-        dx += Gdx.input.isKeyPressed(Input.Keys.W) ? 1 : 0;//the ? mark means true returns left and false return right
-        dx -= Gdx.input.isKeyPressed(Input.Keys.D) ? 1 : 0;
+        dx += Gdx.input.isKeyPressed(Input.Keys.D) ? 1 : 0;//the ? mark means true returns left and false return right
+        dx -= Gdx.input.isKeyPressed(Input.Keys.A) ? 1 : 0;
         int dy = 0;
         dy += Gdx.input.isKeyPressed(Input.Keys.W) ? 1 : 0;
-        dy -= Gdx.input.isKeyPressed(Input.Keys.D) ? 1 : 0;
+        dy -= Gdx.input.isKeyPressed(Input.Keys.S) ? 1 : 0;
         manager.updateCharacterPosition(id, dx, dy);
     }
 }

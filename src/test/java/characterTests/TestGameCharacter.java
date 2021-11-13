@@ -1,3 +1,5 @@
+package characterTests;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import core.characters.GameCharacter;
