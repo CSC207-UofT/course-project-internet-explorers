@@ -57,6 +57,10 @@ public class GameCharacter extends WorldEntity {
     public void move(Vector2 velocity){
         this.getBody().setLinearVelocity(velocity);
     }
+
+    //I feel like we may need a player class for this?
+    public void openInventory(){}
+    public void useItem(){}
 }
 
 

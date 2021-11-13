@@ -78,6 +78,7 @@ public class EntitySpawner {
         return entity;
     }
 
+
     public void setWorldManager(WorldManager worldManager) {
         this.worldManager = worldManager;
     }

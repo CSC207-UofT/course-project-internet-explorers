@@ -86,6 +86,17 @@ public class CharacterManager {
         }
         return false;
     }
+
+    //TODO: Need to find a way to select the item being used
+    public void useItem(UUID id){
+        if (canUseItem(id, "item")){
+            this.characterEntities.get(id).useItem();
+        }
+    }
+    //TODO: should prob have something that checks to make sure the character is a player before using thiese function
+    public void openInventory(UUID id){
+        this.characterEntities.get(id).openInventory();
+    }
 //    TODO: Move inventory stuff to separate inventory manager class
 //    public void addInventory(UUID id, String item) {
 //        /*

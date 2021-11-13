@@ -31,4 +31,13 @@ public class InputHandler {
         dy -= Gdx.input.isKeyPressed(Input.Keys.D) ? 1 : 0;
         manager.updateCharacterPosition(id, dx, dy);
     }
+    public void checkInputItemUsage(UUID id){
+        if (Gdx.input.isKeyPressed(Input.Keys.I)) {
+            manager.useItem(id);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            manager.openInventory(id);
+        }
+
+    }
 }
