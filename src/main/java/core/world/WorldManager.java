@@ -9,6 +9,8 @@ import java.util.*;
 
 /**
  * Use-case class managing WorldEntities and their Box2D representation.
+ * TODO split into WorldManager and separate WorldEntityManager (?)
+ *      could make WorldManager methods part of LevelManager
  */
 public class WorldManager {
 

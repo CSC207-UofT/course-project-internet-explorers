@@ -25,6 +25,7 @@ public class EntitySpawner {
 
     /**
      * Utility class used to specify position, size, and offset for new WorldEntities.
+     * TODO move to own file, or into WorldEntity
      */
     public static class WorldEntityGeometry {
 
@@ -45,6 +46,7 @@ public class EntitySpawner {
         }
     }
 
+    // TODO add more utility methods for basic shapes and bodies
     /**
      * Creates a rectangular box shaped fixture using the passed in size as width/height.
      */
