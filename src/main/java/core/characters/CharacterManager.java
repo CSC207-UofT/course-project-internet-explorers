@@ -1,8 +1,13 @@
 package core.characters;
 
-import java.util.ArrayList;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
 
-// Need to import InputManager and ControlState
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * TODO – the PlayerManager should inherit from here
@@ -11,73 +16,122 @@ public class CharacterManager {
 
     /*
      * Use case class that handles updating instances of GameCharacter based on inputs from the InputHandler
-     * @param character: An instance of GameCharacter being updated
+     * @param characterEntities: Hashmap storing characters as values with their UUID as keys
      * TODO: Change item to type Item when implemented
-     * TODO: Import InputManager and ControlState
      * */
 
-    private GameCharacter character;
+    public HashMap<UUID, GameCharacter> characterEntities;
 
-    public CharacterManager(GameCharacter character) {
-        this.character = character;
+    public CharacterManager() {
+        this.characterEntities = new HashMap<UUID, GameCharacter>();
     }
 
-    public void moveCharacter() {
-        // Updates the characters position
-    }
-
-    public void depleteHealth(int damage) {
+    public void addCharacter(GameCharacter character) {
         /*
-         * Decreases player health by damage
-         * */
-        this.character.health -= damage;
+        * Generates a unique id for each character when added
+        * */
+        this.characterEntities.put(character.getId(), character);
     }
 
-    public void increaseLevel() {
+    /***
+     *This is the use case that sets the velocity for the character with the specific id and moves the character
+     * @param id character id
+     * @param dx change in x from inputHandler
+     * @param dy change in y from inputHandler
+     */
+    public void updateCharacterPosition(UUID id, float dx, float dy) {
+
         /*
-         * Increases the level of enemies by 1 following each wave of enemies.
-         * Need to check if character.team == "Enemy"
-         * */
-        this.character.level += 1;
+        * Updates the position of the character
+        * TODO: Update to use setPosition when worldEntity merged
+        * */
+
+        if (verifyId(id)){
+            this.characterEntities.get(id).move(new Vector2(dx, dy));
+        }
     }
 
-    public boolean useItem() {
+    public void updateHealth(UUID id, int damage) {
         /*
-         * Checks if the item is in the characters inventory and then allows them to use it.
-         * This will only be available to the player class, will check insanceof Player.
-         * Returns true iff the player uses the item, false otherwise.
+         * Decreases character health by damage
          * */
-
-        return true;
+        if (verifyId(id)) {
+            this.characterEntities.get(id).setHealth(this.characterEntities.get(id).getHealth() - damage);
+        }
     }
 
-    public void addInventory(String item) {
+    public void updateLevel(UUID id) {
         /*
-         * Adds item to the inventory
-         * Only valid for the player class, will check insanceof Player.
+         * Increases the level of a character following the completion of a wave
          * */
+        if (verifyId(id)) {
+            this.characterEntities.get(id).setLevel(this.characterEntities.get(id).getLevel() + 1);
+        }
     }
 
-    public boolean removeInventory(String item) {
+    public boolean canUseItem(UUID id, String item) {
         /*
-         * Checks if item is in inventory, then removes if it is
-         * Only valid for the player class, will check insanceof Player.
-         * Returns True if item successfully removed
+         * Checks if the item is in the characters inventory and then returns true if it is.
+         * Ensures that there are no issues when controller class calls a child of itemUsageDelegate
          * */
-
-        return true;
+        if (verifyId(id)) {
+            return this.characterEntities.get(id).getInventory().contains(item);
+        }
+        return false;
     }
 
-    public ArrayList<String> openInventory() {
-        /*
-         * Returns inventory contents and displays them
-         * */
-
-        // Update to show on display
-        return this.character.inventory;
+    //TODO: Need to find a way to select the item being used
+    public void useItem(UUID id){
+        if (canUseItem(id, "item")){
+            this.characterEntities.get(id).useItem();
+        }
     }
+    //TODO: should prob have something that checks to make sure the character is a player before using thiese function
+    public void openInventory(UUID id){
+        this.characterEntities.get(id).openInventory();
+    }
+//    TODO: Move inventory stuff to separate inventory manager class
+//    public void addInventory(UUID id, String item) {
+//        /*
+//         * Adds item to the inventory
+//         * */
+//        if (verifyId(id)) {
+//            this.characterEntities.get(id).inventory.add(item);
+//        }
+//    }
+//
+//    public boolean removeInventory(UUID id, String item) {
+//        /*
+//         * Checks if item is in inventory, then removes if it is
+//         * Returns True if item successfully removed, false if not
+//         * */
+//        if (verifyId(id)) {
+//            if (this.characterEntities.get(id).inventory.contains(item)) {
+//                this.characterEntities.get(id).inventory.remove(item);
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    public Object openInventory(UUID id) {
+//        /*
+//         * Returns inventory contents and displays them
+//         * Returns null if character id cannot be found
+//         * */
+//        if (verifyId(id)) {
+//            return this.characterEntities.get(id).inventory;
+//        }
+//        return null;
+//    }
 
-    public void onCollision() {
-        // What happens when a character collides with something
+    private boolean verifyId(UUID id) {
+        // Loops through hashmap to ensure .get doesn't return null
+        for (var i : this.characterEntities.entrySet()) {
+            if (i.getKey() == id) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -50,6 +50,7 @@ public class WorldEntity {
         this.id = UUID.randomUUID();
     }
 
+
     // TODO copy returned vector to keep our vector private
     public Vector2 getPosition() {
         return this.body.getPosition();

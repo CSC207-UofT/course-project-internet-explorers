@@ -24,6 +24,7 @@ public class LevelGameplayController implements Screen {
     private ShapeRenderer shapeRenderer;
     private final LevelManager levelManager;
     private final WorldEntity player;
+    //TODO: ^This should be a GameCharacter, but GameCharacter currently extends the wrong world entity
     private final Box2DDebugRenderer box2DDebugRenderer;
     private HudManager hud;
 

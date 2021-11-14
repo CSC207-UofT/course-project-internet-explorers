@@ -71,7 +71,7 @@ public class CameraManager {
      */
     private void handleFreecamInput(float dt) {
         int dx = 0;
-        dx += Gdx.input.isKeyPressed(Input.Keys.RIGHT) ? 1 : 0;
+        dx += Gdx.input.isKeyPressed(Input.Keys.RIGHT) ? 1 : 0;//the ? mark means true returns left and false return right
         dx -= Gdx.input.isKeyPressed(Input.Keys.LEFT) ? 1 : 0;
         int dy = 0;
         dy += Gdx.input.isKeyPressed(Input.Keys.UP) ? 1 : 0;
