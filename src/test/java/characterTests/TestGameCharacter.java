@@ -1,7 +1,8 @@
 package characterTests;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import core.InventorySystem.Item;
+import core.InventorySystem.ItemTypes.*;
 import core.characters.GameCharacter;
 import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,9 +14,9 @@ public class TestGameCharacter {
 
     @BeforeEach
 //    void setup() {
-//        ArrayList<String> items = new ArrayList<>();
-//        items.add("Sword");
-//        items.add("Defender: Archer");
+//        ArrayList<Item> items = new ArrayList<>();
+//        items.add((Item) new Sword(2));
+//        items.add((Item) new Dagger(1));
 //        test_player = new GameCharacter("square", "player", 100, 1, items);
 //    } TODO Need to update shape body
 
@@ -31,9 +32,9 @@ public class TestGameCharacter {
 
     @Test
     void testInventoryAttribute() {
-        ArrayList<String> test_items = new ArrayList<>();
-        test_items.add("Sword");
-        test_items.add("Defender: Archer");
+        ArrayList<Item> test_items = new ArrayList<>();
+        test_items.add((Item) new Sword(2));
+        test_items.add((Item) new Dagger(1));
         assertEquals(test_items, test_player.getInventory());
     }
 }

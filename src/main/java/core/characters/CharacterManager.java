@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.Collections;
+import core.InventorySystem.*;
 
 /**
  * TODO – the PlayerManager should inherit from here
@@ -17,7 +19,6 @@ public class CharacterManager {
     /*
      * Use case class that handles updating instances of GameCharacter based on inputs from the InputHandler
      * @param characterEntities: Hashmap storing characters as values with their UUID as keys
-     * TODO: Change item to type Item when implemented
      * */
 
     public HashMap<UUID, GameCharacter> characterEntities;
@@ -28,8 +29,8 @@ public class CharacterManager {
 
     public void addCharacter(GameCharacter character) {
         /*
-        * Generates a unique id for each character when added
-        * */
+         * Generates a unique id for each character when added
+         * */
         this.characterEntities.put(character.getId(), character);
     }
 
@@ -42,9 +43,9 @@ public class CharacterManager {
     public void updateCharacterPosition(UUID id, float dx, float dy) {
 
         /*
-        * Updates the position of the character
-        * TODO: Update to use setPosition when worldEntity merged
-        * */
+         * Updates the position of the character
+         * TODO: Update to use setPosition when worldEntity merged
+         * */
 
         if (verifyId(id)){
             this.characterEntities.get(id).move(new Vector2(dx, dy));
@@ -69,10 +70,14 @@ public class CharacterManager {
         }
     }
 
-    public boolean canUseItem(UUID id, String item) {
+    /***
+     *This section implements character behaviors in relation to their inventory
+     */
+
+    public boolean canUseItem(UUID id, Item item) {
         /*
-         * Checks if the item is in the characters inventory and then returns true if it is.
-         * Ensures that there are no issues when controller class calls a child of itemUsageDelegate
+         * Checks if the item is in the character's inventory and then returns true if it is.
+         * Ensures that there are no issues when controller class calls a UsageDelegate
          * */
         if (verifyId(id)) {
             return this.characterEntities.get(id).getInventory().contains(item);
@@ -80,50 +85,64 @@ public class CharacterManager {
         return false;
     }
 
-    //TODO: Need to find a way to select the item being used
-    public void useItem(UUID id){
-        if (canUseItem(id, "item")){
-            this.characterEntities.get(id).useItem();
+    public boolean selectItem(UUID id, Item item) {
+        /*
+         * Checks if item is in inventory, then moves it to the first index at which item would be used
+         * Returns True if item successfully selected, false if not
+         * */
+        if (verifyId(id)) {
+            if (this.characterEntities.get(id).getInventory().contains(item)) {
+                Collections.swap(this.characterEntities.get(id).getInventory(), 0,
+                        this.characterEntities.get(id).inventory.indexOf(item));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addInventory(UUID id, Item item) {
+        /*
+         * Adds item to the inventory
+         * */
+        if (verifyId(id)) {
+            this.characterEntities.get(id).getInventory().add(item);
         }
     }
-    //TODO: should prob have something that checks to make sure the character is a player before using thiese function
-    public void openInventory(UUID id){
-        this.characterEntities.get(id).openInventory();
+
+    public boolean removeInventory(UUID id, Item item) {
+        /*
+         * Checks if item is in inventory, then removes if it is
+         * Returns True if item successfully removed, false if not
+         * */
+        if (verifyId(id)) {
+            if (this.characterEntities.get(id).getInventory().contains(item)) {
+                this.characterEntities.get(id).getInventory().remove(item);
+                return true;
+            }
+        }
+        return false;
     }
-//    TODO: Move inventory stuff to separate inventory manager class
-//    public void addInventory(UUID id, String item) {
-//        /*
-//         * Adds item to the inventory
-//         * */
-//        if (verifyId(id)) {
-//            this.characterEntities.get(id).inventory.add(item);
-//        }
-//    }
-//
-//    public boolean removeInventory(UUID id, String item) {
-//        /*
-//         * Checks if item is in inventory, then removes if it is
-//         * Returns True if item successfully removed, false if not
-//         * */
-//        if (verifyId(id)) {
-//            if (this.characterEntities.get(id).inventory.contains(item)) {
-//                this.characterEntities.get(id).inventory.remove(item);
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//
-//    public Object openInventory(UUID id) {
-//        /*
-//         * Returns inventory contents and displays them
-//         * Returns null if character id cannot be found
-//         * */
-//        if (verifyId(id)) {
-//            return this.characterEntities.get(id).inventory;
-//        }
-//        return null;
-//    }
+
+    public Object openInventory(UUID id) {
+        /*
+         * Returns inventory contents and displays them
+         * Returns null if character id cannot be found
+         * */
+        if (verifyId(id)) {
+            return this.characterEntities.get(id).getInventory();
+        }
+        return null;
+    }
+
+    private void acceptInput(UUID id, boolean use) {
+        /*
+         * calls methods depending on InputController actions //TODO merge with repositioning side of functionality
+         * */
+        if (use) {
+            WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
+            usageDelegate.use((Weapon) this.characterEntities.get(id).getInventory().get(0));
+        }
+    }
 
     private boolean verifyId(UUID id) {
         // Loops through hashmap to ensure .get doesn't return null
@@ -135,3 +154,4 @@ public class CharacterManager {
         return false;
     }
 }
+
