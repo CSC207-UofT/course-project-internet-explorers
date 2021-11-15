@@ -2,9 +2,6 @@ package core.levels;
 
 import com.badlogic.gdx.physics.box2d.World;
 import core.world.EntitySpawner;
-
-import javax.swing.text.html.parser.Entity;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,19 +42,35 @@ public class LevelState {
         return mapPath;
     }
 
-    public boolean getLevelPaused(){ return levelPaused;}
+    public boolean getLevelPaused() {
+        return levelPaused;
+    }
 
-    public void setLevelPaused(boolean set){this.levelPaused = set;}
+    public void setLevelPaused(boolean set) {
+        this.levelPaused = set;
+    }
 
-    public float getCurrentTime(){ return currentTime;}
+    public float getCurrentTime() {
+        return currentTime;
+    }
 
-    public void setCurrentTime(float currentTime){ this.currentTime = currentTime;}
+    public void setCurrentTime(float currentTime) {
+        this.currentTime = currentTime;
+    }
 
-    public int getScore(){ return score;}
+    public int getScore() {
+        return score;
+    }
 
-    public void setScore(int score){ this.score = score;}
+    public void setScore(int score) {
+        this.score = score;
+    }
 
-    public List<EntitySpawner> getEnemySpawns(){ return enemySpawns;}
+    public List<EntitySpawner> getEnemySpawns() {
+        return enemySpawns;
+    }
 
-    public void setEnemySpawns(List<EntitySpawner> enemySpawns){ this.enemySpawns = enemySpawns;}
+    public void setEnemySpawns(List<EntitySpawner> enemySpawns) {
+        this.enemySpawns = enemySpawns;
+    }
 }

@@ -1,6 +1,5 @@
 package core.levels;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -8,7 +7,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import core.world.EntitySpawner;
 import core.world.WorldManager;
-
 import java.util.List;
 
 /**
@@ -54,11 +52,12 @@ public class LevelManager {
             // Spawning enemies in world
             List<EntitySpawner> enemies = level.getEnemySpawns();
 
-            if (enemies.isEmpty()){
+            if (enemies.isEmpty()) {
                 // If all enemies have been spawned, check if game is won or not
-                if (checkWin()){System.out.println("Level WIN!");}
-            }
-            else {
+                if (checkWin()) {
+                    System.out.println("Level WIN!");
+                }
+            } else {
                 // Spawn enemy every 15 seconds
                 if (level.getCurrentTime() >= spawnTime) {
                     EntitySpawner enemy = enemies.remove(0);
@@ -80,7 +79,7 @@ public class LevelManager {
      *
      * @return whether win condition has been met or not
      */
-    public boolean checkWin(){
+    public boolean checkWin() {
         return level.getCurrentTime() >= 100;
     }
 
@@ -108,11 +107,11 @@ public class LevelManager {
         map.dispose();
     }
 
-    public void pause(){
+    public void pause() {
         level.setLevelPaused(true);
     }
 
-    public void resume(){
+    public void resume() {
         level.setLevelPaused(false);
     }
 }
