@@ -35,7 +35,7 @@ public class InputHandler {
     }
     public void checkInputItemUsage(UUID id){
         if (Gdx.input.isKeyPressed(Input.Keys.I)) {
-            manager.useItem(id);
+//            manager.useItem(id);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             manager.openInventory(id);

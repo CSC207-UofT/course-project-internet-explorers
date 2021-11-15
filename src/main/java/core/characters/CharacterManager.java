@@ -92,8 +92,8 @@ public class CharacterManager {
          * */
         if (verifyId(id)) {
             if (this.characterEntities.get(id).getInventory().contains(item)) {
-                Collections.swap(this.characterEntities.get(id).getInventory(), 0,
-                        this.characterEntities.get(id).inventory.indexOf(item));
+//                Collections.swap(this.characterEntities.get(id).getInventory(), 0,
+//                        this.characterEntities.get(id).inventory.indexOf(item));
                 return true;
             }
         }
