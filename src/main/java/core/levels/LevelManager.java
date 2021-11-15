@@ -5,10 +5,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import core.world.WorldEntity;
-import core.world.WorldEntityManager;
 import core.world.Spawner;
+import core.world.WorldEntityManager;
+import core.world.WorldEntityWithSprite;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -35,9 +34,9 @@ public class LevelManager {
 
         this.batch = new SpriteBatch();
 
-        // assign all enemies to current worldManager
-        List<Spawner> enemiesUpdated = level.getEnemySpawns();
-        for (Spawner enemy : enemiesUpdated){ enemy.setEntityManager(this.entityManager);}
+        // assign all enemies to current entityManager
+        List<Spawner<WorldEntityWithSprite>> enemiesUpdated = level.getEnemySpawns();
+        for (Spawner<WorldEntityWithSprite> enemy : enemiesUpdated){ enemy.setEntityManager(this.entityManager);}
         level.setEnemySpawns(enemiesUpdated);
     }
 
@@ -56,7 +55,7 @@ public class LevelManager {
         return; }
 
         // Stepping physics simulation
-        entityManager.step(dt);
+        level.world.step(Math.min(dt, 0.5f), 6, 2);
 
         // Elapsing time in world
         level.setCurrentTime(level.getCurrentTime() + dt);
@@ -71,7 +70,7 @@ public class LevelManager {
      */
     private void updateEnemies() {
         // Spawning enemies in world
-        List<Spawner> enemies = level.getEnemySpawns();
+        List<Spawner<WorldEntityWithSprite>> enemies = level.getEnemySpawns();
 
         if (enemies.isEmpty()){
             // If all enemies have been spawned, check if game is won or not
@@ -80,7 +79,7 @@ public class LevelManager {
         else {
             // Spawn enemy every 15 seconds
             if (level.getCurrentTime() >= level.getSpawnTime()) {
-                Spawner enemy = enemies.remove(0);
+                Spawner<WorldEntityWithSprite> enemy = enemies.remove(0);
                 enemy.spawn();
                 level.setEnemySpawns(enemies);
                 level.setScore(level.getScore() + 1);

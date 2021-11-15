@@ -1,7 +1,8 @@
 package core.levels;
 
 import com.badlogic.gdx.physics.box2d.World;
-import core.world.EntitySpawner;
+import core.world.Spawner;
+import core.world.WorldEntityWithSprite;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,7 +17,7 @@ public class LevelState implements Serializable {
     protected boolean levelPaused;
     transient protected float currentTime;
     protected int score;
-    protected List<EntitySpawner> enemySpawns;
+    protected List<Spawner<WorldEntityWithSprite>> enemySpawns;
     private float spawnTime;
 
     // unitScale measured in m/px
@@ -26,7 +27,7 @@ public class LevelState implements Serializable {
     //  * tiles are 32px by 32px
     private float unitScale;
 
-    protected LevelState(String mapPath, List<EntitySpawner> enemies) {
+    protected LevelState(String mapPath, List<Spawner<WorldEntityWithSprite>> enemies) {
         this.mapPath = mapPath;
         this.currentTime = 0;
         this.levelPaused = false;
@@ -62,7 +63,7 @@ public class LevelState implements Serializable {
 
     public void setSpawnTime(float spawnTime) { this.spawnTime = spawnTime;}
 
-    public List<EntitySpawner> getEnemySpawns(){ return enemySpawns;}
+    public List<Spawner<WorldEntityWithSprite>> getEnemySpawns(){ return enemySpawns;}
 
-    public void setEnemySpawns(List<EntitySpawner> enemySpawns){ this.enemySpawns = enemySpawns;}
+    public void setEnemySpawns(List<Spawner<WorldEntityWithSprite>> enemySpawns){ this.enemySpawns = enemySpawns;}
 }

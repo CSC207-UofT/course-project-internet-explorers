@@ -2,7 +2,8 @@ package core.levels;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import core.world.EntitySpawner;
+import core.world.Spawner;
+import core.world.WorldEntityWithSprite;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class LevelLoader {
      */
     public static LevelState getLevel1() {
         // Create enemy spawner list
-        List<EntitySpawner> enemies = createEnemyList(5);
+        List<Spawner<WorldEntityWithSprite>> enemies = createEnemyList(5);
 
         LevelState lvl = new LevelState("maps/demo.tmx", enemies);
         lvl.setUnitScale(1 / 64f);
@@ -43,7 +44,7 @@ public class LevelLoader {
 
         float currentTime = (float)objectInputStream.readObject();
 
-        List<EntitySpawner> enemies = createEnemyList(5);
+        List<Spawner<WorldEntityWithSprite>> enemies = createEnemyList(5);
         LevelState lvl = new LevelState("maps/demo.tmx", enemies);
         lvl.setUnitScale(1 / 64f);
         lvl.world = new World(new Vector2(0, 0), true);
@@ -52,7 +53,7 @@ public class LevelLoader {
         lvl.setCurrentTime(currentTime);
         double numEnemies = Math.floor(lvl.getCurrentTime() / lvl.getSpawnTime());
         for (int i = 0; i < numEnemies; i++) {
-            List<EntitySpawner> enemiesUpdated = lvl.getEnemySpawns();
+            List<Spawner<WorldEntityWithSprite>> enemiesUpdated = lvl.getEnemySpawns();
             enemiesUpdated.remove(0);
             lvl.setEnemySpawns(enemiesUpdated);
         }
@@ -65,10 +66,10 @@ public class LevelLoader {
      * @param numOfEnemies wanted to be spawned in this level
      * @return enemies list
      */
-    private static List<EntitySpawner> createEnemyList(int numOfEnemies){
-        List<EntitySpawner> enemies = new ArrayList<>();
+    private static List<Spawner<WorldEntityWithSprite>> createEnemyList(int numOfEnemies){
+        List<Spawner<WorldEntityWithSprite>> enemies = new ArrayList<>();
         for (int i = 0; i < numOfEnemies; i++){
-            EntitySpawner enemySpawner = createEnemySpawner();
+            Spawner<WorldEntityWithSprite> enemySpawner = createEnemySpawner();
             enemies.add(enemySpawner);
         }
         return enemies;
