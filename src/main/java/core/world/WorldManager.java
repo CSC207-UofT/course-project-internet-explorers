@@ -3,7 +3,6 @@ package core.world;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import java.util.*;
 
@@ -22,12 +21,20 @@ public class WorldManager {
         this.entities = new HashMap<>();
     }
 
-    public WorldEntity createEntity(BodyDef bodyDef, FixtureDef... fixtureDefs) {
-        WorldEntity entity = new WorldEntity(world.createBody(bodyDef));
+    /**
+     * Creates a WorldEntity's representation in the World,
+     * and adds it to the collection of managed entities.
+     *
+     * @param entity      The entity to register
+     * @param bodyDef     Box2D representation details
+     * @param fixtureDefs Box2D representation details
+     * @return The WorldEntity's representation as a Box2D Body.
+     */
+    protected Body addEntityToWorld(WorldEntity entity, BodyDef bodyDef, FixtureDef... fixtureDefs) {
+        Body body = world.createBody(bodyDef);
+        createFixtures(body, fixtureDefs);
         this.entities.put(entity.id, entity);
-        createFixtures(entity, fixtureDefs);
-        // TODO maybe just return ID
-        return entity;
+        return body;
     }
 
     /**
@@ -37,12 +44,12 @@ public class WorldManager {
      * @param defs     details of fixtures to add
      */
     public void createFixtures(UUID entityId, FixtureDef... defs) {
-        createFixtures(getEntity(entityId), defs);
+        createFixtures(getEntity(entityId).getBody(), defs);
     }
 
-    private void createFixtures(WorldEntity entity, FixtureDef... defs) {
+    private void createFixtures(Body body, FixtureDef... defs) {
         for (FixtureDef def : defs) {
-            entity.body.createFixture(def);
+            body.createFixture(def);
         }
     }
 
@@ -66,8 +73,11 @@ public class WorldManager {
      */
     public void draw(SpriteBatch batch) {
         entities.forEach((id, e) -> {
-            if (updateEntitySprite(e)) {
-                e.getSprite().draw(batch);
+            if (e instanceof WorldEntityWithSprite entity) {
+                Sprite sprite;
+                if ((sprite = entity.getSprite()) != null) {
+                    sprite.draw(batch);
+                }
             }
         });
     }
@@ -75,35 +85,9 @@ public class WorldManager {
     /**
      * Invoke `render` on a Box2DDebugRenderer to draw the physics going on in this world.
      * Used for debugging.
-     *
-     * @param renderer
-     * @param camera
      */
     public void drawPhysics(Box2DDebugRenderer renderer, OrthographicCamera camera) {
         renderer.render(world, camera.combined);
-    }
-
-    /**
-     * Sync a WorldEntity's sprite geometry to its currently stored geometry.
-     *
-     * @param e
-     */
-    public static boolean updateEntitySprite(WorldEntity e) {
-        Sprite sprite = e.getSprite();
-        if (sprite == null) {
-            return false;
-        }
-
-        // Set sprite rotation origin and angle
-        Vector2 origin = e.body.getLocalCenter();
-        sprite.setOrigin(origin.x, origin.y);
-        sprite.setRotation(e.body.getAngle() * 6.2832f);
-
-        // Set sprite position and dimensions
-        Vector2 pos = e.body.getPosition().add(e.getOffset());
-        Vector2 size = e.getSize();
-        sprite.setBounds(pos.x, pos.y, size.x, size.y);
-        return true;
     }
     // TODO check with ben if we should make WorldEntity properties protected
     //      and only have public getters/setters in WorldManager

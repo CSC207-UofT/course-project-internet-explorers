@@ -6,16 +6,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import core.camera.CameraManager;
 import core.levels.LevelManager;
-import core.world.EntitySpawner;
+import core.world.Spawner;
 import core.world.WorldEntity;
-import core.world.WorldManager;
 
 /**
  * Runs the gameplay of a Level.
@@ -34,25 +30,26 @@ public class LevelGameplayController implements Screen {
 
         this.box2DDebugRenderer = new Box2DDebugRenderer();
 
-        EntitySpawner playerSpawner = createPlayerSpawner();
+        Spawner<?> playerSpawner = createPlayerSpawner();
         playerSpawner.setWorldManager(levelManager.getWorldManager());
         player = playerSpawner.spawn();
 
-        EntitySpawner enemySpawner = createEnemySpawner();
+        Spawner<?> enemySpawner = createEnemySpawner();
         enemySpawner.setWorldManager(levelManager.getWorldManager());
         enemySpawner.spawn();
 
-        EntitySpawner defenderSpawner = createDefenderSpawner();
+        Spawner<?> defenderSpawner = createDefenderSpawner();
         defenderSpawner.setWorldManager(levelManager.getWorldManager());
         defenderSpawner.spawn();
 
-        EntitySpawner mapBorderSpawner = createMapBorderSpawner();
+        Spawner<?> mapBorderSpawner = createMapBorderSpawner();
         mapBorderSpawner.setWorldManager(levelManager.getWorldManager());
         mapBorderSpawner.spawn();
 
         // not the proper way to control stuff on-screen, this is just for debugging
         // TODO remove following line – player position should be mutated by the PlayerManager
         //      should pass in the Player WorldEntity's ID and the WorldEntity Manager once ID-based system is implemented
+        cameraManager.getCamera().position.set(2, 2, 0);
         cameraManager.enterDebugFreecamMode();
     }
 
