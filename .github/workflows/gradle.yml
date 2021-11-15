@@ -5,7 +5,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ $default-branch, "staging", "actions" ]
+    branches: [ $default-branch, "staging" ]
   pull_request:
     branches: [ $default-branch, "staging" ]
 
@@ -26,5 +26,3 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Test with Gradle
-        run: ./gradlew test
