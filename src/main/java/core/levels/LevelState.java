@@ -3,21 +3,21 @@ package core.levels;
 import com.badlogic.gdx.physics.box2d.World;
 import core.world.EntitySpawner;
 
-import javax.swing.text.html.parser.Entity;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 /**
     Entity class that stores information of the level
  */
-public class LevelState {
+public class LevelState implements Serializable {
 
     private String mapPath;
     protected World world;
     protected boolean levelPaused;
-    protected float currentTime;
+    transient protected float currentTime;
     protected int score;
     protected List<EntitySpawner> enemySpawns;
+    private float spawnTime;
 
     // unitScale measured in m/px
     // represents in-game size of map tiles
@@ -31,6 +31,7 @@ public class LevelState {
         this.currentTime = 0;
         this.levelPaused = false;
         this.enemySpawns = enemies;
+        this.spawnTime = 15;
     }
 
     protected void setUnitScale(float unitScale) {
@@ -56,6 +57,10 @@ public class LevelState {
     public int getScore(){ return score;}
 
     public void setScore(int score){ this.score = score;}
+
+    public float getSpawnTime(){ return spawnTime;}
+
+    public void setSpawnTime(float spawnTime) { this.spawnTime = spawnTime;}
 
     public List<EntitySpawner> getEnemySpawns(){ return enemySpawns;}
 
