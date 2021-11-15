@@ -99,10 +99,14 @@ public class LevelGameplayController implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+        levelManager.pause();
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+        levelManager.resume();
+    }
 
     @Override
     public void hide() {}

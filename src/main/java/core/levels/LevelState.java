@@ -1,13 +1,23 @@
 package core.levels;
 
 import com.badlogic.gdx.physics.box2d.World;
-import java.util.Date;
+import core.characters.GameCharacter;
+import core.world.Spawner;
+import java.io.Serializable;
+import java.util.List;
 
-public class LevelState {
+/**
+    Entity class that stores information of the level
+ */
+public class LevelState implements Serializable {
 
     private String mapPath;
     protected World world;
-    protected Date startTime;
+    protected boolean levelPaused;
+    protected transient float currentTime;
+    protected int score;
+    protected List<Spawner<GameCharacter>> enemySpawns;
+    private float spawnTime;
 
     // unitScale measured in m/px
     // represents in-game size of map tiles
@@ -16,8 +26,12 @@ public class LevelState {
     //  * tiles are 32px by 32px
     private float unitScale;
 
-    protected LevelState(String mapPath) {
+    protected LevelState(String mapPath, List<Spawner<GameCharacter>> enemies) {
         this.mapPath = mapPath;
+        this.currentTime = 0;
+        this.levelPaused = false;
+        this.enemySpawns = enemies;
+        this.spawnTime = 15;
     }
 
     protected void setUnitScale(float unitScale) {
@@ -30,5 +44,45 @@ public class LevelState {
 
     public String getMapPath() {
         return mapPath;
+    }
+
+    public boolean getLevelPaused() {
+        return levelPaused;
+    }
+
+    public void setLevelPaused(boolean set) {
+        this.levelPaused = set;
+    }
+
+    public float getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(float currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public float getSpawnTime() {
+        return spawnTime;
+    }
+
+    public void setSpawnTime(float spawnTime) {
+        this.spawnTime = spawnTime;
+    }
+
+    public List<Spawner<GameCharacter>> getEnemySpawns() {
+        return enemySpawns;
+    }
+
+    public void setEnemySpawns(List<Spawner<GameCharacter>> enemySpawns) {
+        this.enemySpawns = enemySpawns;
     }
 }
