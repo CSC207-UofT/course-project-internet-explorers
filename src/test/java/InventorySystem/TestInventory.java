@@ -2,22 +2,59 @@ package InventorySystem;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import core.InventorySystem.*;
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.World;
 import core.InventorySystem.Item;
 import core.InventorySystem.ItemTypes.*;
+import core.InventorySystem.Weapon;
 import core.characters.CharacterManager;
 import core.characters.GameCharacter;
+import core.world.WorldEntityManager;
 import java.util.ArrayList;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestInventory {
 
+    World world;
+    CharacterManager characterManager;
+
     GameCharacter test_player;
+
+    @BeforeAll
+    static void makeApp() {
+        new LwjglApplication(new ApplicationAdapter() {}, new LwjglApplicationConfiguration());
+    }
+
+    @BeforeEach
+    public void setup() {
+        world = new World(new Vector2(0, 0), true);
+        WorldEntityManager entityManager = new WorldEntityManager(world);
+        characterManager = new CharacterManager(entityManager);
+
+        test_player = new GameCharacter(entityManager, new BodyDef());
+    }
+
+    @AfterEach
+    public void teardown() {
+        world.dispose();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Gdx.files.getLocalStoragePath());
+    }
 
     @Test
     void testDamage() {
-        Item sword = (Item) new Sword(1);
-        Item dagger = (Item) new Dagger(2);
+        Item sword = new Sword(1);
+        Item dagger = new Dagger(2);
         test_player.getInventory().add(sword);
         test_player.getInventory().add(dagger);
         Weapon weapon = (Weapon) test_player.getInventory().get(0);
@@ -26,13 +63,12 @@ public class TestInventory {
 
     @Test
     void testInventory() {
-        Item sword = (Item) new Sword(1);
-        Item dagger = (Item) new Dagger(2);
+        Item sword = new Sword(1);
+        Item dagger = new Dagger(2);
         test_player.getInventory().add(sword);
         test_player.getInventory().add(dagger);
-        CharacterManager manager = new CharacterManager();
-        manager.addCharacter(test_player);
-        ArrayList<Item> inventory = (ArrayList<Item>) manager.openInventory(test_player.id);
+
+        ArrayList<Item> inventory = (ArrayList<Item>) characterManager.openInventory(test_player.id);
         ArrayList<Item> comparison = new ArrayList<>();
         comparison.add(sword);
         comparison.add(dagger);
@@ -41,12 +77,13 @@ public class TestInventory {
 
     @Test
     void testSelect() {
-        Item sword = (Item) new Sword(1);
-        Item dagger = (Item) new Dagger(2);
+        Item sword = new Sword(1);
+        Item dagger = new Dagger(2);
         test_player.getInventory().add(sword);
         test_player.getInventory().add(dagger);
-        CharacterManager manager = new CharacterManager();
-        manager.addCharacter(test_player);
-        assertEquals(manager.selectItem(test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))), true);
+        assertEquals(
+            characterManager.selectItem(test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))),
+            true
+        );
     }
 }

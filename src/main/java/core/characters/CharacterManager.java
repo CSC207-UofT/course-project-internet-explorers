@@ -2,6 +2,7 @@ package core.characters;
 
 import com.badlogic.gdx.math.Vector2;
 import core.InventorySystem.*;
+import core.world.WorldEntityManager;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
@@ -14,16 +15,42 @@ public class CharacterManager {
      * */
 
     public HashMap<UUID, GameCharacter> characterEntities;
+    private final WorldEntityManager entityManager;
 
-    public CharacterManager() {
-        this.characterEntities = new HashMap<UUID, GameCharacter>();
+    public CharacterManager(WorldEntityManager entityManager) {
+        this.characterEntities = new HashMap<>();
+        this.entityManager = entityManager;
     }
 
-    public void addCharacter(GameCharacter character) {
-        /*
-         * Generates a unique id for each character when added
-         * */
-        this.characterEntities.put(character.id, character);
+    /**
+     * Adds a WorldEntity in the entityManager to this CharacterManager.
+     *
+     * The WorldEntity must be already added to the entityManager and must be a subclass of GameCharacter.
+     */
+    public void addCharacter(UUID id) {
+        if (entityManager.getEntity(id) instanceof GameCharacter character) {
+            this.characterEntities.put(character.id, character);
+        }
+        throw new RuntimeException("Couldn't find a GameCharacter with the specified UUID: " + id);
+    }
+
+    // ben this is why we need a simple ControlState class this method signature is gonna get Huge
+    private void acceptInput(UUID id, boolean up, boolean down, boolean left, boolean right, boolean use) {
+        int dx = 0;
+        dx += right ? 1 : 0;
+        dx -= left ? 1 : 0;
+        int dy = 0;
+        dy += up ? 1 : 0;
+        dy -= down ? 1 : 0;
+
+        // m/s
+        float speed = 10;
+        entityManager.setLinearVelocity(id, new Vector2(dx, dy).nor().scl(speed));
+
+        if (use) {
+            WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
+            usageDelegate.use((Weapon) this.characterEntities.get(id).getInventory().get(0));
+        }
     }
 
     /***
@@ -126,16 +153,6 @@ public class CharacterManager {
             return this.characterEntities.get(id).getInventory();
         }
         return null;
-    }
-
-    private void acceptInput(UUID id, boolean use) {
-        /*
-         * calls methods depending on InputController actions //TODO merge with repositioning side of functionality
-         * */
-        if (use) {
-            WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
-            usageDelegate.use((Weapon) this.characterEntities.get(id).getInventory().get(0));
-        }
     }
 
     private boolean verifyId(UUID id) {

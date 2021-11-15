@@ -11,6 +11,7 @@ import core.characters.GameCharacter;
 import core.world.WorldEntityManager;
 import java.util.ArrayList;
 import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
 
 public class TestCharacterManager {
 
@@ -18,33 +19,36 @@ public class TestCharacterManager {
      * Tests the CharacterManager use case class
      * */
     World world;
-
     CharacterManager cm;
+
     GameCharacter player1;
     GameCharacter player2;
     GameCharacter player3;
 
     @Before
-    public void setUp() {
-        cm = new CharacterManager();
-
+    public void setup() {
         world = new World(new Vector2(0, 0), true);
         WorldEntityManager entityManager = new WorldEntityManager(world);
+        cm = new CharacterManager(entityManager);
 
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
 
-        Body body = world.createBody(def);
         player1 = new GameCharacter(entityManager, def);
         player2 = new GameCharacter(entityManager, def);
         player3 = new GameCharacter(entityManager, def);
     }
 
+    @AfterEach
+    public void teardown() {
+        world.dispose();
+    }
+
     @org.junit.Test
     public void testAddCharacter() {
-        cm.addCharacter(player1);
-        cm.addCharacter(player2);
-        cm.addCharacter(player3);
+        cm.addCharacter(player1.id);
+        cm.addCharacter(player2.id);
+        cm.addCharacter(player3.id);
 
         assertEquals(3, cm.characterEntities.size());
     }
