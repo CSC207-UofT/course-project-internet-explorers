@@ -17,7 +17,7 @@ public class Dagger extends Weapon {
      * @param damage: damage of Dagger
      * */
 
-    private Texture texture = new Texture(Gdx.files.internal("java/resources/weapons/dagger.png"));
+    private final String texturePath = "weapons/dagger.png";
     private int size;
     private int level;
     private int range;
@@ -34,7 +34,7 @@ public class Dagger extends Weapon {
 
     @Override
     public Texture getTexture() {
-        return texture;
+        return new Texture(texturePath);
     }
 
     @Override

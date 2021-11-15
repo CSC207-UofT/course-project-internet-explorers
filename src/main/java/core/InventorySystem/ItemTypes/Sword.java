@@ -16,7 +16,7 @@ public class Sword extends Weapon {
      * @param damage: damage of Sword
      * */
 
-    private Texture texture = new Texture(Gdx.files.internal("java/resources/weapons/sword.png"));
+    private String texturePath = "weapons/sword.png";
     private int size;
     private int level;
     private int range;
@@ -33,7 +33,7 @@ public class Sword extends Weapon {
 
     @Override
     public Texture getTexture() {
-        return texture;
+        return new Texture(texturePath);
     }
 
     @Override

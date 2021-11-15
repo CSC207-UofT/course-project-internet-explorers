@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public abstract class Weapon implements Item {
 
-    private String texture;
+    private String texturePath;
     private int size;
     private int level;
     private int damage;

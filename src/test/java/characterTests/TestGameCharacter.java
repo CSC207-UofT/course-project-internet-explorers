@@ -3,7 +3,6 @@ package characterTests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import core.InventorySystem.Item;
@@ -41,8 +40,8 @@ public class TestGameCharacter {
         player.setHealth(100);
         player.setLevel(1);
         ArrayList<Item> testItems = new ArrayList<>();
-        testItems.add((Item) new Sword(2));
-        testItems.add((Item) new Dagger(1));
+        testItems.add(new Sword(2));
+        testItems.add(new Dagger(1));
         player.setInventory(testItems);
 
         assertEquals("defender", player.getTeam());
