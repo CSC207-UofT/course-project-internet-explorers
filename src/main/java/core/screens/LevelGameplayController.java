@@ -3,20 +3,15 @@ package core.screens;
 import static core.world.DemoSpawners.*;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import core.camera.CameraManager;
 import core.levels.LevelManager;
 import core.world.EntitySpawner;
 import core.world.WorldEntity;
-
 
 /**
  * Runs the gameplay of a Level.
@@ -93,10 +88,14 @@ public class LevelGameplayController implements Screen {
     }
 
     @Override
-    public void pause() {levelManager.pause();}
+    public void pause() {
+        levelManager.pause();
+    }
 
     @Override
-    public void resume() { levelManager.resume();}
+    public void resume() {
+        levelManager.resume();
+    }
 
     @Override
     public void hide() {}
