@@ -16,8 +16,8 @@ public class InventoryWindow extends Window {
         this.setMovable(false);
         this.setPosition(300, 300);
         this.add(createSpriteDemoButton());
-
     }
+
     private TextButton createSpriteDemoButton() {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = new BitmapFont();
@@ -27,12 +27,12 @@ public class InventoryWindow extends Window {
         button.setPosition(500, 600);
 
         button.addListener(
-                new ChangeListener() {
-                    @Override
-                    public void changed(ChangeEvent event, Actor actor) {
-                        System.out.println("testing inv button");
-                    }
+            new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    System.out.println("testing inv button");
                 }
+            }
         );
         return button;
     }

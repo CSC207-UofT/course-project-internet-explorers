@@ -1,16 +1,17 @@
 package core.characters;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import core.InventorySystem.*;
-
+import core.world.WorldEntity;
+import core.world.WorldEntityManager;
+import core.world.WorldEntityWithSprite;
 import java.util.ArrayList;
 import java.util.UUID;
-import core.world.WorldEntity;
 
-
-
-public class GameCharacter extends WorldEntity {
+public class GameCharacter extends WorldEntityWithSprite {
 
     /*
      * Class that defines the main attributes of the classes Player, Enemy and Defender in the game.
@@ -25,32 +26,47 @@ public class GameCharacter extends WorldEntity {
     private int level;
     private ArrayList<Item> inventory;
 
-    public GameCharacter(Body body) {
-        super(body);
+    public GameCharacter(WorldEntityManager entityManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
+        super(entityManager, bodyDef, fixtureDefs);
         this.team = "";
         this.health = 0;
         this.level = 0;
         this.inventory = new ArrayList<Item>();
     }
 
-    public String getTeam() { return this.team; }
+    public String getTeam() {
+        return this.team;
+    }
 
-    public void setTeam(String team) {this.team = team;}
+    public void setTeam(String team) {
+        this.team = team;
+    }
 
-    public int getHealth() { return this.health; }
+    public int getHealth() {
+        return this.health;
+    }
 
-    public void setHealth(int health) { this.health = health;}
+    public void setHealth(int health) {
+        this.health = health;
+    }
 
-    public int getLevel() { return this.level; }
+    public int getLevel() {
+        return this.level;
+    }
 
-    public void setLevel(int level) { this.level = level; }
+    public void setLevel(int level) {
+        this.level = level;
+    }
 
-    public ArrayList<Item> getInventory() { return this.inventory; }
+    public ArrayList<Item> getInventory() {
+        return this.inventory;
+    }
 
-    public void setInventory(ArrayList<Item> inventory) { this.inventory = inventory;}
+    public void setInventory(ArrayList<Item> inventory) {
+        this.inventory = inventory;
+    }
 
-    public void setVelocity(Vector2 velocity){
+    public void setVelocity(Vector2 velocity) {
         this.getBody().setLinearVelocity(velocity);
     }
 }
-

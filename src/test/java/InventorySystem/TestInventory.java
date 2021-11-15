@@ -2,13 +2,13 @@ package InventorySystem;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import core.InventorySystem.*;
 import core.InventorySystem.Item;
 import core.InventorySystem.ItemTypes.*;
-import core.InventorySystem.*;
+import core.characters.CharacterManager;
 import core.characters.GameCharacter;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
-import core.characters.CharacterManager;
 
 public class TestInventory {
 
@@ -32,7 +32,7 @@ public class TestInventory {
         test_player.getInventory().add(dagger);
         CharacterManager manager = new CharacterManager();
         manager.addCharacter(test_player);
-        ArrayList<Item> inventory = (ArrayList<Item>) manager.openInventory(test_player.getId());
+        ArrayList<Item> inventory = (ArrayList<Item>) manager.openInventory(test_player.id);
         ArrayList<Item> comparison = new ArrayList<>();
         comparison.add(sword);
         comparison.add(dagger);
@@ -47,7 +47,6 @@ public class TestInventory {
         test_player.getInventory().add(dagger);
         CharacterManager manager = new CharacterManager();
         manager.addCharacter(test_player);
-        assertEquals(manager.selectItem(test_player.getId(),
-                test_player.getInventory().get(test_player.getInventory().indexOf(sword))), true);
+        assertEquals(manager.selectItem(test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))), true);
     }
 }

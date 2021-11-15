@@ -9,27 +9,34 @@ import com.badlogic.gdx.physics.box2d.World;
 import core.InventorySystem.Item;
 import core.InventorySystem.ItemTypes.*;
 import core.characters.GameCharacter;
+import core.world.WorldEntityManager;
 import java.util.ArrayList;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestGameCharacter {
 
     GameCharacter player;
+    World world;
 
     @BeforeEach
     public void setup() {
-        World world = new World(new Vector2(0, 0), true);
-        BodyDef def = new BodyDef();
-        def.type = BodyDef.BodyType.DynamicBody;
+        world = new World(new Vector2(0, 0), true);
+        WorldEntityManager entityManager = new WorldEntityManager(world);
 
-        Body body = world.createBody(def);
-        player = new GameCharacter(body);
+        BodyDef def = new BodyDef();
+
+        player = new GameCharacter(entityManager, def);
+    }
+
+    @AfterEach
+    public void teardown() {
+        world.dispose();
     }
 
     @Test
     public void testSetters() {
-
         player.setTeam("defender");
         player.setHealth(100);
         player.setLevel(1);

@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import core.world.EntitySpawner;
-import core.world.WorldManager;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import core.world.WorldEntity;
+import core.world.WorldEntityManager;
+import core.world.Spawner;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,19 +24,20 @@ public class LevelManager {
     private final LevelState level;
     private final TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
-    private final WorldManager worldManager;
+    private final WorldEntityManager entityManager;
     private final SpriteBatch batch;
 
     public LevelManager(LevelState level) {
         this.level = level;
         map = new TmxMapLoader().load(level.getMapPath());
         this.mapRenderer = new OrthogonalTiledMapRenderer(map, level.getUnitScale());
-        this.worldManager = new WorldManager(level.world);
+        this.entityManager = new WorldEntityManager(level.world);
+
         this.batch = new SpriteBatch();
 
         // assign all enemies to current worldManager
-        List<EntitySpawner> enemiesUpdated = level.getEnemySpawns();
-        for (EntitySpawner enemy : enemiesUpdated){ enemy.setWorldManager(this.worldManager);}
+        List<Spawner> enemiesUpdated = level.getEnemySpawns();
+        for (Spawner enemy : enemiesUpdated){ enemy.setEntityManager(this.entityManager);}
         level.setEnemySpawns(enemiesUpdated);
     }
 
@@ -53,7 +56,7 @@ public class LevelManager {
         return; }
 
         // Stepping physics simulation
-        worldManager.step(dt);
+        entityManager.step(dt);
 
         // Elapsing time in world
         level.setCurrentTime(level.getCurrentTime() + dt);
@@ -68,7 +71,7 @@ public class LevelManager {
      */
     private void updateEnemies() {
         // Spawning enemies in world
-        List<EntitySpawner> enemies = level.getEnemySpawns();
+        List<Spawner> enemies = level.getEnemySpawns();
 
         if (enemies.isEmpty()){
             // If all enemies have been spawned, check if game is won or not
@@ -77,7 +80,7 @@ public class LevelManager {
         else {
             // Spawn enemy every 15 seconds
             if (level.getCurrentTime() >= level.getSpawnTime()) {
-                EntitySpawner enemy = enemies.remove(0);
+                Spawner enemy = enemies.remove(0);
                 enemy.spawn();
                 level.setEnemySpawns(enemies);
                 level.setScore(level.getScore() + 1);
@@ -120,7 +123,7 @@ public class LevelManager {
     public void renderWorld(OrthographicCamera camera) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        worldManager.draw(batch);
+        entityManager.draw(batch);
         batch.end();
     }
 
@@ -128,8 +131,8 @@ public class LevelManager {
         return level.getUnitScale();
     }
 
-    public WorldManager getWorldManager() {
-        return worldManager;
+    public WorldEntityManager getEntityManager() {
+        return entityManager;
     }
 
     public void dispose() {

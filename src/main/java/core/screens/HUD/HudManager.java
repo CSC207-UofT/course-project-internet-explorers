@@ -69,7 +69,6 @@ public class HudManager implements Disposable {
         table.add(scoreLabel).expandX();
         table.add(countdownLabel).expandX();
 
-
         //add table to the stage
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
@@ -78,7 +77,7 @@ public class HudManager implements Disposable {
     /***
      * Draws the overlay
      */
-    public void draw(){
+    public void draw() {
         sb.setProjectionMatrix(getCamera().combined);
         stage.draw();
     }
@@ -87,7 +86,7 @@ public class HudManager implements Disposable {
      * TODO: use the camera from cameraManager
      * @return the camera used for the HUD
      */
-    public Camera getCamera(){
+    public Camera getCamera() {
         return stage.getCamera();
     }
 
@@ -102,25 +101,24 @@ public class HudManager implements Disposable {
     /***
      * Toggles the inventory window by adding or removing it to/from the stage
      */
-    public void toggleInventory(){
-        if (inventoryIsOpen){
+    public void toggleInventory() {
+        if (inventoryIsOpen) {
             playerInventory.remove();
         } else {
             stage.addActor(playerInventory);
         }
         inventoryIsOpen = !inventoryIsOpen;
     }
-
     // These methods are unused at the moment, but may be useful later
-//    public boolean isTimeUp() {
-//        return timeUp;
-//    }
-//
-//    public static Label getScoreLabel() {
-//        return scoreLabel;
-//    }
-//
-//    public static Integer getScore() {
-//        return score;
-//    }
+    //    public boolean isTimeUp() {
+    //        return timeUp;
+    //    }
+    //
+    //    public static Label getScoreLabel() {
+    //        return scoreLabel;
+    //    }
+    //
+    //    public static Integer getScore() {
+    //        return score;
+    //    }
 }

@@ -1,13 +1,13 @@
 package core.InventorySystem.ItemTypes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.files.*;
+import com.badlogic.gdx.graphics.Texture;
 import core.InventorySystem.Weapon;
-
 import java.util.UUID;
 
 public class Dagger extends Weapon {
+
     /*
      * Dagger weapon object stored in inventory for use
      * @param texture: texture of Dagger
@@ -31,7 +31,6 @@ public class Dagger extends Weapon {
         this.damage = this.level * 2;
         this.id = UUID.randomUUID();
     }
-
 
     @Override
     public Texture getTexture() {

@@ -1,11 +1,10 @@
 package core.characters;
 
 import com.badlogic.gdx.math.Vector2;
+import core.InventorySystem.*;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.Collections;
-import core.InventorySystem.*;
-
 
 public class CharacterManager {
 
@@ -24,7 +23,7 @@ public class CharacterManager {
         /*
          * Generates a unique id for each character when added
          * */
-        this.characterEntities.put(character.getId(), character);
+        this.characterEntities.put(character.id, character);
     }
 
     /***
@@ -34,13 +33,12 @@ public class CharacterManager {
      * @param dy change in y from inputHandler
      */
     public void updateCharacterPosition(UUID id, float dx, float dy) {
-
         /*
          * Updates the position of the character
          * TODO: Update to use setPosition when worldEntity merged
          * */
 
-        if (verifyId(id)){
+        if (verifyId(id)) {
             this.characterEntities.get(id).setVelocity(new Vector2(dx, dy));
         }
     }
@@ -85,8 +83,11 @@ public class CharacterManager {
          * */
         if (verifyId(id)) {
             if (this.characterEntities.get(id).getInventory().contains(item)) {
-                Collections.swap(this.characterEntities.get(id).getInventory(), 0,
-                        this.characterEntities.get(id).getInventory().indexOf(item));
+                Collections.swap(
+                    this.characterEntities.get(id).getInventory(),
+                    0,
+                    this.characterEntities.get(id).getInventory().indexOf(item)
+                );
                 return true;
             }
         }
@@ -147,4 +148,3 @@ public class CharacterManager {
         return false;
     }
 }
-
