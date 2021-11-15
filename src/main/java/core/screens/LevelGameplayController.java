@@ -31,19 +31,19 @@ public class LevelGameplayController implements Screen {
         this.box2DDebugRenderer = new Box2DDebugRenderer();
 
         Spawner<?> playerSpawner = createPlayerSpawner();
-        playerSpawner.setWorldManager(levelManager.getWorldManager());
+        playerSpawner.setEntityManager(levelManager.getEntityManager());
         player = playerSpawner.spawn();
 
         Spawner<?> enemySpawner = createEnemySpawner();
-        enemySpawner.setWorldManager(levelManager.getWorldManager());
+        enemySpawner.setEntityManager(levelManager.getEntityManager());
         enemySpawner.spawn();
 
         Spawner<?> defenderSpawner = createDefenderSpawner();
-        defenderSpawner.setWorldManager(levelManager.getWorldManager());
+        defenderSpawner.setEntityManager(levelManager.getEntityManager());
         defenderSpawner.spawn();
 
         Spawner<?> mapBorderSpawner = createMapBorderSpawner();
-        mapBorderSpawner.setWorldManager(levelManager.getWorldManager());
+        mapBorderSpawner.setEntityManager(levelManager.getEntityManager());
         mapBorderSpawner.spawn();
 
         // not the proper way to control stuff on-screen, this is just for debugging
@@ -81,7 +81,7 @@ public class LevelGameplayController implements Screen {
         shapeRenderer.end();
 
         // TODO only do this in debug mode
-        levelManager.getWorldManager().drawPhysics(box2DDebugRenderer, cameraManager.getCamera());
+        levelManager.renderPhysics(box2DDebugRenderer, cameraManager.getCamera());
     }
 
     @Override

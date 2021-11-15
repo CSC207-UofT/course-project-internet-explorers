@@ -10,6 +10,9 @@ import java.util.UUID;
  * Represents an entity within a level's World.
  * <p>
  * A WorldEntity has a unique ID and is represented as a Box2D Body within the World.
+ *
+ * TODO check with ben if we should make WorldEntity properties protected
+ *      and only have public getters/setters in WorldManager
  */
 public class WorldEntity {
 
@@ -20,10 +23,10 @@ public class WorldEntity {
     protected final Body body;
     public final UUID id;
 
-    public WorldEntity(WorldManager worldManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
+    public WorldEntity(WorldEntityManager entityManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
         this.id = UUID.randomUUID();
 
-        this.body = worldManager.addEntityToWorld(this, bodyDef, fixtureDefs);
+        this.body = entityManager.register(this, bodyDef, fixtureDefs);
     }
 
     public Vector2 getPosition() {

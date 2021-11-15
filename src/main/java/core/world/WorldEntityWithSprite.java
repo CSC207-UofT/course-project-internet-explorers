@@ -10,8 +10,8 @@ public class WorldEntityWithSprite extends WorldEntity {
     private Sprite sprite;
     private Vector2 offset;
 
-    public WorldEntityWithSprite(WorldManager worldManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
-        super(worldManager, bodyDef, fixtureDefs);
+    public WorldEntityWithSprite(WorldEntityManager entityManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
+        super(entityManager, bodyDef, fixtureDefs);
     }
 
     public void setSprite(Sprite sprite) {

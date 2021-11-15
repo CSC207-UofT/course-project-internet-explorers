@@ -14,7 +14,7 @@ import java.util.function.Supplier;
  */
 public class Spawner<T extends WorldEntity> {
 
-    private WorldManager worldManager;
+    private WorldEntityManager entityManager;
     private final Class<T> type;
 
     private Supplier<BodyDef> bodyDefSupplier;
@@ -58,8 +58,8 @@ public class Spawner<T extends WorldEntity> {
 
         try {
             T entity = type
-                .getConstructor(WorldManager.class, BodyDef.class, FixtureDef[].class)
-                .newInstance(worldManager, bodyDef, fixtureDefsSupplier.get());
+                .getConstructor(WorldEntityManager.class, BodyDef.class, FixtureDef[].class)
+                .newInstance(entityManager, bodyDef, fixtureDefsSupplier.get());
 
             spawnCallback.accept(entity);
 
@@ -70,8 +70,8 @@ public class Spawner<T extends WorldEntity> {
         }
     }
 
-    public void setWorldManager(WorldManager worldManager) {
-        this.worldManager = worldManager;
+    public void setEntityManager(WorldEntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     public void setBodyDefSupplier(Supplier<BodyDef> bodyDefSupplier) {

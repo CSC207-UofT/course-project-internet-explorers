@@ -6,20 +6,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import core.world.WorldEntity;
-import core.world.WorldManager;
+import core.world.WorldEntityManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestWorldEntity {
 
-    WorldManager worldManager;
+    WorldEntityManager entityManager;
     World world;
 
     @BeforeEach
     void setup() {
         world = new World(new Vector2(), true);
-        worldManager = new WorldManager(world);
+        entityManager = new WorldEntityManager(world);
     }
 
     @AfterEach
@@ -32,10 +32,10 @@ public class TestWorldEntity {
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.StaticBody;
 
-        WorldEntity entity = new WorldEntity(worldManager, def);
+        WorldEntity entity = new WorldEntity(entityManager, def);
 
         assertNotNull(entity.id, "Entity UUID was not set.");
-        assertNotNull(worldManager.getEntity(entity.id), "WorldManager can't get the entity by UUID.");
+        assertNotNull(entityManager.getEntity(entity.id), "WorldManager can't get the entity by UUID.");
 
         assertAll(
             "Default position, size, and offset were all set to 0.",
@@ -55,7 +55,7 @@ public class TestWorldEntity {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
 
-        WorldEntity entity = new WorldEntity(worldManager, bodyDef, fixtureDef);
+        new WorldEntity(entityManager, bodyDef, fixtureDef);
 
         circle.dispose();
 
@@ -77,7 +77,7 @@ public class TestWorldEntity {
         fixtureDef1.shape = circle;
         fixtureDef2.shape = square;
 
-        WorldEntity entity = new WorldEntity(worldManager, bodyDef, fixtureDef1, fixtureDef2);
+        new WorldEntity(entityManager, bodyDef, fixtureDef1, fixtureDef2);
 
         circle.dispose();
         square.dispose();

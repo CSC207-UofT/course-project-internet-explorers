@@ -5,9 +5,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import core.world.SpawnController;
 import core.world.WorldEntity;
-import core.world.WorldManager;
+import core.world.WorldEntityManager;
 
 /**
  * Use-Case class for LevelState.
@@ -18,21 +19,25 @@ public class LevelManager {
     private final LevelState level;
     private final TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
-    private final WorldManager worldManager;
+    private final WorldEntityManager entityManager;
     private final SpriteBatch batch;
 
     public LevelManager(LevelState level) {
         this.level = level;
         map = new TmxMapLoader().load(level.getMapPath());
         this.mapRenderer = new OrthogonalTiledMapRenderer(map, level.getUnitScale());
-        this.worldManager = new WorldManager(level.world);
+        this.entityManager = new WorldEntityManager(level.world);
 
         this.batch = new SpriteBatch();
     }
 
-    // TODO seems redundant, reevaluate if needed
+    /**
+     * Steps the physics simulation of the level's World.
+     *
+     * @param dt time delta to simulate (seconds) (capped at .5 in case computer is too slow)
+     */
     public void step(float dt) {
-        worldManager.step(dt);
+        level.world.step(Math.min(dt, 0.5f), 6, 2);
     }
 
     public void renderMap(OrthographicCamera camera) {
@@ -43,8 +48,16 @@ public class LevelManager {
     public void renderWorld(OrthographicCamera camera) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        worldManager.draw(batch);
+        entityManager.draw(batch);
         batch.end();
+    }
+
+    /**
+     * Invoke `render` on a Box2DDebugRenderer to draw the physics going on in this world.
+     * Used for debugging.
+     */
+    public void renderPhysics(Box2DDebugRenderer renderer, OrthographicCamera camera) {
+        renderer.render(level.world, camera.combined);
     }
 
     // TODO: Configure changes from SpawnController
@@ -56,8 +69,8 @@ public class LevelManager {
         return level.getUnitScale();
     }
 
-    public WorldManager getWorldManager() {
-        return worldManager;
+    public WorldEntityManager getEntityManager() {
+        return entityManager;
     }
 
     public void dispose() {
