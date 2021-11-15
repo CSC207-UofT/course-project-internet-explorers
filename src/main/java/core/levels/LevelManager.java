@@ -5,9 +5,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import core.world.SpawnController;
-import core.world.WorldEntity;
+import core.world.EntitySpawner;
 import core.world.WorldManager;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.List;
 
 /**
  * Use-Case class for LevelState.
@@ -26,13 +30,86 @@ public class LevelManager {
         map = new TmxMapLoader().load(level.getMapPath());
         this.mapRenderer = new OrthogonalTiledMapRenderer(map, level.getUnitScale());
         this.worldManager = new WorldManager(level.world);
-
         this.batch = new SpriteBatch();
+
+        // assign all enemies to current worldManager
+        List<EntitySpawner> enemiesUpdated = level.getEnemySpawns();
+        for (EntitySpawner enemy : enemiesUpdated){ enemy.setWorldManager(this.worldManager);}
+        level.setEnemySpawns(enemiesUpdated);
     }
 
-    // TODO seems redundant, reevaluate if needed
+    /**
+     * Step physics simulation of World
+     * Elapse time in World
+     * Spawn enemies in World
+     *
+     * Above actions only performed if level isn't in a paused state
+     *
+     * @param dt time delta to simulate (seconds) (capped at .5 in case computer is too slow)
+     */
     public void step(float dt) {
+        // If level isn't paused, perform step, time elapsing, spawning
+        if (level.getLevelPaused()) {
+        return; }
+
+        // Stepping physics simulation
         worldManager.step(dt);
+
+        // Elapsing time in world
+        level.setCurrentTime(level.getCurrentTime() + dt);
+
+        // Spawning enemies in world
+        updateEnemies();
+    }
+
+    /**
+     * Periodically spawn enemies into the world, based on spawnTime given in LevelState
+     * If all enemies spawned, check if game has been won
+     */
+    private void updateEnemies() {
+        // Spawning enemies in world
+        List<EntitySpawner> enemies = level.getEnemySpawns();
+
+        if (enemies.isEmpty()){
+            // If all enemies have been spawned, check if game is won or not
+            if (checkWin()){showWinCondition();} // Roy will implement showWinCondition()
+        }
+        else {
+            // Spawn enemy every 15 seconds
+            if (level.getCurrentTime() >= level.getSpawnTime()) {
+                EntitySpawner enemy = enemies.remove(0);
+                enemy.spawn();
+                level.setEnemySpawns(enemies);
+                level.setScore(level.getScore() + 1);
+                level.setSpawnTime(level.getSpawnTime() + 15);
+            }
+        }
+    }
+
+    /**
+     * Checking win condition
+     * level is won if 100 seconds have passed
+     *
+     * @return whether win condition has been met or not
+     */
+    public boolean checkWin(){
+        return level.getCurrentTime() >= 100;
+    }
+
+    /**
+     * Save current time elapsed from level
+     * @throws IOException relating to savedState.txt
+     * @throws ClassNotFoundException relating to reading objects in
+     */
+    public void saveState() throws IOException, ClassNotFoundException {
+        FileOutputStream fileOutputStream = new FileOutputStream("savedState.txt");
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+        // objectOutputStream.writeObject(level.getEnemySpawns());
+        objectOutputStream.writeFloat(level.getCurrentTime());
+
+        objectOutputStream.flush();
+        objectOutputStream.close();
     }
 
     public void renderMap(OrthographicCamera camera) {
@@ -47,11 +124,6 @@ public class LevelManager {
         batch.end();
     }
 
-    // TODO: Configure changes from SpawnController
-    public void spawnEntity(WorldEntity worldEntity, SpawnController spawnController) {
-        spawnController.spawn(worldEntity);
-    }
-
     public float getUnitScale() {
         return level.getUnitScale();
     }
@@ -62,5 +134,13 @@ public class LevelManager {
 
     public void dispose() {
         map.dispose();
+    }
+
+    public void pause(){
+        level.setLevelPaused(true);
+    }
+
+    public void resume(){
+        level.setLevelPaused(false);
     }
 }
