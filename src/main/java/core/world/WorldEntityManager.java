@@ -2,6 +2,7 @@ package core.world;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -73,5 +74,22 @@ public class WorldEntityManager {
 
     public WorldEntity getEntity(UUID id) {
         return entities.get(id);
+    }
+
+    public void setLinearVelocity(UUID id, Vector2 velocity) {
+        entities.get(id).body.setLinearVelocity(velocity);
+    }
+
+    /**
+     * Set the entity's velocity such that it reaches the target position in the specified amount of time `dt`.
+     */
+    public void setTeleportVelocity(UUID id, Vector2 target, float dt) {
+        Body body = entities.get(id).body;
+        body.setLinearVelocity(target.cpy().sub(body.getPosition().cpy()).scl(1 / dt));
+    }
+
+    public void teleport(UUID id, Vector2 target) {
+        Body body = entities.get(id).body;
+        body.setTransform(target, body.getAngle());
     }
 }

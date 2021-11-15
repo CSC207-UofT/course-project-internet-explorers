@@ -11,7 +11,9 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import core.camera.CameraManager;
 import core.levels.LevelManager;
 import core.world.Spawner;
-import core.world.WorldEntity;
+import core.world.WorldEntityManager;
+import core.world.WorldEntityWithSprite;
+import java.util.UUID;
 
 /**
  * Runs the gameplay of a Level.
@@ -21,35 +23,39 @@ public class LevelGameplayController implements Screen {
     private final CameraManager cameraManager;
     private ShapeRenderer shapeRenderer;
     private final LevelManager levelManager;
-    private final WorldEntity player;
+    private final WorldEntityManager entityManager;
+    private final UUID playerId;
     private final Box2DDebugRenderer box2DDebugRenderer;
 
     public LevelGameplayController(LevelManager levelManager) {
         this.levelManager = levelManager;
+        this.entityManager = levelManager.getEntityManager();
         cameraManager = new CameraManager(levelManager.getUnitScale());
 
         this.box2DDebugRenderer = new Box2DDebugRenderer();
 
-        Spawner<?> playerSpawner = createPlayerSpawner();
-        playerSpawner.setEntityManager(levelManager.getEntityManager());
-        player = playerSpawner.spawn();
+        Spawner<WorldEntityWithSprite> playerSpawner = createPlayerSpawner();
+        playerSpawner.setEntityManager(entityManager);
+        playerId = playerSpawner.spawn().id;
 
         Spawner<?> enemySpawner = createEnemySpawner();
-        enemySpawner.setEntityManager(levelManager.getEntityManager());
+        enemySpawner.setEntityManager(entityManager);
         enemySpawner.spawn();
 
         Spawner<?> defenderSpawner = createDefenderSpawner();
-        defenderSpawner.setEntityManager(levelManager.getEntityManager());
+        defenderSpawner.setEntityManager(entityManager);
         defenderSpawner.spawn();
 
         Spawner<?> mapBorderSpawner = createMapBorderSpawner();
-        mapBorderSpawner.setEntityManager(levelManager.getEntityManager());
+        mapBorderSpawner.setEntityManager(entityManager);
         mapBorderSpawner.spawn();
 
         // not the proper way to control stuff on-screen, this is just for debugging
         // TODO remove following line – player position should be mutated by the PlayerManager
         //      should pass in the Player WorldEntity's ID and the WorldEntity Manager once ID-based system is implemented
-        cameraManager.getCamera().position.set(2, 2, 0);
+        cameraManager
+            .getCamera()
+            .position.set(entityManager.getEntity(playerId).getPosition().x, entityManager.getEntity(playerId).getPosition().y, 0);
         cameraManager.enterDebugFreecamMode();
     }
 
@@ -65,8 +71,9 @@ public class LevelGameplayController implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         cameraManager.update(dt);
-        // TODO change to proper system, currently set velocity such that player position stays in sync with camera subject position
-        player.getBody().setLinearVelocity(cameraManager.getSubjectPosition().cpy().sub(player.getPosition()).scl(1 / dt));
+        // TODO update camera based on player, not other way around.
+        //      do this once merged with GameCharacter branch
+        entityManager.setTeleportVelocity(playerId, cameraManager.getSubjectPosition(), dt);
 
         levelManager.step(dt);
         levelManager.renderMap(cameraManager.getCamera());
