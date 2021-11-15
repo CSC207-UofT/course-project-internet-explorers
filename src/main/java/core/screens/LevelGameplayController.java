@@ -75,8 +75,6 @@ public class LevelGameplayController implements Screen {
         levelManager.step(dt);
         levelManager.renderMap(cameraManager.getCamera());
         levelManager.renderWorld(cameraManager.getCamera());
-        levelManager.elapseTime();
-
 
         // TODO move following code to the CameraManager
         // draw a red dot which marks the spot tracked by the camera (for debugging)

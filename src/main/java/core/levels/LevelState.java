@@ -1,6 +1,11 @@
 package core.levels;
 
 import com.badlogic.gdx.physics.box2d.World;
+import core.world.EntitySpawner;
+
+import javax.swing.text.html.parser.Entity;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
     Entity class that stores information of the level
@@ -12,6 +17,7 @@ public class LevelState {
     protected boolean levelPaused;
     protected float currentTime;
     protected int score;
+    protected List<EntitySpawner> enemySpawns;
 
     // unitScale measured in m/px
     // represents in-game size of map tiles
@@ -20,10 +26,11 @@ public class LevelState {
     //  * tiles are 32px by 32px
     private float unitScale;
 
-    protected LevelState(String mapPath) {
+    protected LevelState(String mapPath, List<EntitySpawner> enemies) {
         this.mapPath = mapPath;
         this.currentTime = 0;
         this.levelPaused = false;
+        this.enemySpawns = enemies;
     }
 
     protected void setUnitScale(float unitScale) {
@@ -45,4 +52,12 @@ public class LevelState {
     public float getCurrentTime(){ return currentTime;}
 
     public void setCurrentTime(float currentTime){ this.currentTime = currentTime;}
+
+    public int getScore(){ return score;}
+
+    public void setScore(int score){ this.score = score;}
+
+    public List<EntitySpawner> getEnemySpawns(){ return enemySpawns;}
+
+    public void setEnemySpawns(List<EntitySpawner> enemySpawns){ this.enemySpawns = enemySpawns;}
 }
