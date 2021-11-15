@@ -24,8 +24,6 @@ public class GameCharacter extends WorldEntityWithSprite {
     private int level;
     private ArrayList<Item> inventory;
 
-    protected InputDevice inputDevice;
-
     public GameCharacter(WorldEntityManager entityManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
         super(entityManager, bodyDef, fixtureDefs);
         this.team = "";

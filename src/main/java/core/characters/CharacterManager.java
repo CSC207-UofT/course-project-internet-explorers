@@ -3,9 +3,11 @@ package core.characters;
 import core.InventorySystem.*;
 import core.input.CharacterInput;
 import core.input.InputDevice;
+import core.input.InputManager;
 import core.world.WorldEntityManager;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class CharacterManager {
@@ -17,10 +19,12 @@ public class CharacterManager {
 
     public HashMap<UUID, GameCharacter> characterEntities;
     private final WorldEntityManager entityManager;
+    private final InputManager inputManager;
 
-    public CharacterManager(WorldEntityManager entityManager) {
+    public CharacterManager(WorldEntityManager entityManager, InputManager inputManager) {
         this.characterEntities = new HashMap<>();
         this.entityManager = entityManager;
+        this.inputManager = inputManager;
     }
 
     /**
@@ -31,7 +35,7 @@ public class CharacterManager {
     public void addCharacter(UUID id, InputDevice inputDevice) {
         if (entityManager.getEntity(id) instanceof GameCharacter character) {
             this.characterEntities.put(character.id, character);
-            character.inputDevice = inputDevice;
+            inputManager.addInputDeviceFor(character, inputDevice);
         } else {
             throw new RuntimeException("Couldn't find a GameCharacter with the specified UUID: " + id);
         }
@@ -41,19 +45,17 @@ public class CharacterManager {
         addCharacter(id, InputDevice.DEFAULT);
     }
 
-    public void processInputs(float dt) {
-        this.characterEntities.forEach((id, character) -> {
-                CharacterInput input = character.inputDevice.getInput();
+    public void processInputs(float dt, Map<UUID, CharacterInput> inputs) {
+        inputs.forEach((id, input) -> {
+            // m/s
+            float speed = 10f;
+            entityManager.setLinearVelocity(id, input.direction().nor().scl(speed / dt / 100));
 
-                // m/s
-                float speed = 10f;
-                entityManager.setLinearVelocity(id, input.direction().nor().scl(speed / dt / 100));
-
-                if (input.using()) {
-                    WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
-                    usageDelegate.use((Weapon) this.characterEntities.get(id).getInventory().get(0));
-                }
-            });
+            if (input.using()) {
+                WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
+                usageDelegate.use((Weapon) this.characterEntities.get(id).getInventory().get(0));
+            }
+        });
     }
 
     public void updateHealth(UUID id, int damage) {
