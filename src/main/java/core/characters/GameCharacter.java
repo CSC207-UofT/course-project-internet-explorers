@@ -1,15 +1,13 @@
 package core.characters;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import core.InventorySystem.*;
-import core.world.WorldEntity;
+import core.input.InputDevice;
 import core.world.WorldEntityManager;
 import core.world.WorldEntityWithSprite;
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class GameCharacter extends WorldEntityWithSprite {
 
@@ -26,12 +24,14 @@ public class GameCharacter extends WorldEntityWithSprite {
     private int level;
     private ArrayList<Item> inventory;
 
+    protected InputDevice inputDevice;
+
     public GameCharacter(WorldEntityManager entityManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
         super(entityManager, bodyDef, fixtureDefs);
         this.team = "";
         this.health = 0;
         this.level = 0;
-        this.inventory = new ArrayList<Item>();
+        this.inventory = new ArrayList<>();
     }
 
     public String getTeam() {

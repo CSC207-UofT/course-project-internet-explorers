@@ -1,7 +1,8 @@
 package core.characters;
 
-import com.badlogic.gdx.math.Vector2;
 import core.InventorySystem.*;
+import core.input.CharacterInput;
+import core.input.InputDevice;
 import core.world.WorldEntityManager;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,47 +28,31 @@ public class CharacterManager {
      *
      * The WorldEntity must be already added to the entityManager and must be a subclass of GameCharacter.
      */
-    public void addCharacter(UUID id) {
+    public void addCharacter(UUID id, InputDevice inputDevice) {
         if (entityManager.getEntity(id) instanceof GameCharacter character) {
             this.characterEntities.put(character.id, character);
+            character.inputDevice = inputDevice;
         }
         throw new RuntimeException("Couldn't find a GameCharacter with the specified UUID: " + id);
     }
 
-    // ben this is why we need a simple ControlState class this method signature is gonna get Huge
-    private void acceptInput(UUID id, boolean up, boolean down, boolean left, boolean right, boolean use) {
-        int dx = 0;
-        dx += right ? 1 : 0;
-        dx -= left ? 1 : 0;
-        int dy = 0;
-        dy += up ? 1 : 0;
-        dy -= down ? 1 : 0;
-
-        // m/s
-        float speed = 10;
-        entityManager.setLinearVelocity(id, new Vector2(dx, dy).nor().scl(speed));
-
-        if (use) {
-            WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
-            usageDelegate.use((Weapon) this.characterEntities.get(id).getInventory().get(0));
-        }
+    public void addCharacter(UUID id) {
+        addCharacter(id, InputDevice.DEFAULT);
     }
 
-    /***
-     *This is the use case that sets the velocity for the character with the specific id and moves the character
-     * @param id character id
-     * @param dx change in x from inputHandler
-     * @param dy change in y from inputHandler
-     */
-    public void updateCharacterPosition(UUID id, float dx, float dy) {
-        /*
-         * Updates the position of the character
-         * TODO: Update to use setPosition when worldEntity merged
-         * */
+    public void processInputs(float dt) {
+        this.characterEntities.forEach((id, character) -> {
+                CharacterInput input = character.inputDevice.getInput();
 
-        if (verifyId(id)) {
-            this.characterEntities.get(id).setVelocity(new Vector2(dx, dy));
-        }
+                // m/s
+                float speed = 10;
+                entityManager.setLinearVelocity(id, input.direction().nor().scl(speed / dt));
+
+                if (input.using()) {
+                    WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
+                    usageDelegate.use((Weapon) this.characterEntities.get(id).getInventory().get(0));
+                }
+            });
     }
 
     public void updateHealth(UUID id, int damage) {
