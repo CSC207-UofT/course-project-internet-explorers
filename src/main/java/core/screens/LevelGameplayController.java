@@ -12,8 +12,10 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import core.camera.CameraManager;
 import core.levels.LevelManager;
 import core.screens.HUD.HudManager;
-import core.world.EntitySpawner;
-import core.world.WorldEntity;
+import core.world.Spawner;
+import core.world.WorldEntityManager;
+import core.world.WorldEntityWithSprite;
+import java.util.UUID;
 
 /**
  * Runs the gameplay of a Level.
@@ -23,36 +25,41 @@ public class LevelGameplayController implements Screen {
     private final CameraManager cameraManager;
     private ShapeRenderer shapeRenderer;
     private final LevelManager levelManager;
-    private final WorldEntity player;
-    //TODO: ^This should be a GameCharacter, but GameCharacter currently extends the wrong world entity
+    private final WorldEntityManager entityManager;
+    private final UUID playerId;
     private final Box2DDebugRenderer box2DDebugRenderer;
     private HudManager hud;
 
     public LevelGameplayController(LevelManager levelManager) {
         this.levelManager = levelManager;
+        this.entityManager = levelManager.getEntityManager();
         cameraManager = new CameraManager(levelManager.getUnitScale());
 
         this.box2DDebugRenderer = new Box2DDebugRenderer();
 
-        EntitySpawner playerSpawner = createPlayerSpawner();
-        playerSpawner.setWorldManager(levelManager.getWorldManager());
-        player = playerSpawner.spawn();
+        Spawner<WorldEntityWithSprite> playerSpawner = createPlayerSpawner();
+        //TODO: ^This should be a GameCharacter, but GameCharacter currently extends the wrong world entity
+        playerSpawner.setEntityManager(entityManager);
+        playerId = playerSpawner.spawn().id;
 
-        EntitySpawner enemySpawner = createEnemySpawner();
-        enemySpawner.setWorldManager(levelManager.getWorldManager());
+        Spawner<?> enemySpawner = createEnemySpawner();
+        enemySpawner.setEntityManager(entityManager);
         enemySpawner.spawn();
 
-        EntitySpawner defenderSpawner = createDefenderSpawner();
-        defenderSpawner.setWorldManager(levelManager.getWorldManager());
+        Spawner<?> defenderSpawner = createDefenderSpawner();
+        defenderSpawner.setEntityManager(entityManager);
         defenderSpawner.spawn();
 
-        EntitySpawner mapBorderSpawner = createMapBorderSpawner();
-        mapBorderSpawner.setWorldManager(levelManager.getWorldManager());
+        Spawner<?> mapBorderSpawner = createMapBorderSpawner();
+        mapBorderSpawner.setEntityManager(entityManager);
         mapBorderSpawner.spawn();
 
         // not the proper way to control stuff on-screen, this is just for debugging
         // TODO remove following line – player position should be mutated by the PlayerManager
         //      should pass in the Player WorldEntity's ID and the WorldEntity Manager once ID-based system is implemented
+        cameraManager
+            .getCamera()
+            .position.set(entityManager.getEntity(playerId).getPosition().x, entityManager.getEntity(playerId).getPosition().y, 0);
         cameraManager.enterDebugFreecamMode();
     }
 
@@ -69,12 +76,13 @@ public class LevelGameplayController implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         cameraManager.update(dt);
+        // TODO update camera based on player, not other way around.
+        //      do this once merged with GameCharacter branch
+        entityManager.setTeleportVelocity(playerId, cameraManager.getSubjectPosition(), dt);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
             hud.toggleInventory();
         }
-        // TODO change to proper system, currently set velocity such that player position stays in sync with camera subject position
-        player.getBody().setLinearVelocity(cameraManager.getSubjectPosition().cpy().sub(player.getPosition()).scl(1 / dt));
 
         levelManager.step(dt);
         levelManager.renderMap(cameraManager.getCamera());
@@ -89,7 +97,7 @@ public class LevelGameplayController implements Screen {
         shapeRenderer.end();
 
         // TODO only do this in debug mode
-        levelManager.getWorldManager().drawPhysics(box2DDebugRenderer, cameraManager.getCamera());
+        levelManager.renderPhysics(box2DDebugRenderer, cameraManager.getCamera());
 
         hud.draw();
     }

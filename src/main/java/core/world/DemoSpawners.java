@@ -1,5 +1,6 @@
 package core.world;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -8,77 +9,37 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class DemoSpawners {
 
-    public static EntitySpawner createPlayerSpawner() {
-        EntitySpawner spawner = new EntitySpawner();
+    public static Spawner<WorldEntityWithSprite> createPlayerSpawner() {
+        Vector2 position = new Vector2(2, 2);
+        Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_player");
+        sprite.setSize(1, 1);
+        sprite.setOriginCenter();
 
-        spawner.setBodyDefSupplier(() -> {
-            BodyDef def = new BodyDef();
-            def.type = BodyDef.BodyType.DynamicBody;
-            return def;
-        });
-
-        EntitySpawner.WorldEntityGeometry geometry = new EntitySpawner.WorldEntityGeometry();
-        geometry.position = new Vector2(2, 10);
-        geometry.size = new Vector2(1, 1);
-        geometry.offset = geometry.size.cpy().scl(-.5f);
-
-        spawner.geometrySupplier(() -> geometry);
-
-        spawner.setFixtureDefsSupplier(EntitySpawner.createRectangularFixtureDefSupplier(geometry.size));
-
-        spawner.setSpriteSupplier(() -> new TextureAtlas("characters/sprites.txt").createSprite("demo_player"));
-
-        return spawner;
+        return Spawner.createSpriteBasedEntitySpawner(position, sprite);
     }
 
-    public static EntitySpawner createEnemySpawner() {
-        EntitySpawner spawner = new EntitySpawner();
+    public static Spawner<WorldEntityWithSprite> createEnemySpawner() {
+        Vector2 position = new Vector2(20, 8);
+        Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_enemy");
+        sprite.setSize(1, 1);
+        sprite.setOriginCenter();
 
-        spawner.setBodyDefSupplier(() -> {
-            BodyDef def = new BodyDef();
-            def.type = BodyDef.BodyType.DynamicBody;
-            return def;
-        });
-
-        EntitySpawner.WorldEntityGeometry geometry = new EntitySpawner.WorldEntityGeometry();
-        geometry.position = new Vector2(20, 8);
-        geometry.size = new Vector2(1, 1);
-        geometry.offset = geometry.size.cpy().scl(-.5f);
-
-        spawner.geometrySupplier(() -> geometry);
-
-        spawner.setFixtureDefsSupplier(EntitySpawner.createRectangularFixtureDefSupplier(geometry.size));
-
-        spawner.setSpriteSupplier(() -> new TextureAtlas("characters/sprites.txt").createSprite("demo_enemy"));
-
-        return spawner;
+        return Spawner.createSpriteBasedEntitySpawner(position, sprite);
     }
 
-    public static EntitySpawner createDefenderSpawner() {
-        EntitySpawner spawner = new EntitySpawner();
+    public static Spawner<WorldEntityWithSprite> createDefenderSpawner() {
+        Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_defense");
+        sprite.setSize(1, 1);
+        sprite.setOriginCenter();
 
-        spawner.setBodyDefSupplier(() -> {
-            BodyDef def = new BodyDef();
-            def.type = BodyDef.BodyType.StaticBody;
-            return def;
-        });
-
-        EntitySpawner.WorldEntityGeometry geometry = new EntitySpawner.WorldEntityGeometry();
-        geometry.position = new Vector2(16, 3);
-        geometry.size = new Vector2(1, 1);
-        geometry.offset = geometry.size.cpy().scl(-.5f);
-
-        spawner.geometrySupplier(() -> geometry);
-
-        spawner.setFixtureDefsSupplier(EntitySpawner.createRectangularFixtureDefSupplier(geometry.size));
-
-        spawner.setSpriteSupplier(() -> new TextureAtlas("characters/sprites.txt").createSprite("demo_defense"));
-
-        return spawner;
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(new Vector2(16, 3));
+        return Spawner.createSpriteBasedEntitySpawner(bodyDef, sprite);
     }
 
-    public static EntitySpawner createMapBorderSpawner() {
-        EntitySpawner spawner = new EntitySpawner();
+    public static Spawner<WorldEntity> createMapBorderSpawner() {
+        Spawner<WorldEntity> spawner = new Spawner<>(WorldEntity.class);
 
         spawner.setBodyDefSupplier(() -> {
             BodyDef def = new BodyDef();
@@ -112,8 +73,6 @@ public class DemoSpawners {
                 def.shape.dispose();
             }
         });
-
-        spawner.setSpriteSupplier(() -> new TextureAtlas("characters/sprites.txt").createSprite("demo_defense"));
 
         return spawner;
     }

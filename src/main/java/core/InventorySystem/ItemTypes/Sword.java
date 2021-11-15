@@ -3,10 +3,10 @@ package core.InventorySystem.ItemTypes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import core.InventorySystem.Weapon;
-
 import java.util.UUID;
 
 public class Sword extends Weapon {
+
     /*
      * Sword weapon object stored in inventory for use
      * @param texture: texture of Sword
@@ -40,7 +40,6 @@ public class Sword extends Weapon {
     public int getSize() {
         return size;
     }
-
 
     @Override
     public int getLevel() {
