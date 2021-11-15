@@ -1,6 +1,11 @@
 package characterTests;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.World;
 import core.InventorySystem.Item;
 import core.InventorySystem.ItemTypes.*;
 import core.characters.GameCharacter;
@@ -10,31 +15,32 @@ import org.junit.jupiter.api.Test;
 
 public class TestGameCharacter {
 
-    GameCharacter test_player;
+    GameCharacter player;
 
     @BeforeEach
-//    void setup() {
-//        ArrayList<Item> items = new ArrayList<>();
-//        items.add((Item) new Sword(2));
-//        items.add((Item) new Dagger(1));
-//        test_player = new GameCharacter("square", "player", 100, 1, items);
-//    } TODO Need to update shape body
+    public void setup() {
+        World world = new World(new Vector2(0, 0), true);
+        BodyDef def = new BodyDef();
+        def.type = BodyDef.BodyType.DynamicBody;
 
-    @Test
-    void testHealthAttribute() {
-        assertEquals(100, test_player.getHealth());
+        Body body = world.createBody(def);
+        player = new GameCharacter(body);
     }
 
     @Test
-    void testLevelAttribute() {
-        assertEquals(1, test_player.getLevel());
-    }
+    public void testSetters() {
 
-    @Test
-    void testInventoryAttribute() {
-        ArrayList<Item> test_items = new ArrayList<>();
-        test_items.add((Item) new Sword(2));
-        test_items.add((Item) new Dagger(1));
-        assertEquals(test_items, test_player.getInventory());
+        player.setTeam("defender");
+        player.setHealth(100);
+        player.setLevel(1);
+        ArrayList<Item> testItems = new ArrayList<>();
+        testItems.add((Item) new Sword(2));
+        testItems.add((Item) new Dagger(1));
+        player.setInventory(testItems);
+
+        assertEquals("defender", player.getTeam());
+        assertEquals(100, player.getHealth());
+        assertEquals(1, player.getLevel());
+        assertEquals(testItems, player.getInventory());
     }
 }

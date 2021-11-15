@@ -1,19 +1,12 @@
 package core.characters;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.Collections;
 import core.InventorySystem.*;
 
-/**
- * TODO – the PlayerManager should inherit from here
- */
+
 public class CharacterManager {
 
     /*
@@ -48,7 +41,7 @@ public class CharacterManager {
          * */
 
         if (verifyId(id)){
-            this.characterEntities.get(id).move(new Vector2(dx, dy));
+            this.characterEntities.get(id).setVelocity(new Vector2(dx, dy));
         }
     }
 
@@ -92,8 +85,8 @@ public class CharacterManager {
          * */
         if (verifyId(id)) {
             if (this.characterEntities.get(id).getInventory().contains(item)) {
-//                Collections.swap(this.characterEntities.get(id).getInventory(), 0,
-//                        this.characterEntities.get(id).inventory.indexOf(item));
+                Collections.swap(this.characterEntities.get(id).getInventory(), 0,
+                        this.characterEntities.get(id).getInventory().indexOf(item));
                 return true;
             }
         }

@@ -89,4 +89,8 @@ public class WorldEntity {
     public Body getBody() {
         return body;
     }
+
+    public UUID getId() {
+        return id;
+    }
 }

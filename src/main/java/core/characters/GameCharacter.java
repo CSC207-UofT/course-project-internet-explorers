@@ -1,14 +1,14 @@
 package core.characters;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import core.world.WorldEntity;
+
 import core.InventorySystem.*;
 
 import java.util.ArrayList;
 import java.util.UUID;
 import core.world.WorldEntity;
 
-import java.util.ArrayList;
+
 
 public class GameCharacter extends WorldEntity {
 
@@ -20,7 +20,7 @@ public class GameCharacter extends WorldEntity {
      * @param inventory: The Items the GameCharacter is able to use at a given point in the game
      * */
 
-    private final String team;
+    private String team;
     private int health;
     private int level;
     private ArrayList<Item> inventory;
@@ -33,11 +33,9 @@ public class GameCharacter extends WorldEntity {
         this.inventory = new ArrayList<Item>();
     }
 
-    public UUID getId() {
-        return this.id;
-    }
-
     public String getTeam() { return this.team; }
+
+    public void setTeam(String team) {this.team = team;}
 
     public int getHealth() { return this.health; }
 
@@ -51,10 +49,8 @@ public class GameCharacter extends WorldEntity {
 
     public void setInventory(ArrayList<Item> inventory) { this.inventory = inventory;}
 
-
-    public void move(Vector2 velocity){
+    public void setVelocity(Vector2 velocity){
         this.getBody().setLinearVelocity(velocity);
     }
-
 }
 
