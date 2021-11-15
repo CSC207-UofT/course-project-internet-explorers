@@ -156,4 +156,9 @@ public class LevelManager {
     public void resume() {
         level.setLevelPaused(false);
     }
+
+    public int getTime() {
+
+        return (int) Math.floor(level.getCurrentTime());
+    }
 }

@@ -16,9 +16,9 @@ import java.util.UUID;
 
 public class InventoryWindow extends Window {
 
-    ArrayList<Item> playerInventory;
-    UUID playerId;
-    CharacterManager characterManager;
+    private ArrayList<Item> playerInventory;
+    private UUID playerId;
+    private CharacterManager characterManager;
 
     public InventoryWindow(CharacterManager characterManager, UUID playerId) {
         super("Inventory", new Skin(Gdx.files.internal("skins/uiskin.json")));
