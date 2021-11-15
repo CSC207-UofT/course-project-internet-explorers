@@ -49,17 +49,17 @@ public class LevelManager {
      */
     public void step(float dt) {
         // If level isn't paused, perform step, time elapsing, spawning
-        if (!level.getLevelPaused()) {
-            // Stepping physics simulation
-            worldManager.step(dt);
+        if (level.getLevelPaused()) {
+        return; }
 
-            // Elapsing time in world
-            level.setCurrentTime(level.getCurrentTime() + dt);
+        // Stepping physics simulation
+        worldManager.step(dt);
 
-            // Spawning enemies in world
-            updateEnemies();
+        // Elapsing time in world
+        level.setCurrentTime(level.getCurrentTime() + dt);
 
-        }
+        // Spawning enemies in world
+        updateEnemies();
     }
 
     /**

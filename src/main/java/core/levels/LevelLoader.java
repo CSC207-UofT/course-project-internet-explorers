@@ -26,6 +26,8 @@ public class LevelLoader {
         lvl.setUnitScale(1 / 64f);
         lvl.world = new World(new Vector2(0, 0), true);
 
+        // TODO: set up player spawner
+
         return lvl;
     }
 
