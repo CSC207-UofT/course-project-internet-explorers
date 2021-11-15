@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import core.camera.CameraManager;
+import core.characters.GameCharacter;
 import core.levels.LevelManager;
 import core.screens.HUD.HudManager;
 import core.world.Spawner;
@@ -37,7 +38,7 @@ public class LevelGameplayController implements Screen {
 
         this.box2DDebugRenderer = new Box2DDebugRenderer();
 
-        Spawner<WorldEntityWithSprite> playerSpawner = createPlayerSpawner();
+        Spawner<GameCharacter> playerSpawner = createPlayerSpawner();
         //TODO: ^This should be a GameCharacter, but GameCharacter currently extends the wrong world entity
         playerSpawner.setEntityManager(entityManager);
         playerId = playerSpawner.spawn().id;

@@ -80,18 +80,28 @@ public class Spawner<T extends WorldEntity> {
         return rectangle;
     }
 
-    public static Spawner<WorldEntityWithSprite> createSpriteBasedEntitySpawner(Vector2 position, Sprite sprite) {
-        Spawner<WorldEntityWithSprite> spawner = new Spawner<>(WorldEntityWithSprite.class);
+    //    public static <K> Spawner<K extends WorldEntityWithSprite> createSpriteBasedEntitySpawner(Class<? extends WorldEntityWithSprite>, Vector2 position, Sprite sprite) {
+    //
+    //    }
 
+    public static <K extends WorldEntityWithSprite> Spawner<K> createSpriteBasedEntitySpawner(
+        Class<K> type,
+        Vector2 position,
+        Sprite sprite
+    ) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(position);
 
-        return createSpriteBasedEntitySpawner(bodyDef, sprite);
+        return createSpriteBasedEntitySpawner(type, bodyDef, sprite);
     }
 
-    public static Spawner<WorldEntityWithSprite> createSpriteBasedEntitySpawner(BodyDef bodyDef, Sprite sprite) {
-        Spawner<WorldEntityWithSprite> spawner = new Spawner<>(WorldEntityWithSprite.class);
+    public static <K extends WorldEntityWithSprite> Spawner<K> createSpriteBasedEntitySpawner(
+        Class<K> type,
+        BodyDef bodyDef,
+        Sprite sprite
+    ) {
+        Spawner<K> spawner = new Spawner<>(type);
         spawner.setBodyDefSupplier(() -> bodyDef);
 
         FixtureDef fixtureDef = new FixtureDef();
