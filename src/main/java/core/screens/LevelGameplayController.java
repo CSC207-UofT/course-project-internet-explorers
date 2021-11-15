@@ -3,6 +3,7 @@ package core.screens;
 import static core.world.DemoSpawners.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import core.camera.CameraManager;
 import core.levels.LevelManager;
+import core.screens.HUD.HudManager;
 import core.world.Spawner;
 import core.world.WorldEntityManager;
 import core.world.WorldEntityWithSprite;
@@ -26,6 +28,7 @@ public class LevelGameplayController implements Screen {
     private final WorldEntityManager entityManager;
     private final UUID playerId;
     private final Box2DDebugRenderer box2DDebugRenderer;
+    private HudManager hud;
 
     public LevelGameplayController(LevelManager levelManager) {
         this.levelManager = levelManager;
@@ -35,6 +38,7 @@ public class LevelGameplayController implements Screen {
         this.box2DDebugRenderer = new Box2DDebugRenderer();
 
         Spawner<WorldEntityWithSprite> playerSpawner = createPlayerSpawner();
+        //TODO: ^This should be a GameCharacter, but GameCharacter currently extends the wrong world entity
         playerSpawner.setEntityManager(entityManager);
         playerId = playerSpawner.spawn().id;
 
@@ -61,6 +65,7 @@ public class LevelGameplayController implements Screen {
 
     @Override
     public void show() {
+        this.hud = new HudManager();
         shapeRenderer = new ShapeRenderer();
     }
 
@@ -74,6 +79,10 @@ public class LevelGameplayController implements Screen {
         // TODO update camera based on player, not other way around.
         //      do this once merged with GameCharacter branch
         entityManager.setTeleportVelocity(playerId, cameraManager.getSubjectPosition(), dt);
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
+            hud.toggleInventory();
+        }
 
         levelManager.step(dt);
         levelManager.renderMap(cameraManager.getCamera());
@@ -89,6 +98,8 @@ public class LevelGameplayController implements Screen {
 
         // TODO only do this in debug mode
         levelManager.renderPhysics(box2DDebugRenderer, cameraManager.getCamera());
+
+        hud.draw();
     }
 
     @Override
@@ -108,5 +119,6 @@ public class LevelGameplayController implements Screen {
     @Override
     public void dispose() {
         levelManager.dispose();
+        hud.dispose();
     }
 }

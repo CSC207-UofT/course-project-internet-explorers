@@ -1,11 +1,7 @@
 package core;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import core.characters.CharacterSprite;
-import core.characters.GameCharacter;
 import core.screens.menus.MainMenuScreen;
-import java.util.ArrayList;
 
 public class ScreenManager extends Game {
 

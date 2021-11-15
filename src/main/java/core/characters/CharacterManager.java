@@ -1,83 +1,150 @@
 package core.characters;
 
-import java.util.ArrayList;
+import com.badlogic.gdx.math.Vector2;
+import core.InventorySystem.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.UUID;
 
-// Need to import InputManager and ControlState
-
-/**
- * TODO – the PlayerManager should inherit from here
- */
 public class CharacterManager {
 
     /*
      * Use case class that handles updating instances of GameCharacter based on inputs from the InputHandler
-     * @param character: An instance of GameCharacter being updated
-     * TODO: Change item to type Item when implemented
-     * TODO: Import InputManager and ControlState
+     * @param characterEntities: Hashmap storing characters as values with their UUID as keys
      * */
 
-    private GameCharacter character;
+    public HashMap<UUID, GameCharacter> characterEntities;
 
-    public CharacterManager(GameCharacter character) {
-        this.character = character;
+    public CharacterManager() {
+        this.characterEntities = new HashMap<UUID, GameCharacter>();
     }
 
-    public void moveCharacter() {
-        // Updates the characters position
-    }
-
-    public void depleteHealth(int damage) {
+    public void addCharacter(GameCharacter character) {
         /*
-         * Decreases player health by damage
+         * Generates a unique id for each character when added
          * */
-        this.character.health -= damage;
+        this.characterEntities.put(character.id, character);
     }
 
-    public void increaseLevel() {
+    /***
+     *This is the use case that sets the velocity for the character with the specific id and moves the character
+     * @param id character id
+     * @param dx change in x from inputHandler
+     * @param dy change in y from inputHandler
+     */
+    public void updateCharacterPosition(UUID id, float dx, float dy) {
         /*
-         * Increases the level of enemies by 1 following each wave of enemies.
-         * Need to check if character.team == "Enemy"
-         * */
-        this.character.level += 1;
-    }
-
-    public boolean useItem() {
-        /*
-         * Checks if the item is in the characters inventory and then allows them to use it.
-         * This will only be available to the player class, will check insanceof Player.
-         * Returns true iff the player uses the item, false otherwise.
+         * Updates the position of the character
+         * TODO: Update to use setPosition when worldEntity merged
          * */
 
-        return true;
+        if (verifyId(id)) {
+            this.characterEntities.get(id).setVelocity(new Vector2(dx, dy));
+        }
     }
 
-    public void addInventory(String item) {
+    public void updateHealth(UUID id, int damage) {
+        /*
+         * Decreases character health by damage
+         * */
+        if (verifyId(id)) {
+            this.characterEntities.get(id).setHealth(this.characterEntities.get(id).getHealth() - damage);
+        }
+    }
+
+    public void updateLevel(UUID id) {
+        /*
+         * Increases the level of a character following the completion of a wave
+         * */
+        if (verifyId(id)) {
+            this.characterEntities.get(id).setLevel(this.characterEntities.get(id).getLevel() + 1);
+        }
+    }
+
+    /***
+     *This section implements character behaviors in relation to their inventory
+     */
+
+    public boolean canUseItem(UUID id, Item item) {
+        /*
+         * Checks if the item is in the character's inventory and then returns true if it is.
+         * Ensures that there are no issues when controller class calls a UsageDelegate
+         * */
+        if (verifyId(id)) {
+            return this.characterEntities.get(id).getInventory().contains(item);
+        }
+        return false;
+    }
+
+    public boolean selectItem(UUID id, Item item) {
+        /*
+         * Checks if item is in inventory, then moves it to the first index at which item would be used
+         * Returns True if item successfully selected, false if not
+         * */
+        if (verifyId(id)) {
+            if (this.characterEntities.get(id).getInventory().contains(item)) {
+                Collections.swap(
+                    this.characterEntities.get(id).getInventory(),
+                    0,
+                    this.characterEntities.get(id).getInventory().indexOf(item)
+                );
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addInventory(UUID id, Item item) {
         /*
          * Adds item to the inventory
-         * Only valid for the player class, will check insanceof Player.
          * */
+        if (verifyId(id)) {
+            this.characterEntities.get(id).getInventory().add(item);
+        }
     }
 
-    public boolean removeInventory(String item) {
+    public boolean removeInventory(UUID id, Item item) {
         /*
          * Checks if item is in inventory, then removes if it is
-         * Only valid for the player class, will check insanceof Player.
-         * Returns True if item successfully removed
+         * Returns True if item successfully removed, false if not
          * */
-
-        return true;
+        if (verifyId(id)) {
+            if (this.characterEntities.get(id).getInventory().contains(item)) {
+                this.characterEntities.get(id).getInventory().remove(item);
+                return true;
+            }
+        }
+        return false;
     }
 
-    public ArrayList<String> openInventory() {
+    public Object openInventory(UUID id) {
         /*
          * Returns inventory contents and displays them
+         * Returns null if character id cannot be found
          * */
-
-        // Update to show on display
-        return this.character.inventory;
+        if (verifyId(id)) {
+            return this.characterEntities.get(id).getInventory();
+        }
+        return null;
     }
 
-    public void onCollision() {
-        // What happens when a character collides with something
+    private void acceptInput(UUID id, boolean use) {
+        /*
+         * calls methods depending on InputController actions //TODO merge with repositioning side of functionality
+         * */
+        if (use) {
+            WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
+            usageDelegate.use((Weapon) this.characterEntities.get(id).getInventory().get(0));
+        }
+    }
+
+    private boolean verifyId(UUID id) {
+        // Loops through hashmap to ensure .get doesn't return null
+        for (var i : this.characterEntities.entrySet()) {
+            if (i.getKey() == id) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -14,8 +14,8 @@ public abstract class Menu implements Screen {
     protected final ScreenManager screenManager;
     protected final Stage stage;
 
-    protected Menu(ScreenManager game) {
-        this.screenManager = game;
+    protected Menu(ScreenManager screenManager) {
+        this.screenManager = screenManager;
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
     }
