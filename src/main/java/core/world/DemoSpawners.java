@@ -9,50 +9,33 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class DemoSpawners {
 
-    private static Spawner<WorldEntityWithSprite> demoSpawnerUtility(Vector2 position, Vector2 size, Sprite sprite) {
-        BodyDef def = new BodyDef();
-        def.type = BodyDef.BodyType.DynamicBody;
-        def.position.set(position);
-
-        Vector2 origin = size.cpy().scl(.5f);
-
-        sprite.setSize(size.x, size.y);
-        sprite.setOrigin(origin.x, origin.y);
-
-        Spawner<WorldEntityWithSprite> spawner = new Spawner<>(WorldEntityWithSprite.class);
-        spawner.setBodyDefSupplier(() -> def);
-        spawner.setFixtureDefsSupplier(Spawner.createRectangularFixtureDefSupplier(sprite));
-        spawner.setSpawnCallback(e -> e.setSprite(sprite));
-
-        return spawner;
-    }
-
     public static Spawner<WorldEntityWithSprite> createPlayerSpawner() {
         Vector2 position = new Vector2(2, 2);
-        Vector2 size = new Vector2(1, 1);
-
         Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_player");
+        sprite.setSize(1, 1);
+        sprite.setOriginCenter();
 
-        return demoSpawnerUtility(position, size, sprite);
+        return Spawner.createSpriteBasedEntitySpawner(position, sprite);
     }
 
     public static Spawner<WorldEntityWithSprite> createEnemySpawner() {
         Vector2 position = new Vector2(20, 8);
-        Vector2 size = new Vector2(1, 1);
-
         Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_enemy");
+        sprite.setSize(1, 1);
+        sprite.setOriginCenter();
 
-        return demoSpawnerUtility(position, size, sprite);
+        return Spawner.createSpriteBasedEntitySpawner(position, sprite);
     }
 
     public static Spawner<WorldEntityWithSprite> createDefenderSpawner() {
-        Vector2 position = new Vector2(16, 3);
-        Vector2 size = new Vector2(1, 1);
-
         Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_defense");
+        sprite.setSize(1, 1);
+        sprite.setOriginCenter();
 
-        // TODO utility for static BodyDef
-        return demoSpawnerUtility(position, size, sprite);
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(new Vector2(16, 3));
+        return Spawner.createSpriteBasedEntitySpawner(bodyDef, sprite);
     }
 
     public static Spawner<WorldEntity> createMapBorderSpawner() {

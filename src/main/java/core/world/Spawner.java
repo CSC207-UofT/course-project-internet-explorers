@@ -22,29 +22,6 @@ public class Spawner<T extends WorldEntity> {
 
     private Consumer<T> spawnCallback;
 
-    // TODO add more utility methods for basic shapes and bodies
-
-    /**
-     * Creates a rectangular box shaped fixture using the passed in size as width/height.
-     */
-    public static Supplier<FixtureDef[]> createRectangularFixtureDefSupplier(Sprite sprite) {
-        return () -> {
-            FixtureDef def = new FixtureDef();
-            PolygonShape rectangle = new PolygonShape();
-            float hx = sprite.getWidth() / 2;
-            float hy = sprite.getHeight() / 2;
-
-            Vector2 origin = new Vector2(hx - sprite.getOriginX(), hy - sprite.getOriginY());
-
-            rectangle.setAsBox(hx, hy, origin, 0f);
-
-            def.shape = rectangle;
-            //            rectangle.setAsBox(size.x/2, size.y/2, new Vector2(-size.x, -size.y), 0f);
-
-            return new FixtureDef[] { def };
-        };
-    }
-
     public Spawner(Class<T> type) {
         this.type = type;
         bodyDefSupplier = BodyDef::new;
@@ -84,5 +61,49 @@ public class Spawner<T extends WorldEntity> {
 
     public void setSpawnCallback(Consumer<T> callback) {
         this.spawnCallback = callback;
+    }
+
+    // Utility Methods
+
+    /**
+     * Creates a rectangular box shape based on a given Sprite.
+     */
+    public static PolygonShape createRectangleFromSprite(Sprite sprite) {
+        PolygonShape rectangle = new PolygonShape();
+        float hx = sprite.getWidth() / 2;
+        float hy = sprite.getHeight() / 2;
+
+        Vector2 origin = new Vector2(hx - sprite.getOriginX(), hy - sprite.getOriginY());
+
+        rectangle.setAsBox(hx, hy, origin, sprite.getRotation() / 57.29578f);
+
+        return rectangle;
+    }
+
+    public static Spawner<WorldEntityWithSprite> createSpriteBasedEntitySpawner(Vector2 position, Sprite sprite) {
+        Spawner<WorldEntityWithSprite> spawner = new Spawner<>(WorldEntityWithSprite.class);
+
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(position);
+
+        return createSpriteBasedEntitySpawner(bodyDef, sprite);
+    }
+
+    public static Spawner<WorldEntityWithSprite> createSpriteBasedEntitySpawner(BodyDef bodyDef, Sprite sprite) {
+        Spawner<WorldEntityWithSprite> spawner = new Spawner<>(WorldEntityWithSprite.class);
+        spawner.setBodyDefSupplier(() -> bodyDef);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        PolygonShape rectangle = createRectangleFromSprite(sprite);
+        fixtureDef.shape = rectangle;
+        spawner.setFixtureDefsSupplier(() -> new FixtureDef[] { fixtureDef });
+
+        spawner.setSpawnCallback(e -> {
+            e.setSprite(sprite);
+            rectangle.dispose();
+        });
+
+        return spawner;
     }
 }
