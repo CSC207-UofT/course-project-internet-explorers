@@ -2,8 +2,6 @@ package core.levels;
 
 import static core.world.DemoSpawners.createEnemySpawner;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import core.characters.GameCharacter;
 import core.world.Spawner;
 import java.io.FileInputStream;
@@ -20,11 +18,10 @@ public class LevelLoader {
      */
     public static LevelState getLevel1() {
         // Create enemy spawner list
-        List<Spawner<GameCharacter>> enemies = createEnemyList(5);
 
-        LevelState lvl = new LevelState("maps/demo.tmx", enemies);
+        LevelState lvl = new LevelState("maps/demo.tmx");
+        lvl.setEnemySpawns(createEnemyList(5));
         lvl.setUnitScale(1 / 64f);
-        lvl.world = new World(new Vector2(0, 0), true);
 
         // TODO: set up player spawner
 
@@ -43,10 +40,9 @@ public class LevelLoader {
 
         float currentTime = (float) objectInputStream.readObject();
 
-        List<Spawner<GameCharacter>> enemies = createEnemyList(5);
-        LevelState lvl = new LevelState("maps/demo.tmx", enemies);
+        LevelState lvl = new LevelState("maps/demo.tmx");
+        lvl.setEnemySpawns(createEnemyList(5));
         lvl.setUnitScale(1 / 64f);
-        lvl.world = new World(new Vector2(0, 0), true);
 
         // take current time and adjust enemyList
         lvl.setCurrentTime(currentTime);

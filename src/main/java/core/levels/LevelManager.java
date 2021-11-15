@@ -37,8 +37,8 @@ public class LevelManager {
 
         // assign all enemies to current entityManager
         List<Spawner<GameCharacter>> enemiesUpdated = level.getEnemySpawns();
-        for (Spawner<GameCharacter> enemy : enemiesUpdated) {
-            enemy.setEntityManager(this.entityManager);
+        for (Spawner<GameCharacter> spawner : enemiesUpdated) {
+            spawner.setEntityManager(this.entityManager);
         }
         level.setEnemySpawns(enemiesUpdated);
     }

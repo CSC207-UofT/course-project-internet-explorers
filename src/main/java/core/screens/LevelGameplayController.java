@@ -3,6 +3,7 @@ package core.screens;
 import static core.world.DemoSpawners.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,35 +14,39 @@ import core.characters.CharacterManager;
 import core.characters.GameCharacter;
 import core.input.KeyboardInputDevice;
 import core.levels.LevelManager;
+import core.levels.LevelState;
 import core.screens.HUD.HudManager;
 import core.world.Spawner;
 import core.world.WorldEntityManager;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 /**
  * Runs the gameplay of a Level.
  */
 public class LevelGameplayController implements Screen {
 
-    private final CameraManager cameraManager;
-    private final ShapeRenderer shapeRenderer;
-    private final LevelManager levelManager;
-    private final CharacterManager characterManager;
-    private final WorldEntityManager entityManager;
-    private final Box2DDebugRenderer box2DDebugRenderer;
+    private final Supplier<LevelState> levelSupplier;
+    private CameraManager cameraManager;
+    private ShapeRenderer shapeRenderer;
+    private LevelManager levelManager;
+    private CharacterManager characterManager;
+    private WorldEntityManager entityManager;
+    private Box2DDebugRenderer box2DDebugRenderer;
     private HudManager hud;
 
-    public LevelGameplayController(LevelManager levelManager) {
-        this.levelManager = levelManager;
+    public LevelGameplayController(Supplier<LevelState> levelSupplier) {
+        this.levelSupplier = levelSupplier;
+    }
+
+    @Override
+    public void show() {
+        this.levelManager = new LevelManager(levelSupplier.get());
         this.entityManager = levelManager.getEntityManager();
         this.characterManager = new CharacterManager(entityManager);
         this.cameraManager = new CameraManager(levelManager.getUnitScale(), entityManager);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.shapeRenderer = new ShapeRenderer();
-    }
-
-    @Override
-    public void show() {
         this.hud = new HudManager();
 
         Spawner<GameCharacter> playerSpawner = createPlayerSpawner();
@@ -89,6 +94,10 @@ public class LevelGameplayController implements Screen {
 
         // TODO only do this in debug mode
         levelManager.renderPhysics(box2DDebugRenderer, cameraManager.getCamera());
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
+            hud.toggleInventory();
+        }
 
         hud.draw();
     }

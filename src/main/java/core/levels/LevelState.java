@@ -1,5 +1,6 @@
 package core.levels;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import core.characters.GameCharacter;
 import core.world.Spawner;
@@ -26,11 +27,11 @@ public class LevelState implements Serializable {
     //  * tiles are 32px by 32px
     private float unitScale;
 
-    protected LevelState(String mapPath, List<Spawner<GameCharacter>> enemies) {
+    protected LevelState(String mapPath) {
+        this.world = new World(new Vector2(0, 0), true);
         this.mapPath = mapPath;
         this.currentTime = 0;
         this.levelPaused = false;
-        this.enemySpawns = enemies;
         this.spawnTime = 15;
     }
 

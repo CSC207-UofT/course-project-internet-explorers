@@ -63,7 +63,7 @@ public class MainMenuScreen extends Menu {
         button.setPosition(PLAY_BUTTON_X, PLAY_BUTTON_Y);
         button.setSize(PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);
 
-        button.addListener(createExitButtonListener(new LevelGameplayController(new LevelManager(LevelLoader.getLevel1()))));
+        button.addListener(createExitButtonListener(new LevelGameplayController(LevelLoader::getLevel1)));
 
         return button;
     }
