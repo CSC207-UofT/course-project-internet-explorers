@@ -14,8 +14,6 @@ public abstract class Weapon implements Item {
 
     public abstract int getDamage();
 
-    public abstract Texture getTexture();
-
     public abstract int getSize();
 
     public abstract int getLevel();

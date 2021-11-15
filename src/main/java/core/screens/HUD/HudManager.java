@@ -12,6 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import core.characters.CharacterManager;
+import core.levels.LevelManager;
+
+import java.util.UUID;
 
 public class HudManager implements Disposable {
 
@@ -33,7 +37,7 @@ public class HudManager implements Disposable {
 
     private SpriteBatch sb;
 
-    public HudManager() {
+    public HudManager(CharacterManager characterManager, LevelManager levelManager, UUID id) {
         //define tracking variables
         sb = new SpriteBatch();
         // TODO: Get this data from LevelManager
@@ -42,7 +46,7 @@ public class HudManager implements Disposable {
         score = 0;
 
         // TODO: Get inventory info from PlayerManager instead of instantiating it here
-        playerInventory = new InventoryWindow();
+        playerInventory = new InventoryWindow(characterManager, id);
 
         //setup the HUD viewport using a new camera seperate from gamecam
         //define stage using that viewport and games spritebatch
