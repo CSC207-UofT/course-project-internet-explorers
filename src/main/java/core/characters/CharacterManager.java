@@ -25,15 +25,16 @@ public class CharacterManager {
 
     /**
      * Adds a WorldEntity in the entityManager to this CharacterManager.
-     *
+     * <p>
      * The WorldEntity must be already added to the entityManager and must be a subclass of GameCharacter.
      */
     public void addCharacter(UUID id, InputDevice inputDevice) {
         if (entityManager.getEntity(id) instanceof GameCharacter character) {
             this.characterEntities.put(character.id, character);
             character.inputDevice = inputDevice;
+        } else {
+            throw new RuntimeException("Couldn't find a GameCharacter with the specified UUID: " + id);
         }
-        throw new RuntimeException("Couldn't find a GameCharacter with the specified UUID: " + id);
     }
 
     public void addCharacter(UUID id) {
@@ -45,8 +46,8 @@ public class CharacterManager {
                 CharacterInput input = character.inputDevice.getInput();
 
                 // m/s
-                float speed = 10;
-                entityManager.setLinearVelocity(id, input.direction().nor().scl(speed / dt));
+                float speed = 10f;
+                entityManager.setLinearVelocity(id, input.direction().nor().scl(speed / dt / 100));
 
                 if (input.using()) {
                     WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);

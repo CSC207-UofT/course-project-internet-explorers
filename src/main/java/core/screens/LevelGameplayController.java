@@ -3,19 +3,19 @@ package core.screens;
 import static core.world.DemoSpawners.*;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import core.camera.CameraManager;
+import core.characters.CharacterManager;
 import core.characters.GameCharacter;
+import core.input.KeyboardInputDevice;
 import core.levels.LevelManager;
 import core.screens.HUD.HudManager;
 import core.world.Spawner;
 import core.world.WorldEntityManager;
-import core.world.WorldEntityWithSprite;
 import java.util.UUID;
 
 /**
@@ -24,24 +24,31 @@ import java.util.UUID;
 public class LevelGameplayController implements Screen {
 
     private final CameraManager cameraManager;
-    private ShapeRenderer shapeRenderer;
+    private final ShapeRenderer shapeRenderer;
     private final LevelManager levelManager;
+    private final CharacterManager characterManager;
     private final WorldEntityManager entityManager;
-    private final UUID playerId;
     private final Box2DDebugRenderer box2DDebugRenderer;
     private HudManager hud;
 
     public LevelGameplayController(LevelManager levelManager) {
         this.levelManager = levelManager;
         this.entityManager = levelManager.getEntityManager();
-        cameraManager = new CameraManager(levelManager.getUnitScale());
-
+        this.characterManager = new CharacterManager(entityManager);
+        this.cameraManager = new CameraManager(levelManager.getUnitScale(), entityManager);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
+        this.shapeRenderer = new ShapeRenderer();
+    }
+
+    @Override
+    public void show() {
+        this.hud = new HudManager();
 
         Spawner<GameCharacter> playerSpawner = createPlayerSpawner();
         //TODO: ^This should be a GameCharacter, but GameCharacter currently extends the wrong world entity
         playerSpawner.setEntityManager(entityManager);
-        playerId = playerSpawner.spawn().id;
+        UUID playerId = playerSpawner.spawn().id;
+        characterManager.addCharacter(playerId, new KeyboardInputDevice());
 
         Spawner<?> enemySpawner = createEnemySpawner();
         enemySpawner.setEntityManager(entityManager);
@@ -55,19 +62,7 @@ public class LevelGameplayController implements Screen {
         mapBorderSpawner.setEntityManager(entityManager);
         mapBorderSpawner.spawn();
 
-        // not the proper way to control stuff on-screen, this is just for debugging
-        // TODO remove following line – player position should be mutated by the PlayerManager
-        //      should pass in the Player WorldEntity's ID and the WorldEntity Manager once ID-based system is implemented
-        cameraManager
-            .getCamera()
-            .position.set(entityManager.getEntity(playerId).getPosition().x, entityManager.getEntity(playerId).getPosition().y, 0);
-        cameraManager.enterDebugFreecamMode();
-    }
-
-    @Override
-    public void show() {
-        this.hud = new HudManager();
-        shapeRenderer = new ShapeRenderer();
+        cameraManager.setSubjectID(playerId);
     }
 
     @Override
@@ -76,16 +71,11 @@ public class LevelGameplayController implements Screen {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        cameraManager.update(dt);
-        // TODO update camera based on player, not other way around.
-        //      do this once merged with GameCharacter branch
-        entityManager.setTeleportVelocity(playerId, cameraManager.getSubjectPosition(), dt);
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-            hud.toggleInventory();
-        }
-
+        characterManager.processInputs(dt);
         levelManager.step(dt);
+
+        cameraManager.update(dt);
+
         levelManager.renderMap(cameraManager.getCamera());
         levelManager.renderWorld(cameraManager.getCamera());
 
