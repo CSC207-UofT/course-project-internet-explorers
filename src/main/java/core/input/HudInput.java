@@ -1,3 +1,3 @@
 package core.input;
 
-public record HudInput(boolean toggleInventory) {}
+public record HudInput(boolean toggleInventory, boolean togglePause) {}

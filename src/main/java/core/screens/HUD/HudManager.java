@@ -23,7 +23,7 @@ import java.util.UUID;
  */
 public class HudManager implements Disposable {
 
-    private Stage stage;
+    private final Stage stage;
     private Viewport viewport;
 
     //score && time tracking variables
@@ -32,15 +32,21 @@ public class HudManager implements Disposable {
     private boolean timeUp;
 
     //Labels for displaying game info on the overlay
-    private Label countTimeLabel, timeLabel, linkLabel, winLabel;
+    private final Label countTimeLabel;
+    private Label timeLabel;
+    private Label linkLabel;
+    private Label winLabel;
     private static Label scoreLabel;
 
     private boolean inventoryIsOpen;
-    private InventoryWindow playerInventory;
+    private final InventoryWindow playerInventory;
 
-    private SpriteBatch sb;
+    private boolean isPauseOpen;
+    private final PauseWindow pauseWindow;
 
-    private LevelManager levelManager;
+    private final SpriteBatch sb;
+
+    private final LevelManager levelManager;
 
     public HudManager(CharacterManager characterManager, LevelManager levelManager, UUID id) {
         //define tracking variables
@@ -51,6 +57,7 @@ public class HudManager implements Disposable {
         score = 0;
 
         playerInventory = new InventoryWindow(characterManager, id);
+        pauseWindow = new PauseWindow();
 
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
         stage = new Stage(viewport, sb);
@@ -61,7 +68,7 @@ public class HudManager implements Disposable {
         //define labels using the String, and a Label style consisting of a font and color
         countTimeLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        timeLabel = new Label("LEFTOVER TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         linkLabel = new Label("POINTS", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         winLabel = new Label("", new Label.LabelStyle(winFont, Color.WHITE));
         winLabel.setAlignment(Align.center);
@@ -126,6 +133,18 @@ public class HudManager implements Disposable {
             stage.addActor(playerInventory);
         }
         inventoryIsOpen = !inventoryIsOpen;
+    }
+
+    /***
+     * Toggles the inventory window by adding or removing it to/from the stage
+     */
+    public void togglePauseWindow() {
+        if (isPauseOpen) {
+            pauseWindow.remove();
+        } else {
+            stage.addActor(pauseWindow);
+        }
+        isPauseOpen = !isPauseOpen;
     }
 
     // These methods are unused at the moment, but may be useful later

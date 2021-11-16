@@ -67,7 +67,7 @@ public class LevelGameplayController implements Screen {
         characterManager.addInventory(playerId, dagger);
 
         this.hud = new HudManager(this.characterManager, this.levelManager, playerId);
-        this.inputController = new InputController(characterManager, hud);
+        this.inputController = new InputController(characterManager, hud, levelManager);
 
 
 

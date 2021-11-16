@@ -158,6 +158,8 @@ public class LevelManager {
         level.setLevelPaused(false);
     }
 
+    public boolean isLevelPaused() { return level.levelPaused; }
+
     public int getTime() {
 
         return (int) Math.floor(level.getCurrentTime());

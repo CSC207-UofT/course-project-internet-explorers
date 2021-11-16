@@ -1,6 +1,7 @@
 package core.input;
 
 import core.characters.CharacterManager;
+import core.levels.LevelManager;
 import core.screens.HUD.HudManager;
 import java.util.HashMap;
 import java.util.UUID;
@@ -17,10 +18,12 @@ public class InputController {
     protected final HudManager hudManager;
     protected final AIInputDevice aiInputDevice;
     protected final KeyboardInputDevice keyboardInputDevice;
+    protected final LevelManager levelManager;
 
-    public InputController(CharacterManager characterManager, HudManager hudManager) {
+    public InputController(CharacterManager characterManager, HudManager hudManager, LevelManager levelManager) {
         this.characterManager = characterManager;
         this.hudManager = hudManager;
+        this.levelManager = levelManager;
         this.aiInputDevice = new AIInputDevice();
         this.keyboardInputDevice = new KeyboardInputDevice();
     }
@@ -47,6 +50,16 @@ public class InputController {
 
         if (keyboardInputDevice.getHudInput().toggleInventory()) {
             hudManager.toggleInventory();
+        }
+
+        if (keyboardInputDevice.getHudInput().togglePause()) {
+            hudManager.togglePauseWindow();
+
+            if (!levelManager.isLevelPaused()) {
+                levelManager.pause();
+            } else {
+                levelManager.resume();
+            }
         }
     }
 }

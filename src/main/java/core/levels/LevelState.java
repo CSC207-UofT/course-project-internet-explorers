@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class LevelState implements Serializable {
 
-    private String mapPath;
+    private final String mapPath;
     protected World world;
     protected boolean levelPaused;
     private boolean levelFinished;

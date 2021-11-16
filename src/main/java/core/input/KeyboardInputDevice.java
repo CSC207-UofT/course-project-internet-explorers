@@ -13,7 +13,7 @@ public class KeyboardInputDevice implements CharacterInputDevice, HudInputDevice
 
     @Override
     public HudInput getHudInput() {
-        return new HudInput(getInventory());
+        return new HudInput(getInventory(), getPauseMenu());
     }
 
     private Vector2 getDirection() {
@@ -33,5 +33,9 @@ public class KeyboardInputDevice implements CharacterInputDevice, HudInputDevice
 
     private boolean getInventory() {
         return Gdx.input.isKeyJustPressed(Input.Keys.I);
+    }
+
+    private boolean getPauseMenu() {
+        return Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE);
     }
 }
