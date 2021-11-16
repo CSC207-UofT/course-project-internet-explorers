@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -20,14 +21,14 @@ public class Spawner<T extends WorldEntity> {
     private Supplier<BodyDef> bodyDefSupplier;
     private Supplier<FixtureDef[]> fixtureDefsSupplier;
 
-    private Consumer<T> spawnCallback;
+    private final ArrayList<Consumer<T>> spawnCallbacks;
 
     public Spawner(Class<T> type) {
         this.type = type;
         bodyDefSupplier = BodyDef::new;
         fixtureDefsSupplier = () -> new FixtureDef[] {};
 
-        spawnCallback = e -> {};
+        spawnCallbacks = new ArrayList<>();
     }
 
     public WorldEntity spawn() {
@@ -38,7 +39,7 @@ public class Spawner<T extends WorldEntity> {
                 .getConstructor(WorldEntityManager.class, BodyDef.class, FixtureDef[].class)
                 .newInstance(entityManager, bodyDef, fixtureDefsSupplier.get());
 
-            spawnCallback.accept(entity);
+            spawnCallbacks.forEach(c -> c.accept(entity));
 
             return entity;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -59,8 +60,8 @@ public class Spawner<T extends WorldEntity> {
         this.fixtureDefsSupplier = supplier;
     }
 
-    public void setSpawnCallback(Consumer<T> callback) {
-        this.spawnCallback = callback;
+    public void addSpawnCallback(Consumer<T> callback) {
+        this.spawnCallbacks.add(callback);
     }
 
     // Utility Methods
@@ -109,7 +110,7 @@ public class Spawner<T extends WorldEntity> {
         fixtureDef.shape = rectangle;
         spawner.setFixtureDefsSupplier(() -> new FixtureDef[] { fixtureDef });
 
-        spawner.setSpawnCallback(e -> {
+        spawner.addSpawnCallback(e -> {
             e.setSprite(sprite);
             rectangle.dispose();
         });
