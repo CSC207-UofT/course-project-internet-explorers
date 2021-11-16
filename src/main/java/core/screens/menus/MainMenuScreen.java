@@ -1,20 +1,14 @@
 package core.screens.menus;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.ScreenManager;
 import core.levels.LevelLoader;
-import core.levels.LevelManager;
 import core.screens.LevelGameplayController;
-import core.screens.SpritesDemoScreen;
 
 public class MainMenuScreen extends Menu {
 
@@ -48,18 +42,6 @@ public class MainMenuScreen extends Menu {
     @Override
     public void hide() {
         stage.dispose();
-    }
-
-    private TextButton createSpriteDemoButton() {
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.font = new BitmapFont();
-        style.overFontColor = Color.BLACK;
-        TextButton button = new TextButton("Sprites Demo", style);
-
-        button.setPosition(500, 600);
-
-        button.addListener(createExitButtonListener(new SpritesDemoScreen()));
-        return button;
     }
 
     private ImageButton createPlayButton() {

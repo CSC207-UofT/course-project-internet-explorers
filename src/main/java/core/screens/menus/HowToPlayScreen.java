@@ -16,7 +16,6 @@ public class HowToPlayScreen extends Menu {
     private final Screen prevScreen;
     private final String instructions;
     private final BitmapFont font;
-    public static final String FONT_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;,{}\"´`'<>";
     private final SpriteBatch batch;
 
     public HowToPlayScreen(ScreenManager screenManager, Screen prevScreen) {
