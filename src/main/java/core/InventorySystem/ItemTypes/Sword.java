@@ -18,28 +18,28 @@ public class Sword extends Weapon {
      * @param damage: damage of Sword
      * */
 
-    private final String texturePathSelected = "items/sword_highlight.png";
-    private final String texturePathNotSelected = "items/sword_not_highlight.png";
-
-    private int size;
+    private final int size;
     private int level;
-    private int range;
-    private int damage;
+    private final int range;
+    private final int damage;
     public UUID id;
 
     public Sword(int level) {
         this.level = level;
-        this.size = this.level * 1;
+        this.size = this.level;
         this.range = this.level * 2;
         this.damage = this.level * 3;
         this.id = UUID.randomUUID();
     }
 
     @Override
-    public Texture getSelectedTexture() { return new Texture(texturePathSelected); }
+    public Texture getSelectedTexture() {
+        String texturePathSelected = "items/sword_highlight.png";
+        return new Texture(texturePathSelected); }
 
     @Override
     public Texture getUnselectedTexture() {
+        String texturePathNotSelected = "items/sword_not_highlight.png";
         return new Texture(texturePathNotSelected);
     }
 

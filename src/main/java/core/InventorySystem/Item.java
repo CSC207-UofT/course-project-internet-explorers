@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 
 import java.util.UUID;
 
-public abstract interface Item {
+public interface Item {
     Texture getSelectedTexture();
     Texture getUnselectedTexture();
     int getSize();

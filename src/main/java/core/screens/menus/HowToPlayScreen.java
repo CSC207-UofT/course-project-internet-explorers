@@ -24,10 +24,11 @@ public class HowToPlayScreen extends Menu {
         this.prevScreen = prevScreen;
         instructions = """
                 Welcome to WhiteKnights!\s
+                You can pause and resume the game by pressing "ESC".\s
                 You can move around with "WASD".\s
                 You can open your inventory by pressing "I".\s
                 Select an item using your mouse.\s
-                Your selected item can be used by pressing "U".\s 
+                Your selected item can be used by pressing "U".\s
                 You will have defenders and weapons in your inventory. \s
                 Enemies will spawn and attack your castle walls. \s
                 Defeat all enemies to beat a level.\s

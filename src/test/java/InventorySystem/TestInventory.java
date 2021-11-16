@@ -68,7 +68,7 @@ public class TestInventory {
         test_player.getInventory().add(sword);
         test_player.getInventory().add(dagger);
 
-        ArrayList<Item> inventory = (ArrayList<Item>) characterManager.openInventory(test_player.id);
+        ArrayList<Item> inventory = characterManager.openInventory(test_player.id);
         ArrayList<Item> comparison = new ArrayList<>();
         comparison.add(sword);
         comparison.add(dagger);
@@ -81,9 +81,8 @@ public class TestInventory {
         Item dagger = new Dagger(2);
         test_player.getInventory().add(sword);
         test_player.getInventory().add(dagger);
-        assertEquals(
-            characterManager.selectItem(test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))),
-            true
-        );
+        assertTrue(characterManager.selectItem(test_player.id,
+                                               test_player.getInventory().get(test_player.getInventory().indexOf(sword))
+        ));
     }
 }

@@ -24,18 +24,18 @@ import java.util.UUID;
 public class HudManager implements Disposable {
 
     private final Stage stage;
-    private Viewport viewport;
+    private final Viewport viewport;
 
     //score && time tracking variables
-    private Integer worldTimer;
+    private final Integer worldTimer;
     private static Integer score;
     private boolean timeUp;
 
     //Labels for displaying game info on the overlay
     private final Label countTimeLabel;
-    private Label timeLabel;
-    private Label linkLabel;
-    private Label winLabel;
+    private final Label timeLabel;
+    private final Label linkLabel;
+    private final Label winLabel;
     private static Label scoreLabel;
 
     private boolean inventoryIsOpen;

@@ -9,7 +9,7 @@ public class WeaponUsageDelegate {
      * @param id: id of character who owns the UsageDelegate
      * */
 
-    private UUID id;
+    private final UUID id;
 
     public WeaponUsageDelegate(UUID id) {
         this.id = id;

@@ -17,29 +17,29 @@ public class Dagger extends Weapon {
      * @param damage: damage of Dagger
      * */
 
-    private final String texturePathSelected = "items/dagger_highlight.png";
-    private final String texturePathNotSelected = "items/dagger_not_highlight.png";
-    private int size;
+    private final int size;
     private int level;
-    private int range;
-    private int damage;
+    private final int range;
+    private final int damage;
     public UUID id;
 
     public Dagger(int level) {
         this.level = level;
-        this.size = this.level * 1;
-        this.range = this.level * 1;
+        this.size = this.level;
+        this.range = this.level;
         this.damage = this.level * 2;
         this.id = UUID.randomUUID();
     }
 
     @Override
     public Texture getSelectedTexture() {
+        String texturePathSelected = "items/dagger_highlight.png";
         return new Texture(texturePathSelected);
     }
 
     @Override
     public Texture getUnselectedTexture() {
+        String texturePathNotSelected = "items/dagger_not_highlight.png";
         return new Texture(texturePathNotSelected);
     }
 

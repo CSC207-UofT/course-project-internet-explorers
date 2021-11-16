@@ -16,16 +16,16 @@ import java.util.UUID;
 
 public class InventoryWindow extends Window {
 
-    private ArrayList<Item> playerInventory;
-    private UUID playerId;
-    private CharacterManager characterManager;
+    private final ArrayList<Item> playerInventory;
+    private final UUID playerId;
+    private final CharacterManager characterManager;
 
     public InventoryWindow(CharacterManager characterManager, UUID playerId) {
         super("Inventory", new Skin(Gdx.files.internal("skins/uiskin.json")));
         this.setSize(400, 200);
         this.setResizable(false);
         this.setMovable(false);
-        this.setPosition(300, 300);
+        this.setPosition(300, 100);
 
         playerInventory = characterManager.openInventory(playerId);
         this.playerId = playerId;

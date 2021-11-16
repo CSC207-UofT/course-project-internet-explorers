@@ -16,7 +16,7 @@ import java.util.UUID;
  */
 public class WorldEntityManager {
 
-    private Map<UUID, WorldEntity> entities;
+    private final Map<UUID, WorldEntity> entities;
     private final World world;
 
     public WorldEntityManager(World world) {
