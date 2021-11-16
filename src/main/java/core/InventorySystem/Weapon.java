@@ -1,6 +1,5 @@
 package core.InventorySystem;
 
-import com.badlogic.gdx.graphics.Texture;
 import java.util.UUID;
 
 public abstract class Weapon implements Item {

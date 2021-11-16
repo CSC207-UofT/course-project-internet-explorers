@@ -3,10 +3,11 @@ package core.characters;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import core.InventorySystem.*;
+import core.InventorySystem.Item;
 import core.input.CharacterInputDevice;
 import core.world.WorldEntityManager;
 import core.world.WorldEntityWithSprite;
+
 import java.util.ArrayList;
 
 public class GameCharacter extends WorldEntityWithSprite {

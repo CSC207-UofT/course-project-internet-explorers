@@ -3,6 +3,7 @@ package core.input;
 import core.characters.CharacterManager;
 import core.levels.LevelManager;
 import core.screens.HUD.HudManager;
+
 import java.util.HashMap;
 import java.util.UUID;
 

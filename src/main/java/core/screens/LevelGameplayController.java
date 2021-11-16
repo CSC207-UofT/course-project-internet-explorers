@@ -1,7 +1,5 @@
 package core.screens;
 
-import static core.world.DemoSpawners.*;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -22,8 +20,11 @@ import core.levels.LevelState;
 import core.screens.HUD.HudManager;
 import core.world.Spawner;
 import core.world.WorldEntityManager;
+
 import java.util.UUID;
 import java.util.function.Supplier;
+
+import static core.world.DemoSpawners.*;
 
 /**
  * Runs the gameplay of a Level.

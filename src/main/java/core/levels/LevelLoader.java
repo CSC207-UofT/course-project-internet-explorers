@@ -1,14 +1,15 @@
 package core.levels;
 
-import static core.world.DemoSpawners.createEnemySpawner;
-
 import core.characters.GameCharacter;
 import core.world.Spawner;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import static core.world.DemoSpawners.createEnemySpawner;
 
 public class LevelLoader {
 
