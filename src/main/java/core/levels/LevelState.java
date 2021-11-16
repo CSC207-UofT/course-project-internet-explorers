@@ -15,10 +15,12 @@ public class LevelState implements Serializable {
     private String mapPath;
     protected World world;
     protected boolean levelPaused;
+    private boolean levelFinished;
     protected transient float currentTime;
     protected int score;
     protected List<Spawner<GameCharacter>> enemySpawns;
     private float spawnTime;
+
 
     // unitScale measured in m/px
     // represents in-game size of map tiles
@@ -33,6 +35,7 @@ public class LevelState implements Serializable {
         this.currentTime = 0;
         this.levelPaused = false;
         this.spawnTime = 15;
+        this.levelFinished = false;
     }
 
     protected void setUnitScale(float unitScale) {
@@ -77,6 +80,14 @@ public class LevelState implements Serializable {
 
     public void setSpawnTime(float spawnTime) {
         this.spawnTime = spawnTime;
+    }
+
+    public boolean isLevelFinished() {
+        return levelFinished;
+    }
+
+    public void finishedLevel(){
+        levelFinished = true;
     }
 
     public List<Spawner<GameCharacter>> getEnemySpawns() {

@@ -77,6 +77,7 @@ public class LevelManager {
 
         if (enemies.isEmpty()) {
             // If all enemies have been spawned, check if game is won or not
+            level.finishedLevel();
             // if (checkWin()){showWinCondition();} // TODO Roy will implement showWinCondition()
             return;
         }
@@ -98,7 +99,7 @@ public class LevelManager {
      * @return whether win condition has been met or not
      */
     public boolean checkWin() {
-        return level.getCurrentTime() >= 100;
+        return level.isLevelFinished();
     }
 
     /**

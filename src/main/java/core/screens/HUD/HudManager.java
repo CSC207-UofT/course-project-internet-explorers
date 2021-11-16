@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -27,12 +28,11 @@ public class HudManager implements Disposable {
 
     //score && time tracking variables
     private Integer worldTimer;
-    private float timeCount;
     private static Integer score;
     private boolean timeUp;
 
     //Labels for displaying game info on the overlay
-    private Label countTimeLabel, timeLabel, linkLabel;
+    private Label countTimeLabel, timeLabel, linkLabel, winLabel;
     private static Label scoreLabel;
 
     private boolean inventoryIsOpen;
@@ -46,9 +46,8 @@ public class HudManager implements Disposable {
         //define tracking variables
         this.levelManager = levelManager;
         sb = new SpriteBatch();
-        // TODO: Get this data from LevelManager
-        worldTimer = 250;
-        timeCount = 0;
+
+        worldTimer = 0;
         score = 0;
 
         playerInventory = new InventoryWindow(characterManager, id);
@@ -56,11 +55,16 @@ public class HudManager implements Disposable {
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
+        BitmapFont winFont = new BitmapFont();
+        winFont.getData().setScale(2);
+
         //define labels using the String, and a Label style consisting of a font and color
         countTimeLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeLabel = new Label("LEFTOVER TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         linkLabel = new Label("POINTS", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        winLabel = new Label("", new Label.LabelStyle(winFont, Color.WHITE));
+        winLabel.setAlignment(Align.center);
 
         //define a table used to organize hud's labels
         Table table = new Table();
@@ -73,6 +77,8 @@ public class HudManager implements Disposable {
         table.row();
         table.add(scoreLabel).expandX();
         table.add(countTimeLabel).expandX();
+        table.row();
+        table.add(winLabel).colspan(2).height(400);
 
         //add table to the stage
         stage.addActor(table);
@@ -84,6 +90,11 @@ public class HudManager implements Disposable {
      */
     public void draw() {
         sb.setProjectionMatrix(getCamera().combined);
+
+        // display winning text once you beat the level
+        if (levelManager.checkWin()){
+            winLabel.setText("YOU BEAT THIS LEVEL");
+        }
 
         // updates the time label continuously
         countTimeLabel.setText(this.levelManager.getTime());
@@ -116,16 +127,17 @@ public class HudManager implements Disposable {
         }
         inventoryIsOpen = !inventoryIsOpen;
     }
+
     // These methods are unused at the moment, but may be useful later
-    //    public boolean isTimeUp() {
-    //        return timeUp;
-    //    }
-    //
-    //    public static Label getScoreLabel() {
-    //        return scoreLabel;
-    //    }
-    //
-    //    public static Integer getScore() {
-    //        return score;
-    //    }
+    public boolean isTimeUp() {
+        return timeUp;
+    }
+
+    public static Label getScoreLabel() {
+        return scoreLabel;
+    }
+
+    public static Integer getScore() {
+        return score;
+    }
 }
