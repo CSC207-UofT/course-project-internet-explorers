@@ -28,10 +28,10 @@ public class KeyboardInputDevice implements CharacterInputDevice, HudInputDevice
     }
 
     private boolean getUsing() {
-        return Gdx.input.isKeyPressed(Input.Keys.U);
+        return Gdx.input.isKeyJustPressed(Input.Keys.U);
     }
 
     private boolean getInventory() {
-        return Gdx.input.isKeyPressed(Input.Keys.I);
+        return Gdx.input.isKeyJustPressed(Input.Keys.I);
     }
 }

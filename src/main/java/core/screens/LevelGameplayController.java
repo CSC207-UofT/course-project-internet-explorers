@@ -47,10 +47,9 @@ public class LevelGameplayController implements Screen {
     @Override
     public void show() {
         this.levelManager = new LevelManager(levelSupplier.get());
-        this.hud = new HudManager();
         this.entityManager = levelManager.getEntityManager();
         this.characterManager = new CharacterManager(entityManager);
-        this.inputController = new InputController(characterManager, hud);
+
         this.cameraManager = new CameraManager(levelManager.getUnitScale(), entityManager);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.shapeRenderer = new ShapeRenderer();
@@ -68,6 +67,7 @@ public class LevelGameplayController implements Screen {
         characterManager.addInventory(playerId, dagger);
 
         this.hud = new HudManager(this.characterManager, this.levelManager, playerId);
+        this.inputController = new InputController(characterManager, hud);
 
 
 
