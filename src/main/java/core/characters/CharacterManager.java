@@ -1,15 +1,13 @@
 package core.characters;
 
-import core.InventorySystem.*;
+import core.InventorySystem.Item;
+import core.InventorySystem.Weapon;
+import core.InventorySystem.WeaponUsageDelegate;
 import core.input.CharacterInput;
 import core.input.CharacterInputDevice;
 import core.world.WorldEntityManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class CharacterManager {
 

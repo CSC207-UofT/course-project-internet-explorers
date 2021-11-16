@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import core.world.WorldEntity;
 import core.world.WorldEntityManager;
+
 import java.util.UUID;
 import java.util.function.Function;
 
