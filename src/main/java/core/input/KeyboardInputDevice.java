@@ -4,11 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
-public class KeyboardInputDevice implements InputDevice {
+public class KeyboardInputDevice implements CharacterInputDevice, HudInputDevice {
 
     @Override
-    public CharacterInput getInput() {
-        return new CharacterInput(getDirection(), getUsing(), getInventory());
+    public CharacterInput getCharacterInput() {
+        return new CharacterInput(getDirection(), getUsing());
+    }
+
+    @Override
+    public HudInput getHudInput() {
+        return new HudInput(getInventory());
     }
 
     private Vector2 getDirection() {

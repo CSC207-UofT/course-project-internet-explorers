@@ -2,12 +2,13 @@ package core.characters;
 
 import core.InventorySystem.*;
 import core.input.CharacterInput;
-import core.input.InputDevice;
+import core.input.CharacterInputDevice;
 import core.world.WorldEntityManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class CharacterManager {
@@ -30,32 +31,35 @@ public class CharacterManager {
      * <p>
      * The WorldEntity must be already added to the entityManager and must be a subclass of GameCharacter.
      */
-    public void addCharacter(UUID id, InputDevice inputDevice) {
+    public void addCharacter(UUID id, Class<? extends CharacterInputDevice> inputDeviceType) {
         if (entityManager.getEntity(id) instanceof GameCharacter character) {
             this.characterEntities.put(character.id, character);
-            character.inputDevice = inputDevice;
+            character.setInputDeviceType(inputDeviceType);
         } else {
             throw new RuntimeException("Couldn't find a GameCharacter with the specified UUID: " + id);
         }
     }
 
     public void addCharacter(UUID id) {
-        addCharacter(id, InputDevice.DEFAULT);
+        addCharacter(id, CharacterInputDevice.class);
     }
 
-    public void processInputs(float dt) {
-        this.characterEntities.forEach((id, character) -> {
-                CharacterInput input = character.inputDevice.getInput();
+    /**
+     * Updates the GameCharacter's velocity to move character in direction specified by the given input (provided by InputController).
+     * Also invokes item usage on the held item (per the input).
+     */
+    public void processInputs(float dt, Map<UUID, CharacterInput> inputs) {
+        inputs.forEach((id, input) -> {
+            // m/s
+            float speed = 10f;
+            entityManager.setLinearVelocity(id, input.direction().nor().scl(speed / dt / 100));
 
-                // m/s
-                float speed = 10f;
-                entityManager.setLinearVelocity(id, input.direction().nor().scl(speed / dt / 100));
-
-                if (input.using()) {
-                    WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
-                    usageDelegate.use((Weapon) this.characterEntities.get(id).getInventory().get(0));
-                }
-            });
+            // TODO separate movement/usage into separate methods (also consult with ben)
+            if (input.using()) {
+                WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
+                usageDelegate.use((Weapon) this.characterEntities.get(id).getInventory().get(0));
+            }
+        });
     }
 
     public void updateHealth(UUID id, int damage) {
