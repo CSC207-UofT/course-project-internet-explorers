@@ -1,8 +1,8 @@
 package core.InventorySystem.ItemTypes;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.*;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.InventorySystem.Weapon;
 import java.util.UUID;
 
@@ -17,7 +17,8 @@ public class Dagger extends Weapon {
      * @param damage: damage of Dagger
      * */
 
-    private final String texturePath = "weapons/dagger.png";
+    private final String texturePathSelected = "items/dagger_highlight.png";
+    private final String texturePathNotSelected = "items/dagger_not_highlight.png";
     private int size;
     private int level;
     private int range;
@@ -33,8 +34,13 @@ public class Dagger extends Weapon {
     }
 
     @Override
-    public Texture getTexture() {
-        return new Texture(texturePath);
+    public Texture getSelectedTexture() {
+        return new Texture(texturePathSelected);
+    }
+
+    @Override
+    public Texture getUnselectedTexture() {
+        return new Texture(texturePathNotSelected);
     }
 
     @Override
@@ -60,6 +66,19 @@ public class Dagger extends Weapon {
     @Override
     public UUID getID() {
         return id;
+    }
+
+    @Override
+    public ImageButton createInventorySlot(int index) {
+        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
+        if (index == 0){
+            style.up = new TextureRegionDrawable(this.getSelectedTexture());
+        } else {
+            style.up = new TextureRegionDrawable(this.getUnselectedTexture());
+        }
+
+
+        return new ImageButton(style);
     }
 
     @Override

@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import core.InventorySystem.Item;
+import core.InventorySystem.ItemTypes.Dagger;
+import core.InventorySystem.ItemTypes.Sword;
 import core.camera.CameraManager;
 import core.characters.CharacterManager;
 import core.characters.GameCharacter;
@@ -57,6 +60,16 @@ public class LevelGameplayController implements Screen {
         playerSpawner.setEntityManager(entityManager);
         UUID playerId = playerSpawner.spawn().id;
         characterManager.addCharacter(playerId, KeyboardInputDevice.class);
+
+        Item sword = new Sword(1);
+        Item dagger = new Dagger(1);
+
+        characterManager.addInventory(playerId, sword);
+        characterManager.addInventory(playerId, dagger);
+
+        this.hud = new HudManager(this.characterManager, this.levelManager, playerId);
+
+
 
         Spawner<?> enemySpawner = createEnemySpawner();
         enemySpawner.setEntityManager(entityManager);

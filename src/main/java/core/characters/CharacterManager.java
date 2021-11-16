@@ -4,6 +4,8 @@ import core.InventorySystem.*;
 import core.input.CharacterInput;
 import core.input.CharacterInputDevice;
 import core.world.WorldEntityManager;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -134,7 +136,7 @@ public class CharacterManager {
         return false;
     }
 
-    public Object openInventory(UUID id) {
+    public ArrayList<Item> openInventory(UUID id) {
         /*
          * Returns inventory contents and displays them
          * Returns null if character id cannot be found

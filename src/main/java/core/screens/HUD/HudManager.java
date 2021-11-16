@@ -12,7 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import core.characters.CharacterManager;
+import core.levels.LevelManager;
 
+import java.util.UUID;
+
+/***
+ * Controller/Presenter class (?) for displaying all heads-up-display
+ */
 public class HudManager implements Disposable {
 
     private Stage stage;
@@ -25,7 +32,7 @@ public class HudManager implements Disposable {
     private boolean timeUp;
 
     //Labels for displaying game info on the overlay
-    private Label countdownLabel, timeLabel, linkLabel;
+    private Label countTimeLabel, timeLabel, linkLabel;
     private static Label scoreLabel;
 
     private boolean inventoryIsOpen;
@@ -33,26 +40,24 @@ public class HudManager implements Disposable {
 
     private SpriteBatch sb;
 
-    public HudManager() {
+    private LevelManager levelManager;
+
+    public HudManager(CharacterManager characterManager, LevelManager levelManager, UUID id) {
         //define tracking variables
+        this.levelManager = levelManager;
         sb = new SpriteBatch();
         // TODO: Get this data from LevelManager
         worldTimer = 250;
         timeCount = 0;
         score = 0;
 
-        // TODO: Get inventory info from PlayerManager instead of instantiating it here
-        playerInventory = new InventoryWindow();
+        playerInventory = new InventoryWindow(characterManager, id);
 
-        //setup the HUD viewport using a new camera seperate from gamecam
-        //define stage using that viewport and games spritebatch
-
-        // TODO: use the camera from CameraManager
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
         //define labels using the String, and a Label style consisting of a font and color
-        countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        countTimeLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeLabel = new Label("LEFTOVER TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         linkLabel = new Label("POINTS", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -67,7 +72,7 @@ public class HudManager implements Disposable {
         table.add(timeLabel).expandX().padTop(10);
         table.row();
         table.add(scoreLabel).expandX();
-        table.add(countdownLabel).expandX();
+        table.add(countTimeLabel).expandX();
 
         //add table to the stage
         stage.addActor(table);
@@ -79,11 +84,13 @@ public class HudManager implements Disposable {
      */
     public void draw() {
         sb.setProjectionMatrix(getCamera().combined);
+
+        // updates the time label continuously
+        countTimeLabel.setText(this.levelManager.getTime());
         stage.draw();
     }
 
     /***
-     * TODO: use the camera from cameraManager
      * @return the camera used for the HUD
      */
     public Camera getCamera() {

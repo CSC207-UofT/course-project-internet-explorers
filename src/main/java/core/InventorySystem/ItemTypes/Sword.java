@@ -2,6 +2,8 @@ package core.InventorySystem.ItemTypes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.InventorySystem.Weapon;
 import java.util.UUID;
 
@@ -16,7 +18,9 @@ public class Sword extends Weapon {
      * @param damage: damage of Sword
      * */
 
-    private String texturePath = "weapons/sword.png";
+    private final String texturePathSelected = "items/sword_highlight.png";
+    private final String texturePathNotSelected = "items/sword_not_highlight.png";
+
     private int size;
     private int level;
     private int range;
@@ -32,8 +36,11 @@ public class Sword extends Weapon {
     }
 
     @Override
-    public Texture getTexture() {
-        return new Texture(texturePath);
+    public Texture getSelectedTexture() { return new Texture(texturePathSelected); }
+
+    @Override
+    public Texture getUnselectedTexture() {
+        return new Texture(texturePathNotSelected);
     }
 
     @Override
@@ -64,5 +71,15 @@ public class Sword extends Weapon {
     @Override
     public int getDamage() {
         return damage;
+    }
+
+    public ImageButton createInventorySlot(int index) {
+        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
+        if (index == 0) {
+            style.up = new TextureRegionDrawable(this.getSelectedTexture());
+        } else {
+            style.up = new TextureRegionDrawable(this.getUnselectedTexture());
+        }
+        return new ImageButton(style);
     }
 }
