@@ -25,6 +25,10 @@ public class InputController {
         this.keyboardInputDevice = new KeyboardInputDevice();
     }
 
+    /**
+     * Handles various inputs, should be called every frame.
+     * @param dt the frame time
+     */
     public void handleInputs(float dt) {
         HashMap<UUID, CharacterInput> res = new HashMap<>();
         characterManager.characterEntities.forEach((id, character) -> {

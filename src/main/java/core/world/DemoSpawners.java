@@ -69,7 +69,7 @@ public class DemoSpawners {
         spawner.setFixtureDefsSupplier(() -> fixtureDefs);
 
         // dispose of shapes used for fixtures *after* entity has been spawned
-        spawner.setSpawnCallback(e -> {
+        spawner.addSpawnCallback(e -> {
             for (FixtureDef def : fixtureDefs) {
                 def.shape.dispose();
             }
