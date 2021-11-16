@@ -3,7 +3,6 @@ package core.screens;
 import static core.world.DemoSpawners.*;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,7 +11,8 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import core.camera.CameraManager;
 import core.characters.CharacterManager;
 import core.characters.GameCharacter;
-import core.input.InputManager;
+import core.input.AIInputDevice;
+import core.input.InputController;
 import core.input.KeyboardInputDevice;
 import core.levels.LevelManager;
 import core.levels.LevelState;
@@ -35,7 +35,7 @@ public class LevelGameplayController implements Screen {
     private WorldEntityManager entityManager;
     private Box2DDebugRenderer box2DDebugRenderer;
     private HudManager hud;
-    private InputManager inputManager;
+    private InputController inputController;
 
     public LevelGameplayController(Supplier<LevelState> levelSupplier) {
         this.levelSupplier = levelSupplier;
@@ -44,23 +44,24 @@ public class LevelGameplayController implements Screen {
     @Override
     public void show() {
         this.levelManager = new LevelManager(levelSupplier.get());
+        this.hud = new HudManager();
         this.entityManager = levelManager.getEntityManager();
-        this.inputManager = new InputManager();
-        this.characterManager = new CharacterManager(entityManager, inputManager);
+        this.characterManager = new CharacterManager(entityManager);
+        this.inputController = new InputController(characterManager, hud);
         this.cameraManager = new CameraManager(levelManager.getUnitScale(), entityManager);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.shapeRenderer = new ShapeRenderer();
-        this.hud = new HudManager();
 
         Spawner<GameCharacter> playerSpawner = createPlayerSpawner();
         //TODO: ^This should be a GameCharacter, but GameCharacter currently extends the wrong world entity
         playerSpawner.setEntityManager(entityManager);
         UUID playerId = playerSpawner.spawn().id;
-        characterManager.addCharacter(playerId, new KeyboardInputDevice());
+        characterManager.addCharacter(playerId, KeyboardInputDevice.class);
 
         Spawner<?> enemySpawner = createEnemySpawner();
         enemySpawner.setEntityManager(entityManager);
-        enemySpawner.spawn();
+        UUID enemyId = enemySpawner.spawn().id;
+        characterManager.addCharacter(enemyId, AIInputDevice.class);
 
         Spawner<?> defenderSpawner = createDefenderSpawner();
         defenderSpawner.setEntityManager(entityManager);
@@ -79,7 +80,7 @@ public class LevelGameplayController implements Screen {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        characterManager.processInputs(dt, inputManager.getInputs());
+        inputController.handleInputs(dt);
         levelManager.step(dt);
 
         cameraManager.update(dt);
@@ -97,10 +98,6 @@ public class LevelGameplayController implements Screen {
 
         // TODO only do this in debug mode
         levelManager.renderPhysics(box2DDebugRenderer, cameraManager.getCamera());
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-            hud.toggleInventory();
-        }
 
         hud.draw();
     }

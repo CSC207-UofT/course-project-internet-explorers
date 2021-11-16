@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import core.InventorySystem.*;
-import core.input.InputDevice;
+import core.input.CharacterInputDevice;
 import core.world.WorldEntityManager;
 import core.world.WorldEntityWithSprite;
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ public class GameCharacter extends WorldEntityWithSprite {
     private int health;
     private int level;
     private ArrayList<Item> inventory;
+    private Class<? extends CharacterInputDevice> inputDeviceType;
 
     public GameCharacter(WorldEntityManager entityManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
         super(entityManager, bodyDef, fixtureDefs);
@@ -66,5 +67,13 @@ public class GameCharacter extends WorldEntityWithSprite {
 
     public void setVelocity(Vector2 velocity) {
         this.getBody().setLinearVelocity(velocity);
+    }
+
+    public void setInputDeviceType(Class<? extends CharacterInputDevice> inputDeviceType) {
+        this.inputDeviceType = inputDeviceType;
+    }
+
+    public Class<? extends CharacterInputDevice> getInputDeviceType() {
+        return inputDeviceType;
     }
 }
