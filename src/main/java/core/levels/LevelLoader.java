@@ -17,34 +17,35 @@ public class LevelLoader {
      * @return LevelState
      */
     public static LevelState getLevel1() {
-        // Create enemy spawner list
-
+        // Initialize LevelState and assign enemy spawns
         LevelState lvl = new LevelState("maps/demo.tmx");
         lvl.setEnemySpawns(createEnemyList(5));
         lvl.setUnitScale(1 / 64f);
-
-        // TODO: set up player spawner
 
         return lvl;
     }
 
     /**
      * If savedState file exists, load LevelState given saved information
+     * This method will be used in phase 2
+     *
      * @return LevelState
      * @throws IOException relating to savedState.txt
      * @throws ClassNotFoundException relating to reading objects in
      */
     public static LevelState loadState() throws IOException, ClassNotFoundException {
+        // Take file that has saved level state
         FileInputStream fileInputStream = new FileInputStream("savedState.txt");
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
         float currentTime = (float) objectInputStream.readObject();
 
+        // Initialize LevelState and assign enemy spawns
         LevelState lvl = new LevelState("maps/demo.tmx");
         lvl.setEnemySpawns(createEnemyList(5));
         lvl.setUnitScale(1 / 64f);
 
-        // take current time and adjust enemyList
+        // Take current time and adjust enemyList
         lvl.setCurrentTime(currentTime);
         double numEnemies = Math.floor(lvl.getCurrentTime() / lvl.getSpawnTime());
         for (int i = 0; i < numEnemies; i++) {

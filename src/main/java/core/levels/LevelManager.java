@@ -106,7 +106,7 @@ public class LevelManager {
             return;
         }
 
-        // Spawn enemy every 15 seconds
+        // Spawn enemy every spawnTime amount of seconds
         if (level.getCurrentTime() >= level.getSpawnTime()) {
             Spawner<GameCharacter> enemy = enemies.remove(0);
             enemy.spawn();
@@ -128,14 +128,15 @@ public class LevelManager {
 
     /**
      * Save current time elapsed from level
+     * This method will be used in phase 2
      *
      * @throws IOException            relating to savedState.txt
      */
     public void saveState() throws IOException {
+        // Save needed level information to file
         FileOutputStream fileOutputStream = new FileOutputStream("savedState.txt");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-        // objectOutputStream.writeObject(level.getEnemySpawns());
         objectOutputStream.writeFloat(level.getCurrentTime());
 
         objectOutputStream.flush();
