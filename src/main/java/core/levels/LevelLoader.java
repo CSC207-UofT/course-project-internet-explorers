@@ -65,6 +65,7 @@ public class LevelLoader {
         List<Spawner<GameCharacter>> enemies = new ArrayList<>();
         for (int i = 0; i < numOfEnemies; i++) {
             Spawner<GameCharacter> enemySpawner = createEnemySpawner();
+            enemySpawner.addSpawnCallback(character -> character.setTeam("enemy"));
             enemies.add(enemySpawner);
         }
         return enemies;

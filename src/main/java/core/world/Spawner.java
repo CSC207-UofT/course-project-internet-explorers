@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 public class Spawner<T extends WorldEntity> {
 
     private WorldEntityManager entityManager;
-    private final Class<T> type;
+    public final Class<T> type;
 
     private Supplier<BodyDef> bodyDefSupplier;
     private Supplier<FixtureDef[]> fixtureDefsSupplier;

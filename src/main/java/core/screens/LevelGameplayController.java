@@ -50,6 +50,8 @@ public class LevelGameplayController implements Screen {
         this.entityManager = levelManager.getEntityManager();
         this.characterManager = new CharacterManager(entityManager);
 
+        levelManager.addGameCharacterRegistrationCallbacks(characterManager);
+
         this.cameraManager = new CameraManager(levelManager.getUnitScale(), entityManager);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.shapeRenderer = new ShapeRenderer();
@@ -68,8 +70,6 @@ public class LevelGameplayController implements Screen {
 
         this.hud = new HudManager(this.characterManager, this.levelManager, playerId);
         this.inputController = new InputController(characterManager, hud, levelManager);
-
-
 
         Spawner<?> enemySpawner = createEnemySpawner();
         enemySpawner.setEntityManager(entityManager);

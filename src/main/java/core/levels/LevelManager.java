@@ -6,10 +6,12 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import core.characters.CharacterManager;
 import core.characters.GameCharacter;
+import core.input.AIInputDevice;
+import core.input.KeyboardInputDevice;
 import core.world.Spawner;
 import core.world.WorldEntityManager;
-import core.world.WorldEntityWithSprite;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -41,6 +43,28 @@ public class LevelManager {
             spawner.setEntityManager(this.entityManager);
         }
         level.setEnemySpawns(enemiesUpdated);
+    }
+
+    /**
+     * Adds callback to assign spawned GameCharacter entities to a CharacterManager,
+     * and sets their InputDevice type according to their `team` property
+     *
+     * @param characterManager the CharacterManager to add the created GameCharacters to
+     */
+    public void addGameCharacterRegistrationCallbacks(CharacterManager characterManager) {
+        for (Spawner<?> spawner : level.getEnemySpawns()) {
+            if (spawner.type.equals(GameCharacter.class)) {
+                spawner.addSpawnCallback(e -> {
+                    if (e instanceof GameCharacter character) {
+                        if (character.getTeam().equals("player")) {
+                            characterManager.addCharacter(character.id, KeyboardInputDevice.class);
+                        } else if (character.getTeam().equals("enemy")) {
+                            characterManager.addCharacter(character.id, AIInputDevice.class);
+                        }
+                    }
+                });
+            }
+        }
     }
 
     /**
@@ -161,7 +185,6 @@ public class LevelManager {
     public boolean isLevelPaused() { return level.levelPaused; }
 
     public int getTime() {
-
         return (int) Math.floor(level.getCurrentTime());
     }
 }
