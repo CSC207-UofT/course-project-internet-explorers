@@ -17,7 +17,7 @@ public abstract class Menu implements Screen {
     protected Menu(ScreenManager screenManager) {
         this.screenManager = screenManager;
         this.stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
+
     }
 
     protected ClickListener createExitButtonListener(Screen nextScreen) {
@@ -39,7 +39,7 @@ public abstract class Menu implements Screen {
     }
 
     @Override
-    public void show() {}
+    public void show() { Gdx.input.setInputProcessor(stage); }
 
     @Override
     public void resize(int width, int height) {}
