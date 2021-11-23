@@ -15,7 +15,7 @@ public class CharacterManager {
      * Use case class that handles updating instances of GameCharacter based on inputs from the InputHandler
      * @param characterEntities: Hashmap storing characters as values with their UUID as keys
      * */
-
+    // TODO: Remove seperate hashmap
     public HashMap<UUID, GameCharacter> characterEntities;
     private final WorldEntityManager entityManager;
 
