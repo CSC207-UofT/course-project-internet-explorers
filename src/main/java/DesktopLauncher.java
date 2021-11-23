@@ -10,6 +10,7 @@ class DesktopLauncher {
         config.width = ScreenManager.WIDTH;
         config.height = ScreenManager.HEIGHT;
         config.resizable = false;
+        config.forceExit = false;
         new LwjglApplication(new ScreenManager(), config);
     }
 }
