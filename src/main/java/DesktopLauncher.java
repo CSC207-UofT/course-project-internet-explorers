@@ -1,6 +1,7 @@
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import core.ScreenManager;
+import core.debug.Terminal;
 
 class DesktopLauncher {
 
@@ -10,6 +11,11 @@ class DesktopLauncher {
         config.width = ScreenManager.WIDTH;
         config.height = ScreenManager.HEIGHT;
         config.resizable = false;
+
+        // Launch game window
         new LwjglApplication(new ScreenManager(), config);
+
+        // Start debug terminal
+        new Thread(new Terminal()).start();
     }
 }
