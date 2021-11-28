@@ -33,7 +33,14 @@ public class Config {
     }
 
     /**
-     * Get value of a setting.
+     * Get the description of a setting.
+     */
+    public static String getDesc(String settingName) {
+        return getSetting(settingName).getDesc();
+    }
+
+    /**
+     * Get the value of a setting.
      */
     public static Object get(String settingName) {
         return getSetting(settingName).get();
