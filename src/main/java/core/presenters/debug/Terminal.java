@@ -80,12 +80,20 @@ public class Terminal implements Runnable {
                 System.err.println(e.getMessage());
             }
         } while (!shouldClose);
-        System.out.println("Bye :)");
-        Gdx.app.exit();
     }
 
     private void addQuitCommand() {
-        registerCommand(new Command("exit", new Options(), (l, out) -> shouldClose = true));
+        registerCommand(
+            new Command(
+                "exit",
+                new Options(),
+                (l, out) -> {
+                    shouldClose = true;
+                    out.println("Bye :)");
+                    Gdx.app.exit();
+                }
+            )
+        );
     }
 
     private void addEchoCommand() {

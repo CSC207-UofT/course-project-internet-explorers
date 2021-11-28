@@ -37,6 +37,7 @@ class DesktopLauncher {
         DesktopConfig.resizable.set(false);
         DesktopConfig.lwjglConfig.width = ScreenManager.WIDTH;
         DesktopConfig.lwjglConfig.height = ScreenManager.HEIGHT;
+        DesktopConfig.lwjglConfig.forceExit = false;
 
         // Launch game window
         new LwjglApplication(new ScreenManager(), DesktopConfig.lwjglConfig);
