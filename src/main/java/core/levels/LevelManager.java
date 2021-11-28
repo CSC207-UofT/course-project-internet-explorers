@@ -6,13 +6,12 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import core.characters.CharacterManager;
-import core.characters.GameCharacter;
 import core.input.AIInputDevice;
 import core.input.KeyboardInputDevice;
-import core.world.Spawner;
-import core.world.WorldEntityManager;
-
+import core.worldEntities.Spawner;
+import core.worldEntities.WorldEntityManager;
+import core.worldEntities.types.characters.Character;
+import core.worldEntities.types.characters.CharacterManager;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -39,8 +38,8 @@ public class LevelManager {
         this.batch = new SpriteBatch();
 
         // assign all enemies to current entityManager
-        List<Spawner<GameCharacter>> enemiesUpdated = level.getEnemySpawns();
-        for (Spawner<GameCharacter> spawner : enemiesUpdated) {
+        List<Spawner<Character>> enemiesUpdated = level.getEnemySpawns();
+        for (Spawner<Character> spawner : enemiesUpdated) {
             spawner.setEntityManager(this.entityManager);
         }
         level.setEnemySpawns(enemiesUpdated);
@@ -54,9 +53,9 @@ public class LevelManager {
      */
     public void addGameCharacterRegistrationCallbacks(CharacterManager characterManager) {
         for (Spawner<?> spawner : level.getEnemySpawns()) {
-            if (spawner.type.equals(GameCharacter.class)) {
+            if (spawner.type.equals(Character.class)) {
                 spawner.addSpawnCallback(e -> {
-                    if (e instanceof GameCharacter character) {
+                    if (e instanceof Character character) {
                         if (character.getTeam().equals("player")) {
                             characterManager.addCharacter(character.id, KeyboardInputDevice.class);
                         } else if (character.getTeam().equals("enemy")) {
@@ -98,7 +97,7 @@ public class LevelManager {
      */
     private void updateEnemies() {
         // Spawning enemies in world
-        List<Spawner<GameCharacter>> enemies = level.getEnemySpawns();
+        List<Spawner<Character>> enemies = level.getEnemySpawns();
 
         if (enemies.isEmpty()) {
             // If all enemies have been spawned, check if game is won or not
@@ -109,7 +108,7 @@ public class LevelManager {
 
         // Spawn enemy every spawnTime amount of seconds
         if (level.getCurrentTime() >= level.getSpawnTime()) {
-            Spawner<GameCharacter> enemy = enemies.remove(0);
+            Spawner<Character> enemy = enemies.remove(0);
             enemy.spawn();
             level.setEnemySpawns(enemies);
             level.setScore(level.getScore() + 1);
@@ -184,7 +183,9 @@ public class LevelManager {
         level.setLevelPaused(false);
     }
 
-    public boolean isLevelPaused() { return level.levelPaused; }
+    public boolean isLevelPaused() {
+        return level.levelPaused;
+    }
 
     public int getTime() {
         return (int) Math.floor(level.getCurrentTime());
