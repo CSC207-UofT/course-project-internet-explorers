@@ -12,6 +12,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import core.camera.CameraManager;
+import core.config.Config;
+import core.config.ConfigurableSetting;
 import core.levels.LevelManager;
 import core.world.EntitySpawner;
 import core.world.WorldEntity;
@@ -28,12 +30,19 @@ public class LevelGameplayController implements Screen {
     private final WorldEntity player;
     private final Box2DDebugRenderer box2DDebugRenderer;
 
+    public final ConfigurableSetting<Boolean> render_physics = new ConfigurableSetting<>(
+        Boolean.class,
+        "render_physics",
+        "Whether physics bodies should be rendered.",
+        false,
+        Boolean::parseBoolean
+    );
+
     public LevelGameplayController(LevelManager levelManager) {
         this.levelManager = levelManager;
         cameraManager = new CameraManager(levelManager.getUnitScale());
 
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-
         EntitySpawner playerSpawner = createPlayerSpawner();
         playerSpawner.setWorldManager(levelManager.getWorldManager());
         player = playerSpawner.spawn();
@@ -83,8 +92,9 @@ public class LevelGameplayController implements Screen {
         shapeRenderer.circle(cameraManager.getSubjectPosition().x, cameraManager.getSubjectPosition().y, 0.1f, 16);
         shapeRenderer.end();
 
-        // TODO only do this in debug mode
-        levelManager.getWorldManager().drawPhysics(box2DDebugRenderer, cameraManager.getCamera());
+        if (render_physics.getValue()) {
+            levelManager.getWorldManager().drawPhysics(box2DDebugRenderer, cameraManager.getCamera());
+        }
     }
 
     @Override
