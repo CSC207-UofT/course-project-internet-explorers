@@ -1,5 +1,6 @@
 package core.debug;
 
+import com.badlogic.gdx.Gdx;
 import java.io.InputStream;
 import java.util.*;
 import java.util.function.Consumer;
@@ -48,11 +49,11 @@ public class Terminal implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("\n\n  ~ debug terminal ~");
+        System.out.print("\n\n  ~ debug terminal ~");
         do {
             System.out.print("\n> ");
             try {
-                if (inputScanner.hasNextLine()) {
+                if (inputScanner.hasNext() && inputScanner.hasNextLine()) {
                     String verb = inputScanner.next();
                     String[] args = inputScanner.nextLine().trim().split(" ");
                     Command cmd = commands.get(verb);
@@ -67,6 +68,7 @@ public class Terminal implements Runnable {
             }
         } while (!shouldClose);
         System.out.println("Bye :)");
+        Gdx.app.exit();
     }
 
     private void addQuitCommand() {

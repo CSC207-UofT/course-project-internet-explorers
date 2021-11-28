@@ -61,3 +61,7 @@ test {
 application {
     mainClassName = "DesktopLauncher"
 }
+
+run {
+    standardInput = System.in
+}
