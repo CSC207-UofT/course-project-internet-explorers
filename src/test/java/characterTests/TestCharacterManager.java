@@ -3,13 +3,11 @@ package characterTests;
 import static org.junit.Assert.assertEquals;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
-import core.characters.CharacterManager;
-import core.characters.GameCharacter;
-import core.world.WorldEntityManager;
-import java.util.ArrayList;
+import core.worldEntities.WorldEntityManager;
+import core.worldEntities.types.characters.Character;
+import core.worldEntities.types.characters.CharacterManager;
 import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 
@@ -21,9 +19,9 @@ public class TestCharacterManager {
     World world;
     CharacterManager cm;
 
-    GameCharacter player1;
-    GameCharacter player2;
-    GameCharacter player3;
+    Character player1;
+    Character player2;
+    Character player3;
 
     @Before
     public void setup() {
@@ -34,9 +32,9 @@ public class TestCharacterManager {
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
 
-        player1 = new GameCharacter(entityManager, def);
-        player2 = new GameCharacter(entityManager, def);
-        player3 = new GameCharacter(entityManager, def);
+        player1 = new Character(entityManager, def);
+        player2 = new Character(entityManager, def);
+        player3 = new Character(entityManager, def);
     }
 
     @AfterEach
