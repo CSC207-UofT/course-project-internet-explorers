@@ -62,8 +62,6 @@ public class ConfigurableSetting<T> {
     ) {
         this(type, name, desc, getter, setter, stringParser);
         set(initialValue);
-
-        Config.registerSetting(this);
     }
 
     /**

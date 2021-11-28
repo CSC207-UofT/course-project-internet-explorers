@@ -6,9 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import core.config.Config;
 import core.levels.LevelLoader;
 import core.presenters.ScreenManager;
 import core.presenters.levels.LevelGameplayController;
+import javax.swing.*;
 
 public class MainMenuScreen extends Menu {
 
@@ -18,11 +20,11 @@ public class MainMenuScreen extends Menu {
     private static final int PLAY_BUTTON_HEIGHT = 100;
     private static final int HOW_TO_PLAY_BUTTON_WIDTH = 450;
     private static final int HOW_TO_PLAY_BUTTON_HEIGHT = 100;
-    private static final int EXIT_BUTTON_X = ScreenManager.WIDTH / 2 - EXIT_BUTTON_WIDTH / 2;
+    private static final int EXIT_BUTTON_X = Gdx.graphics.getWidth() / 2 - EXIT_BUTTON_WIDTH / 2;
     private static final int EXIT_BUTTON_Y = 80;
-    private static final int PLAY_BUTTON_X = ScreenManager.WIDTH / 2 - PLAY_BUTTON_WIDTH / 2;
+    private static final int PLAY_BUTTON_X = Gdx.graphics.getWidth() / 2 - PLAY_BUTTON_WIDTH / 2;
     private static final int PLAY_BUTTON_Y = 320;
-    private static final int HOW_TO_PLAY_BUTTON_X = ScreenManager.WIDTH / 2 - HOW_TO_PLAY_BUTTON_WIDTH / 2;
+    private static final int HOW_TO_PLAY_BUTTON_X = Gdx.graphics.getWidth() / 2 - HOW_TO_PLAY_BUTTON_WIDTH / 2;
     private static final int HOW_TO_PLAY_BUTTON_Y = 200;
 
     public MainMenuScreen(ScreenManager screenManager) {
