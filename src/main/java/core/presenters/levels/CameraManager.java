@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import core.entities.WorldEntity;
-import core.entities.WorldEntityManager;
+import core.worldEntities.WorldEntity;
+import core.worldEntities.WorldEntityManager;
 import java.util.UUID;
 import java.util.function.Function;
 

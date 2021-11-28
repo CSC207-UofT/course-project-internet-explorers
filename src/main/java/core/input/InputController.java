@@ -1,8 +1,8 @@
 package core.input;
 
-import core.entities.types.characters.CharacterManager;
 import core.levels.LevelManager;
 import core.presenters.HUD.HudManager;
+import core.worldEntities.types.characters.CharacterManager;
 import java.util.HashMap;
 import java.util.UUID;
 

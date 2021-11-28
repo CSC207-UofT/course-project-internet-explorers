@@ -1,4 +1,4 @@
-package core.entities;
+package core.worldEntities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -6,29 +6,29 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import core.entities.types.characters.GameCharacter;
+import core.worldEntities.types.characters.Character;
 
 public class DemoSpawners {
 
-    public static Spawner<GameCharacter> createPlayerSpawner() {
+    public static Spawner<Character> createPlayerSpawner() {
         Vector2 position = new Vector2(2, 2);
         Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_player");
         sprite.setSize(1, 1);
         sprite.setOriginCenter();
 
-        return Spawner.createSpriteBasedEntitySpawner(GameCharacter.class, position, sprite);
+        return Spawner.createSpriteBasedEntitySpawner(Character.class, position, sprite);
     }
 
-    public static Spawner<GameCharacter> createEnemySpawner() {
+    public static Spawner<Character> createEnemySpawner() {
         Vector2 position = new Vector2(20, 8);
         Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_enemy");
         sprite.setSize(1, 1);
         sprite.setOriginCenter();
 
-        return Spawner.createSpriteBasedEntitySpawner(GameCharacter.class, position, sprite);
+        return Spawner.createSpriteBasedEntitySpawner(Character.class, position, sprite);
     }
 
-    public static Spawner<GameCharacter> createDefenderSpawner() {
+    public static Spawner<Character> createDefenderSpawner() {
         Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_defense");
         sprite.setSize(1, 1);
         sprite.setOriginCenter();
@@ -36,7 +36,7 @@ public class DemoSpawners {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(new Vector2(16, 3));
-        return Spawner.createSpriteBasedEntitySpawner(GameCharacter.class, bodyDef, sprite);
+        return Spawner.createSpriteBasedEntitySpawner(Character.class, bodyDef, sprite);
     }
 
     public static Spawner<WorldEntity> createMapBorderSpawner() {

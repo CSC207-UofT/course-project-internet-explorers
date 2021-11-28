@@ -1,4 +1,4 @@
-package core.entities.types.characters;
+package core.worldEntities.types.characters;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

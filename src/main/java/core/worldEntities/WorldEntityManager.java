@@ -1,4 +1,4 @@
-package core.entities;
+package core.worldEntities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

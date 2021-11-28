@@ -9,12 +9,12 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
-import core.entities.WorldEntityManager;
-import core.entities.types.characters.CharacterManager;
-import core.entities.types.characters.GameCharacter;
 import core.inventory.Item;
 import core.inventory.Weapon;
 import core.inventory.items.*;
+import core.worldEntities.WorldEntityManager;
+import core.worldEntities.types.characters.Character;
+import core.worldEntities.types.characters.CharacterManager;
 import java.util.ArrayList;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,7 +26,7 @@ public class TestInventory {
     World world;
     CharacterManager characterManager;
 
-    GameCharacter test_player;
+    Character test_player;
 
     @BeforeAll
     static void makeApp() {
@@ -39,7 +39,7 @@ public class TestInventory {
         WorldEntityManager entityManager = new WorldEntityManager(world);
         characterManager = new CharacterManager(entityManager);
 
-        test_player = new GameCharacter(entityManager, new BodyDef());
+        test_player = new Character(entityManager, new BodyDef());
     }
 
     @AfterEach

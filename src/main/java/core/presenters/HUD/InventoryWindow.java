@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import core.entities.types.characters.CharacterManager;
 import core.inventory.Item;
+import core.worldEntities.types.characters.CharacterManager;
 import java.util.ArrayList;
 import java.util.UUID;
 

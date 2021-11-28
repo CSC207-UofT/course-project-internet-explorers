@@ -13,8 +13,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import core.entities.types.characters.CharacterManager;
 import core.levels.LevelManager;
+import core.worldEntities.types.characters.CharacterManager;
 import java.util.UUID;
 
 /***

@@ -1,6 +1,6 @@
 package core.presenters.levels;
 
-import static core.entities.DemoSpawners.*;
+import static core.worldEntities.DemoSpawners.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -8,10 +8,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import core.entities.Spawner;
-import core.entities.WorldEntityManager;
-import core.entities.types.characters.CharacterManager;
-import core.entities.types.characters.GameCharacter;
 import core.input.AIInputDevice;
 import core.input.InputController;
 import core.input.KeyboardInputDevice;
@@ -21,6 +17,10 @@ import core.inventory.items.Sword;
 import core.levels.LevelManager;
 import core.levels.LevelState;
 import core.presenters.HUD.HudManager;
+import core.worldEntities.Spawner;
+import core.worldEntities.WorldEntityManager;
+import core.worldEntities.types.characters.Character;
+import core.worldEntities.types.characters.CharacterManager;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -55,7 +55,7 @@ public class LevelGameplayController implements Screen {
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.shapeRenderer = new ShapeRenderer();
 
-        Spawner<GameCharacter> playerSpawner = createPlayerSpawner();
+        Spawner<Character> playerSpawner = createPlayerSpawner();
         //TODO: ^This should be a GameCharacter, but GameCharacter currently extends the wrong world entity
         playerSpawner.setEntityManager(entityManager);
         UUID playerId = playerSpawner.spawn().id;

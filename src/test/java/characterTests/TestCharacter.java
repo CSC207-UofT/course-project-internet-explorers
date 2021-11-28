@@ -5,18 +5,18 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
-import core.entities.WorldEntityManager;
-import core.entities.types.characters.GameCharacter;
 import core.inventory.Item;
 import core.inventory.items.*;
+import core.worldEntities.WorldEntityManager;
+import core.worldEntities.types.characters.Character;
 import java.util.ArrayList;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestGameCharacter {
+public class TestCharacter {
 
-    GameCharacter player;
+    Character player;
     World world;
 
     @BeforeEach
@@ -26,7 +26,7 @@ public class TestGameCharacter {
 
         BodyDef def = new BodyDef();
 
-        player = new GameCharacter(entityManager, def);
+        player = new Character(entityManager, def);
     }
 
     @AfterEach

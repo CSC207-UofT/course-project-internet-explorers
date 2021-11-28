@@ -1,11 +1,11 @@
-package core.entities.types.characters;
+package core.worldEntities.types.characters;
 
-import core.entities.WorldEntityManager;
 import core.input.CharacterInput;
 import core.input.CharacterInputDevice;
 import core.inventory.Item;
 import core.inventory.Weapon;
 import core.inventory.WeaponUsageDelegate;
+import core.worldEntities.WorldEntityManager;
 import java.util.*;
 
 public class CharacterManager {
@@ -15,7 +15,7 @@ public class CharacterManager {
      * @param characterEntities: Hashmap storing characters as values with their UUID as keys
      * */
 
-    public HashMap<UUID, GameCharacter> characterEntities;
+    public HashMap<UUID, Character> characterEntities;
     private final WorldEntityManager entityManager;
 
     public CharacterManager(WorldEntityManager entityManager) {
@@ -29,7 +29,7 @@ public class CharacterManager {
      * The WorldEntity must be already added to the entityManager and must be a subclass of GameCharacter.
      */
     public void addCharacter(UUID id, Class<? extends CharacterInputDevice> inputDeviceType) {
-        if (entityManager.getEntity(id) instanceof GameCharacter character) {
+        if (entityManager.getEntity(id) instanceof Character character) {
             this.characterEntities.put(character.id, character);
             character.setInputDeviceType(inputDeviceType);
         } else {

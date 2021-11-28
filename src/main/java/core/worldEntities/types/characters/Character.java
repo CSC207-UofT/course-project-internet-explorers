@@ -1,15 +1,15 @@
-package core.entities.types.characters;
+package core.worldEntities.types.characters;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import core.entities.WorldEntityManager;
-import core.entities.WorldEntityWithSprite;
 import core.input.CharacterInputDevice;
 import core.inventory.Item;
+import core.worldEntities.WorldEntityManager;
+import core.worldEntities.WorldEntityWithSprite;
 import java.util.ArrayList;
 
-public class GameCharacter extends WorldEntityWithSprite {
+public class Character extends WorldEntityWithSprite {
 
     /*
      * Class that defines the main attributes of the classes Player, Enemy and Defender in the game.
@@ -25,7 +25,7 @@ public class GameCharacter extends WorldEntityWithSprite {
     private ArrayList<Item> inventory;
     private Class<? extends CharacterInputDevice> inputDeviceType;
 
-    public GameCharacter(WorldEntityManager entityManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
+    public Character(WorldEntityManager entityManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
         super(entityManager, bodyDef, fixtureDefs);
         this.team = "";
         this.health = 0;
