@@ -2,8 +2,10 @@ package core.presenters.debug;
 
 import com.badlogic.gdx.Gdx;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.*;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import org.apache.commons.cli.*;
 
 /**
@@ -13,30 +15,38 @@ public class Terminal implements Runnable {
 
     // error-proof callback https://stackoverflow.com/questions/18198176/java-8-lambda-function-that-throws-exception
     @FunctionalInterface
-    public interface CommandCallback<T> extends Consumer<T> {
+    public interface CommandCallback<T, U> extends BiConsumer<T, U> {
         @Override
-        default void accept(final T param) {
+        default void accept(final T param1, final U param2) {
             try {
-                acceptThrows(param);
+                acceptThrows(param1, param2);
             } catch (final Exception e) {
                 System.err.println(e.getMessage());
             }
         }
 
-        void acceptThrows(T elem) throws Exception;
+        void acceptThrows(T param1, U param2) throws Exception;
     }
 
-    public record Command(String name, Options options, CommandCallback<CommandLine> handler) {}
+    /**
+     * @param name Name used to identify and invoke the command.
+     * @param options Options object specifying options.
+     * @param handler Callback function to handle parsed input to the command.
+     *                Output should be written to the provided OutputStream.
+     */
+    public record Command(String name, Options options, CommandCallback<CommandLine, PrintStream> handler) {}
 
     private final Map<String, Command> commands;
     private final CommandLineParser parser;
     private final Scanner inputScanner;
+    private final PrintStream printStream;
     private boolean shouldClose;
 
-    public Terminal(InputStream inputStream) {
+    public Terminal(InputStream inputStream, PrintStream printStream) {
         this.commands = new HashMap<>();
         this.parser = new DefaultParser();
         this.inputScanner = new Scanner(inputStream);
+        this.printStream = printStream;
         this.shouldClose = false;
 
         this.addQuitCommand();
@@ -44,7 +54,7 @@ public class Terminal implements Runnable {
     }
 
     public Terminal() {
-        this(System.in);
+        this(System.in, System.out);
     }
 
     @Override
@@ -53,14 +63,17 @@ public class Terminal implements Runnable {
         do {
             System.out.print("\n> ");
             try {
+                // wait for non-empty line of input
                 if (inputScanner.hasNext() && inputScanner.hasNextLine()) {
-                    String verb = inputScanner.next();
+                    // split input into command name and command arguments
+                    String name = inputScanner.next();
                     String[] args = inputScanner.nextLine().trim().split(" ");
-                    Command cmd = commands.get(verb);
+
+                    Command cmd = commands.get(name);
                     if (cmd == null) {
-                        System.out.println(verb + " is not the name of a command.");
+                        System.out.println(name + " is not the name of a command.");
                     } else {
-                        cmd.handler.accept(parser.parse(cmd.options, args));
+                        cmd.handler.accept(parser.parse(cmd.options, args), printStream);
                     }
                 }
             } catch (ParseException | NoSuchElementException e) {
@@ -72,11 +85,11 @@ public class Terminal implements Runnable {
     }
 
     private void addQuitCommand() {
-        registerCommand(new Command("exit", new Options(), l -> shouldClose = true));
+        registerCommand(new Command("exit", new Options(), (l, out) -> shouldClose = true));
     }
 
     private void addEchoCommand() {
-        registerCommand(new Command("echo", new Options(), l -> System.out.println(String.join(" ", l.getArgs()))));
+        registerCommand(new Command("echo", new Options(), (l, out) -> out.println(String.join(" ", l.getArgs()))));
     }
 
     public static void main(String[] args) {

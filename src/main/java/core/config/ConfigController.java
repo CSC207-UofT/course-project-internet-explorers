@@ -23,19 +23,19 @@ public class ConfigController {
             new Terminal.Command(
                 "cfg",
                 options,
-                line -> {
+                (line, out) -> {
                     if (line.hasOption(set)) {
                         String[] args = line.getOptionValues(set);
                         String name = args[0];
                         String value = args[1];
 
                         Config.set(name, value);
-                        System.out.printf("%s: %s", name, Config.get(name));
+                        out.printf("%s: %s", name, Config.get(name));
                     }
 
                     if (line.hasOption(get)) {
                         String name = line.getOptionValue(get);
-                        System.out.printf("%s: %s", name, Config.get(name));
+                        out.printf("%s: %s", name, Config.get(name));
                     }
                 }
             )
