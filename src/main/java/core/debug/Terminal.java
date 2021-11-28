@@ -1,9 +1,7 @@
 package core.debug;
 
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Consumer;
 import org.apache.commons.cli.*;
 
@@ -12,7 +10,22 @@ import org.apache.commons.cli.*;
  */
 public class Terminal implements Runnable {
 
-    public record Command(String name, Options options, Consumer<CommandLine> handler) {}
+    // error-proof callback https://stackoverflow.com/questions/18198176/java-8-lambda-function-that-throws-exception
+    @FunctionalInterface
+    public interface CommandCallback<T> extends Consumer<T> {
+        @Override
+        default void accept(final T param) {
+            try {
+                acceptThrows(param);
+            } catch (final Exception e) {
+                System.err.println(e.getMessage());
+            }
+        }
+
+        void acceptThrows(T elem) throws Exception;
+    }
+
+    public record Command(String name, Options options, CommandCallback<CommandLine> handler) {}
 
     private final Map<String, Command> commands;
     private final CommandLineParser parser;
@@ -26,6 +39,7 @@ public class Terminal implements Runnable {
         this.shouldClose = false;
 
         this.addQuitCommand();
+        this.addEchoCommand();
     }
 
     public Terminal() {
@@ -35,22 +49,36 @@ public class Terminal implements Runnable {
     @Override
     public void run() {
         System.out.println("\n\n  ~ debug terminal ~");
-        while (!shouldClose) {
-            System.out.print("> ");
-            String cmdName = inputScanner.next();
-            String args = inputScanner.nextLine();
-            Command cmd = this.commands.get(cmdName);
+        do {
+            System.out.print("\n> ");
             try {
-                cmd.handler.accept(parser.parse(cmd.options, args.split(" ")));
-            } catch (ParseException e) {
-                e.printStackTrace();
+                if (inputScanner.hasNextLine()) {
+                    String verb = inputScanner.next();
+                    String[] args = inputScanner.nextLine().trim().split(" ");
+                    Command cmd = commands.get(verb);
+                    if (cmd == null) {
+                        System.out.println(verb + " is not the name of a command.");
+                    } else {
+                        cmd.handler.accept(parser.parse(cmd.options, args));
+                    }
+                }
+            } catch (ParseException | NoSuchElementException e) {
+                System.err.println(e.getMessage());
             }
-        }
+        } while (!shouldClose);
         System.out.println("Bye :)");
     }
 
     private void addQuitCommand() {
         registerCommand(new Command("exit", new Options(), l -> shouldClose = true));
+    }
+
+    private void addEchoCommand() {
+        registerCommand(new Command("echo", new Options(), l -> System.out.println(String.join(" ", l.getArgs()))));
+    }
+
+    public static void main(String[] args) {
+        new Thread(new Terminal()).start();
     }
 
     /**
