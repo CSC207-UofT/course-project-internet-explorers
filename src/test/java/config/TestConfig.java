@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 public class TestConfig {
 
@@ -64,5 +65,12 @@ public class TestConfig {
         newValue = (int) (Math.random() * -400);
         Config.set(name, Integer.toString(newValue));
         Assertions.assertEquals(Config.get(name), newValue, "Can set value from string via Config.");
+    }
+
+    @Test
+    public void testCantRegisterDuplicateSetting() {
+        new ConfigurableSetting<>(Integer.class, "name", "desc", 2, Integer::parseInt);
+        Executable registerDuplicateSetting = () -> new ConfigurableSetting<>(Integer.class, "name", "desc", 2, Integer::parseInt);
+        Assertions.assertThrows(RuntimeException.class, registerDuplicateSetting, "Can't register settings with duplicate names.");
     }
 }
