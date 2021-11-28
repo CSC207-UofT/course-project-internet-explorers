@@ -45,7 +45,7 @@ public class ConfigurableSetting<T> {
         this.setter = setter;
         this.stringParser = stringParser;
 
-        Config.getManager().registerSetting(this);
+        Config.registerSetting(this);
     }
 
     /**
@@ -59,7 +59,7 @@ public class ConfigurableSetting<T> {
         this.setter = newValue -> this.value = newValue;
         this.stringParser = stringParser;
 
-        Config.getManager().registerSetting(this);
+        Config.registerSetting(this);
     }
 
     /**
@@ -67,19 +67,19 @@ public class ConfigurableSetting<T> {
      */
     public ConfigurableSetting(Class<T> type, String name, String desc, T initialValue, Function<String, T> stringParser) {
         this(type, name, desc, stringParser);
-        setValue(initialValue);
+        set(initialValue);
     }
 
-    public T getValue() {
+    public T get() {
         return getter.get();
     }
 
-    public void setValue(T value) {
+    public void set(T value) {
         setter.accept(value);
     }
 
-    public void setValueFromString(String valueString) {
-        this.setValue(stringParser.apply(valueString));
+    public void set(String valueString) {
+        this.set(stringParser.apply(valueString));
     }
 
     public String getName() {

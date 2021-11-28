@@ -6,18 +6,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import core.camera.CameraManager;
-import core.config.Config;
 import core.config.ConfigurableSetting;
 import core.levels.LevelManager;
 import core.world.EntitySpawner;
 import core.world.WorldEntity;
-import core.world.WorldManager;
 
 /**
  * Runs the gameplay of a Level.
@@ -30,7 +25,7 @@ public class LevelGameplayController implements Screen {
     private final WorldEntity player;
     private final Box2DDebugRenderer box2DDebugRenderer;
 
-    public final ConfigurableSetting<Boolean> render_physics = new ConfigurableSetting<>(
+    private final ConfigurableSetting<Boolean> render_physics = new ConfigurableSetting<>(
         Boolean.class,
         "render_physics",
         "Whether physics bodies should be rendered.",
@@ -92,7 +87,7 @@ public class LevelGameplayController implements Screen {
         shapeRenderer.circle(cameraManager.getSubjectPosition().x, cameraManager.getSubjectPosition().y, 0.1f, 16);
         shapeRenderer.end();
 
-        if (render_physics.getValue()) {
+        if (render_physics.get()) {
             levelManager.getWorldManager().drawPhysics(box2DDebugRenderer, cameraManager.getCamera());
         }
     }
