@@ -1,6 +1,6 @@
 package core.config;
 
-import core.debug.Terminal;
+import core.presenters.debug.Terminal;
 import org.apache.commons.cli.*;
 
 /**

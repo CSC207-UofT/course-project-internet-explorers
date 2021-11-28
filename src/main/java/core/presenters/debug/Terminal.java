@@ -1,4 +1,4 @@
-package core.debug;
+package core.presenters.debug;
 
 import com.badlogic.gdx.Gdx;
 import java.io.InputStream;

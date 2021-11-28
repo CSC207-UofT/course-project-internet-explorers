@@ -2,8 +2,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import core.config.ConfigController;
 import core.config.ConfigurableSetting;
-import core.debug.Terminal;
 import core.presenters.ScreenManager;
+import core.presenters.debug.Terminal;
 
 class DesktopLauncher {
 
