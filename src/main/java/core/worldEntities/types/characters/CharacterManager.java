@@ -47,9 +47,8 @@ public class CharacterManager {
      */
     public void processInputs(float dt, Map<UUID, CharacterInput> inputs) {
         inputs.forEach((id, input) -> {
-            // m/s
-            float speed = 10f;
-            entityManager.setLinearVelocity(id, input.direction().nor().scl(speed / dt / 100));
+            // normalize input direction then scale by desired speed in m/s
+            entityManager.setLinearVelocity(id, input.direction().nor().scl(10f));
 
             // TODO separate movement/usage into separate methods (also consult with ben)
             if (input.using()) {
