@@ -6,13 +6,12 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import core.characters.CharacterManager;
-import core.characters.GameCharacter;
+import core.entities.Spawner;
+import core.entities.WorldEntityManager;
+import core.entities.types.characters.CharacterManager;
+import core.entities.types.characters.GameCharacter;
 import core.input.AIInputDevice;
 import core.input.KeyboardInputDevice;
-import core.world.Spawner;
-import core.world.WorldEntityManager;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -184,7 +183,9 @@ public class LevelManager {
         level.setLevelPaused(false);
     }
 
-    public boolean isLevelPaused() { return level.levelPaused; }
+    public boolean isLevelPaused() {
+        return level.levelPaused;
+    }
 
     public int getTime() {
         return (int) Math.floor(level.getCurrentTime());

@@ -1,4 +1,6 @@
-package core.screens;
+package core.presenters.levels;
+
+import static core.entities.DemoSpawners.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -6,25 +8,21 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import core.InventorySystem.Item;
-import core.InventorySystem.ItemTypes.Dagger;
-import core.InventorySystem.ItemTypes.Sword;
-import core.camera.CameraManager;
-import core.characters.CharacterManager;
-import core.characters.GameCharacter;
+import core.entities.Spawner;
+import core.entities.WorldEntityManager;
+import core.entities.types.characters.CharacterManager;
+import core.entities.types.characters.GameCharacter;
 import core.input.AIInputDevice;
 import core.input.InputController;
 import core.input.KeyboardInputDevice;
+import core.inventory.Item;
+import core.inventory.items.Dagger;
+import core.inventory.items.Sword;
 import core.levels.LevelManager;
 import core.levels.LevelState;
-import core.screens.HUD.HudManager;
-import core.world.Spawner;
-import core.world.WorldEntityManager;
-
+import core.presenters.HUD.HudManager;
 import java.util.UUID;
 import java.util.function.Supplier;
-
-import static core.world.DemoSpawners.*;
 
 /**
  * Runs the gameplay of a Level.

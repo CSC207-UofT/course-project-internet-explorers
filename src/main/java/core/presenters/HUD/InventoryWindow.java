@@ -1,12 +1,11 @@
-package core.screens.HUD;
+package core.presenters.HUD;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import core.InventorySystem.Item;
-import core.characters.CharacterManager;
-
+import core.entities.types.characters.CharacterManager;
+import core.inventory.Item;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -29,7 +28,7 @@ public class InventoryWindow extends Window {
         updateInventoryWindow();
     }
 
-    private void updateInventoryWindow(){
+    private void updateInventoryWindow() {
         this.clear();
 
         Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
@@ -38,28 +37,27 @@ public class InventoryWindow extends Window {
         table.pad(10);
         table.add(label0);
 
-        if (playerInventory != null){
-
-            for (int i = 1; i < playerInventory.size(); i++){
+        if (playerInventory != null) {
+            for (int i = 1; i < playerInventory.size(); i++) {
                 Label label = new Label(String.valueOf(i), skin);
                 table.add(label);
             }
 
             table.row();
 
-            for (int i = 0; i < playerInventory.size(); i++){
+            for (int i = 0; i < playerInventory.size(); i++) {
                 Item item = playerInventory.get(i);
 
                 ImageButton button = item.createInventorySlot(i);
 
                 button.addListener(
-                        new ChangeListener() {
-                            @Override
-                            public void changed(ChangeEvent event, Actor actor) {
-                                characterManager.selectItem(playerId, item);
-                                updateInventoryWindow();
-                            }
+                    new ChangeListener() {
+                        @Override
+                        public void changed(ChangeEvent event, Actor actor) {
+                            characterManager.selectItem(playerId, item);
+                            updateInventoryWindow();
                         }
+                    }
                 );
 
                 table.add(button).width(48).height(123).pad(10);

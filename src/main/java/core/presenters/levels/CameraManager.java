@@ -1,4 +1,4 @@
-package core.camera;
+package core.presenters.levels;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -6,9 +6,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import core.world.WorldEntity;
-import core.world.WorldEntityManager;
-
+import core.entities.WorldEntity;
+import core.entities.WorldEntityManager;
 import java.util.UUID;
 import java.util.function.Function;
 

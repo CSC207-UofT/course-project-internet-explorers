@@ -1,12 +1,11 @@
-package core.characters;
+package core.entities.types.characters;
 
-import core.InventorySystem.Item;
-import core.InventorySystem.Weapon;
-import core.InventorySystem.WeaponUsageDelegate;
+import core.entities.WorldEntityManager;
 import core.input.CharacterInput;
 import core.input.CharacterInputDevice;
-import core.world.WorldEntityManager;
-
+import core.inventory.Item;
+import core.inventory.Weapon;
+import core.inventory.WeaponUsageDelegate;
 import java.util.*;
 
 public class CharacterManager {

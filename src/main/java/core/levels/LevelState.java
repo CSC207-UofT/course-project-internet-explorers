@@ -1,11 +1,9 @@
 package core.levels;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import core.characters.GameCharacter;
-import core.world.Spawner;
-
+import core.entities.Spawner;
+import core.entities.types.characters.GameCharacter;
 import java.io.Serializable;
 import java.util.List;
 
@@ -22,7 +20,6 @@ public class LevelState implements Serializable {
     protected int score;
     protected List<Spawner<GameCharacter>> enemySpawns;
     private float spawnTime;
-
 
     // unitScale measured in m/px
     // represents in-game size of map tiles
@@ -88,7 +85,7 @@ public class LevelState implements Serializable {
         return levelFinished;
     }
 
-    public void finishedLevel(){
+    public void finishedLevel() {
         levelFinished = true;
     }
 

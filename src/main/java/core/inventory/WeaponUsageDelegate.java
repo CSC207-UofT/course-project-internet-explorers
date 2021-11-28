@@ -1,4 +1,4 @@
-package core.InventorySystem;
+package core.inventory;
 
 import java.util.UUID;
 

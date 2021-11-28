@@ -1,4 +1,4 @@
-package core.characters;
+package core.entities.types.characters;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -49,10 +49,10 @@ public class CharacterSprite {
     public void renderCharacter() {
         Gdx.gl.glClearColor(0.57f, 0.77f, 0.85f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        if(Gdx.input.isKeyPressed(Input.Keys.A)) this.player_x -= 10;
-        if(Gdx.input.isKeyPressed(Input.Keys.D)) this.player_x += 10;
-        if(Gdx.input.isKeyPressed(Input.Keys.W)) this.player_y += 10;
-        if(Gdx.input.isKeyPressed(Input.Keys.S)) this.player_y -= 10;
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) this.player_x -= 10;
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) this.player_x += 10;
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) this.player_y += 10;
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) this.player_y -= 10;
         this.playerSprite.setPosition(player_x, player_y);
         batch.begin();
         playerSprite.draw(batch);

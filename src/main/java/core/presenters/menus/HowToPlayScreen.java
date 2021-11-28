@@ -1,4 +1,4 @@
-package core.screens.menus;
+package core.presenters.menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import core.ScreenManager;
+import core.presenters.ScreenManager;
 
 public class HowToPlayScreen extends Menu {
 
@@ -20,7 +20,8 @@ public class HowToPlayScreen extends Menu {
     public HowToPlayScreen(ScreenManager screenManager, Screen prevScreen) {
         super(screenManager);
         this.prevScreen = prevScreen;
-        instructions = """
+        instructions =
+            """
                 Welcome to WhiteKnights!\s
                 You can pause and resume the game by pressing "ESC".\s
                 You can move around with "WASD".\s
@@ -43,11 +44,10 @@ public class HowToPlayScreen extends Menu {
     public void show() {
         super.show();
         stage.addActor(createBackButton());
-
     }
 
     @Override
-    public void render(float delta){
+    public void render(float delta) {
         super.render(delta);
         batch.begin();
 

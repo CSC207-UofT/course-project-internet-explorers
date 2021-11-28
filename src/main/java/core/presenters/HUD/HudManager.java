@@ -1,4 +1,4 @@
-package core.screens.HUD;
+package core.presenters.HUD;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -13,9 +13,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import core.characters.CharacterManager;
+import core.entities.types.characters.CharacterManager;
 import core.levels.LevelManager;
-
 import java.util.UUID;
 
 /***
@@ -99,7 +98,7 @@ public class HudManager implements Disposable {
         sb.setProjectionMatrix(getCamera().combined);
 
         // display winning text once you beat the level
-        if (levelManager.checkWin()){
+        if (levelManager.checkWin()) {
             winLabel.setText("YOU BEAT THIS LEVEL");
         }
 

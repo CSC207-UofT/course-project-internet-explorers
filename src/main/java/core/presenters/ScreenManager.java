@@ -1,7 +1,7 @@
-package core;
+package core.presenters;
 
 import com.badlogic.gdx.Game;
-import core.screens.menus.MainMenuScreen;
+import core.presenters.menus.MainMenuScreen;
 
 public class ScreenManager extends Game {
 

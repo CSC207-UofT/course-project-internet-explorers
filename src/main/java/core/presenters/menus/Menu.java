@@ -1,4 +1,4 @@
-package core.screens.menus;
+package core.presenters.menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import core.ScreenManager;
+import core.presenters.ScreenManager;
 
 public abstract class Menu implements Screen {
 
@@ -17,7 +17,6 @@ public abstract class Menu implements Screen {
     protected Menu(ScreenManager screenManager) {
         this.screenManager = screenManager;
         this.stage = new Stage(new ScreenViewport());
-
     }
 
     protected ClickListener createExitButtonListener(Screen nextScreen) {
@@ -39,7 +38,9 @@ public abstract class Menu implements Screen {
     }
 
     @Override
-    public void show() { Gdx.input.setInputProcessor(stage); }
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
+    }
 
     @Override
     public void resize(int width, int height) {}

@@ -1,4 +1,4 @@
-package core.screens.menus;
+package core.presenters.menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -6,9 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import core.ScreenManager;
 import core.levels.LevelLoader;
-import core.screens.LevelGameplayController;
+import core.presenters.ScreenManager;
+import core.presenters.levels.LevelGameplayController;
 
 public class MainMenuScreen extends Menu {
 
@@ -31,12 +31,11 @@ public class MainMenuScreen extends Menu {
 
     @Override
     public void show() {
-//        stage.addActor(createSpriteDemoButton());
+        //        stage.addActor(createSpriteDemoButton());
         super.show();
         stage.addActor(createPlayButton());
         stage.addActor(createHowToPlayButton());
         stage.addActor(createExitButton());
-
     }
 
     @Override

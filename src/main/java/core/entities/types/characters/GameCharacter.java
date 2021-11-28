@@ -1,13 +1,12 @@
-package core.characters;
+package core.entities.types.characters;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import core.InventorySystem.Item;
+import core.entities.WorldEntityManager;
+import core.entities.WorldEntityWithSprite;
 import core.input.CharacterInputDevice;
-import core.world.WorldEntityManager;
-import core.world.WorldEntityWithSprite;
-
+import core.inventory.Item;
 import java.util.ArrayList;
 
 public class GameCharacter extends WorldEntityWithSprite {

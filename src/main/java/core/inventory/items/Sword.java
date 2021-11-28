@@ -1,21 +1,20 @@
-package core.InventorySystem.ItemTypes;
+package core.inventory.items;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import core.InventorySystem.Weapon;
-
+import core.inventory.Weapon;
 import java.util.UUID;
 
-public class Dagger extends Weapon {
+public class Sword extends Weapon {
 
     /*
-     * Dagger weapon object stored in inventory for use
-     * @param texture: texture of Dagger
-     * @param size: size of Dagger
-     * @param level: level of Dagger
-     * @param range: range of Dagger
-     * @param damage: damage of Dagger
+     * Sword weapon object stored in inventory for use
+     * @param texture: texture of Sword
+     * @param size: size of Sword
+     * @param level: level of Sword
+     * @param range: range of Sword
+     * @param damage: damage of Sword
      * */
 
     private final int size;
@@ -24,23 +23,23 @@ public class Dagger extends Weapon {
     private final int damage;
     public UUID id;
 
-    public Dagger(int level) {
+    public Sword(int level) {
         this.level = level;
         this.size = this.level;
-        this.range = this.level;
-        this.damage = this.level * 2;
+        this.range = this.level * 2;
+        this.damage = this.level * 3;
         this.id = UUID.randomUUID();
     }
 
     @Override
     public Texture getSelectedTexture() {
-        String texturePathSelected = "items/dagger_highlight.png";
+        String texturePathSelected = "items/sword_highlight.png";
         return new Texture(texturePathSelected);
     }
 
     @Override
     public Texture getUnselectedTexture() {
-        String texturePathNotSelected = "items/dagger_not_highlight.png";
+        String texturePathNotSelected = "items/sword_not_highlight.png";
         return new Texture(texturePathNotSelected);
     }
 
@@ -70,20 +69,17 @@ public class Dagger extends Weapon {
     }
 
     @Override
+    public int getDamage() {
+        return damage;
+    }
+
     public ImageButton createInventorySlot(int index) {
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
-        if (index == 0){
+        if (index == 0) {
             style.up = new TextureRegionDrawable(this.getSelectedTexture());
         } else {
             style.up = new TextureRegionDrawable(this.getUnselectedTexture());
         }
-
-
         return new ImageButton(style);
-    }
-
-    @Override
-    public int getDamage() {
-        return damage;
     }
 }

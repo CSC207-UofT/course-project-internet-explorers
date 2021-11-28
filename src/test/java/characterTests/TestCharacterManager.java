@@ -3,13 +3,11 @@ package characterTests;
 import static org.junit.Assert.assertEquals;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
-import core.characters.CharacterManager;
-import core.characters.GameCharacter;
-import core.world.WorldEntityManager;
-import java.util.ArrayList;
+import core.entities.WorldEntityManager;
+import core.entities.types.characters.CharacterManager;
+import core.entities.types.characters.GameCharacter;
 import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 

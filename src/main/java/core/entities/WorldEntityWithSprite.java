@@ -1,4 +1,4 @@
-package core.world;
+package core.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
