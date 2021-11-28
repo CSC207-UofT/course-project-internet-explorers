@@ -3,6 +3,9 @@ package core.config;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
+/**
+ * Use-case class for `ConfigurableSetting`'s.
+ */
 public class ConfigManager {
 
     protected final HashMap<String, ConfigurableSetting<?>> configurableSettings;
@@ -21,6 +24,9 @@ public class ConfigManager {
         }
     }
 
+    /**
+     * Get a ConfigurableSetting.
+     */
     private ConfigurableSetting<?> getSetting(String settingName) {
         ConfigurableSetting<?> setting = configurableSettings.get(settingName);
         if (setting == null) {
@@ -30,12 +36,15 @@ public class ConfigManager {
     }
 
     /**
-     * convenience method to get setting value
+     * Get value of a setting.
      */
     public Object get(String settingName) {
         return getSetting(settingName).getValue();
     }
 
+    /**
+     * Set the value of a setting using a String.
+     */
     public void set(String settingName, String valueString) {
         getSetting(settingName).setValueFromString(valueString);
     }

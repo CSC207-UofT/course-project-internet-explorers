@@ -4,6 +4,15 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+/**
+ * Entity class which represents a setting in the game, including its
+ *      * type
+ *      * description
+ *      * value
+ *
+ * ConfigurableSettings are registered with the global ConfigManager upon instantiation,
+ * such that settings are usable wherever needed. For example, in presenter classes.
+ */
 public class ConfigurableSetting<T> {
 
     public final Class<T> type;
@@ -12,8 +21,15 @@ public class ConfigurableSetting<T> {
     private final String desc;
     private final Supplier<T> getter;
     private final Consumer<T> setter;
+    /**
+     * Function to parse strings into a setting value of type T.
+     * TODO possibly make it possible to throw ParseException for invalid strings.
+     */
     private final Function<String, T> stringParser;
 
+    /**
+     * Initialize setting using getters and setters; storing value is left to client code.
+     */
     public ConfigurableSetting(
         Class<T> type,
         String name,
@@ -32,6 +48,9 @@ public class ConfigurableSetting<T> {
         Config.getManager().registerSetting(this);
     }
 
+    /**
+     * Initialize setting with value stored internally. Initially, setting value is `null`.
+     */
     public ConfigurableSetting(Class<T> type, String name, String desc, Function<String, T> stringParser) {
         this.type = type;
         this.name = name;
@@ -43,6 +62,9 @@ public class ConfigurableSetting<T> {
         Config.getManager().registerSetting(this);
     }
 
+    /**
+     * Initialize setting with specified initial value, stored internally.
+     */
     public ConfigurableSetting(Class<T> type, String name, String desc, T initialValue, Function<String, T> stringParser) {
         this(type, name, desc, stringParser);
         setValue(initialValue);

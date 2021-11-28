@@ -14,6 +14,9 @@ public class Config {
         return configManager;
     }
 
+    /**
+     * Registers a command in the Terminal to read/write settings via the `configManager`.
+     */
     public static void useTerminal(Terminal terminal) {
         Option set = Option.builder().option("set").desc("sets the value of a setting").hasArgs().numberOfArgs(2).build();
         Option get = Option.builder().option("get").desc("gets the value of a setting").hasArgs().numberOfArgs(1).build();
