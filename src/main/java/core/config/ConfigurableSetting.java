@@ -49,6 +49,24 @@ public class ConfigurableSetting<T> {
     }
 
     /**
+     * Initialize setting with specified initialValue using getters and setters; storing value is left to client code.
+     */
+    public ConfigurableSetting(
+        Class<T> type,
+        String name,
+        String desc,
+        T initialValue,
+        Supplier<T> getter,
+        Consumer<T> setter,
+        Function<String, T> stringParser
+    ) {
+        this(type, name, desc, getter, setter, stringParser);
+        set(initialValue);
+
+        Config.registerSetting(this);
+    }
+
+    /**
      * Initialize setting with value stored internally. Initially, setting value is `null`.
      */
     public ConfigurableSetting(Class<T> type, String name, String desc, Function<String, T> stringParser) {
