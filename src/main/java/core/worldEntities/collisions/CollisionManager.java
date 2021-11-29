@@ -8,6 +8,10 @@ import core.worldEntities.WorldEntity;
 
 public class CollisionManager implements ContactListener {
 
+    /**
+     * Checks if collided WorldEntities implement HasCollisionBehaviour.
+     * If so, calls each CollisionBehaviour's collision handler invoker.
+     */
     @Override
     public void beginContact(Contact contact) {
         Object a = contact.getFixtureA().getBody().getUserData();
