@@ -3,10 +3,8 @@ package core.worldEntities;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
+import core.worldEntities.collisions.CollisionManager;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -22,6 +20,8 @@ public class WorldEntityManager {
     public WorldEntityManager(World world) {
         this.world = world;
         this.entities = new HashMap<>();
+
+        world.setContactListener(new CollisionManager());
     }
 
     /**
@@ -35,6 +35,7 @@ public class WorldEntityManager {
      */
     protected Body register(WorldEntity entity, BodyDef bodyDef, FixtureDef... fixtureDefs) {
         Body body = world.createBody(bodyDef);
+        body.setUserData(entity);
         createFixtures(body, fixtureDefs);
         this.entities.put(entity.id, entity);
         return body;
