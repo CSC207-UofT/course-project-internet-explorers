@@ -10,19 +10,19 @@ public class CollisionManager implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-        WorldEntity a = (WorldEntity) contact.getFixtureA().getBody().getUserData();
-        WorldEntity b = (WorldEntity) contact.getFixtureB().getBody().getUserData();
+        Object a = contact.getFixtureA().getBody().getUserData();
+        Object b = contact.getFixtureB().getBody().getUserData();
 
-        if (a instanceof HasCollisionBehaviour participantA) {
-            for (CollisionBehaviour<?, ?> collisionBehaviour : participantA.getCollisionBehaviour()) {
-                collisionBehaviour.doCollisionBehaviourIfNecessary(a, b);
-            }
+        if (a instanceof HasCollisionBehaviour<?> participantA) {
+            (participantA.getCollisionBehaviour()).forEach(collisionBehaviour ->
+                    collisionBehaviour.doCollisionBehaviourIfNecessary((WorldEntity) a, (WorldEntity) b)
+                );
         }
 
-        if (b instanceof HasCollisionBehaviour participantB) {
-            for (CollisionBehaviour<?, ?> collisionBehaviour : participantB.getCollisionBehaviour()) {
-                collisionBehaviour.doCollisionBehaviourIfNecessary(b, a);
-            }
+        if (b instanceof HasCollisionBehaviour<?> participantB) {
+            participantB
+                .getCollisionBehaviour()
+                .forEach(collisionBehaviour -> collisionBehaviour.doCollisionBehaviourIfNecessary((WorldEntity) b, (WorldEntity) a));
         }
     }
 

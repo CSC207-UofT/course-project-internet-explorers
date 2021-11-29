@@ -1,5 +1,6 @@
 package core.worldEntities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import core.worldEntities.types.characters.Character;
+import core.worldEntities.types.damageDealers.Spike;
 
 public class DemoSpawners {
 
@@ -17,6 +19,15 @@ public class DemoSpawners {
         sprite.setOriginCenter();
 
         return Spawner.createSpriteBasedEntitySpawner(Character.class, position, sprite);
+    }
+
+    public static Spawner<Spike> createSpikeSpawner() {
+        Vector2 position = new Vector2(8, 5);
+        Sprite sprite = new Sprite(new Texture("weapons/spike.png"));
+        sprite.setSize(1.5f, 1.5f);
+        sprite.setOriginCenter();
+
+        return Spawner.createSpriteBasedEntitySpawner(Spike.class, position, sprite);
     }
 
     public static Spawner<Character> createEnemySpawner() {

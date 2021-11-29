@@ -21,6 +21,7 @@ import core.worldEntities.Spawner;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
+import core.worldEntities.types.damageDealers.Spike;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -56,7 +57,6 @@ public class LevelGameplayController implements Screen {
         this.shapeRenderer = new ShapeRenderer();
 
         Spawner<Character> playerSpawner = createPlayerSpawner();
-        //TODO: ^This should be a GameCharacter, but GameCharacter currently extends the wrong world entity
         playerSpawner.setEntityManager(entityManager);
         UUID playerId = playerSpawner.spawn().id;
         characterManager.addCharacter(playerId, KeyboardInputDevice.class);
@@ -69,6 +69,10 @@ public class LevelGameplayController implements Screen {
 
         this.hud = new HudManager(this.characterManager, this.levelManager, playerId);
         this.inputController = new InputController(characterManager, hud, levelManager);
+
+        Spawner<Spike> spikeSpawner = createSpikeSpawner();
+        spikeSpawner.setEntityManager(entityManager);
+        spikeSpawner.spawn();
 
         Spawner<?> enemySpawner = createEnemySpawner();
         enemySpawner.setEntityManager(entityManager);
