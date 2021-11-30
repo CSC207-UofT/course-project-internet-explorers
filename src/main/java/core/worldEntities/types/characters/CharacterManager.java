@@ -15,31 +15,10 @@ public class CharacterManager {
      * @param characterEntities: Hashmap storing characters as values with their UUID as keys
      * */
 
-    public HashMap<UUID, Character> characterEntities;
     private final WorldEntityManager entityManager;
 
     public CharacterManager(WorldEntityManager entityManager) {
-        this.characterEntities = new HashMap<>();
         this.entityManager = entityManager;
-    }
-
-    /**
-     * Adds a WorldEntity in the entityManager to this CharacterManager.
-     * The WorldEntity must be already added to the entityManager and must be a subclass of GameCharacter.
-     * TODO: Remove this and replace any calls to character entities with ones from entity manager
-     *      using the ID and checking for instance of character
-     */
-    public void addCharacter(UUID id, Class<? extends CharacterInputDevice> inputDeviceType) {
-        if (entityManager.getEntity(id) instanceof Character character) {
-            this.characterEntities.put(character.id, character);
-            character.setInputDeviceType(inputDeviceType);
-        } else {
-            throw new RuntimeException("Couldn't find a GameCharacter with the specified UUID: " + id);
-        }
-    }
-
-    public void addCharacter(UUID id) {
-        addCharacter(id, CharacterInputDevice.class);
     }
 
     /**
@@ -49,13 +28,13 @@ public class CharacterManager {
     public void processInputs(float dt, Map<UUID, CharacterInput> inputs) {
         inputs.forEach((id, input) -> {
             // normalize input direction then scale by desired speed in m/s
-            // TODO: Change it to call setVelocity from the Character class
-            entityManager.setLinearVelocity(id, input.direction().nor().scl(10f));
+            // Moved this to be a setter in the entity class
+            entityManager.getEntity(id).setLinearVelocity(id, input.direction().nor().scl(10f));
 
             // TODO separate movement/usage into separate methods (also consult with ben)
             if (input.using()) {
                 WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
-                usageDelegate.use((Weapon) this.characterEntities.get(id).getInventory().get(0));
+                usageDelegate.use((Weapon) ((GameCharacter) this.entityManager.getEntity(id)).getInventory().get(0));
             }
         });
     }
@@ -65,7 +44,8 @@ public class CharacterManager {
          * Decreases character health by damage
          * */
         if (verifyId(id)) {
-            this.characterEntities.get(id).setHealth(this.characterEntities.get(id).getHealth() - damage);
+            ((GameCharacter) this.entityManager.getEntity(id)).setHealth(((GameCharacter)
+                    this.entityManager.getEntity(id)).getHealth() - damage);
         }
     }
 
@@ -74,7 +54,8 @@ public class CharacterManager {
          * Increases the level of a character following the completion of a wave
          * */
         if (verifyId(id)) {
-            this.characterEntities.get(id).setLevel(this.characterEntities.get(id).getLevel() + 1);
+            ((GameCharacter) this.entityManager.getEntity(id)).setLevel(((GameCharacter)
+                    this.entityManager.getEntity(id)).getLevel() + 1);
         }
     }
 
@@ -88,7 +69,7 @@ public class CharacterManager {
          * Ensures that there are no issues when controller class calls a UsageDelegate
          * */
         if (verifyId(id)) {
-            return this.characterEntities.get(id).getInventory().contains(item);
+            return ((GameCharacter) this.entityManager.getEntity(id)).getInventory().contains(item);
         }
         return false;
     }
@@ -99,11 +80,11 @@ public class CharacterManager {
          * Returns True if item successfully selected, false if not
          * */
         if (verifyId(id)) {
-            if (this.characterEntities.get(id).getInventory().contains(item)) {
+            if (((GameCharacter) this.entityManager.getEntity(id)).getInventory().contains(item)) {
                 Collections.swap(
-                    this.characterEntities.get(id).getInventory(),
+                        ((GameCharacter) this.entityManager.getEntity(id)).getInventory(),
                     0,
-                    this.characterEntities.get(id).getInventory().indexOf(item)
+                        ((GameCharacter) this.entityManager.getEntity(id)).getInventory().indexOf(item)
                 );
                 return true;
             }
@@ -116,7 +97,7 @@ public class CharacterManager {
          * Adds item to the inventory
          * */
         if (verifyId(id)) {
-            this.characterEntities.get(id).getInventory().add(item);
+            ((GameCharacter) this.entityManager.getEntity(id)).getInventory().add(item);
         }
     }
 
@@ -126,8 +107,8 @@ public class CharacterManager {
          * Returns True if item successfully removed, false if not
          * */
         if (verifyId(id)) {
-            if (this.characterEntities.get(id).getInventory().contains(item)) {
-                this.characterEntities.get(id).getInventory().remove(item);
+            if (((GameCharacter) this.entityManager.getEntity(id)).getInventory().contains(item)) {
+                ((GameCharacter) this.entityManager.getEntity(id)).getInventory().remove(item);
                 return true;
             }
         }
@@ -140,18 +121,12 @@ public class CharacterManager {
          * Returns null if character id cannot be found
          * */
         if (verifyId(id)) {
-            return this.characterEntities.get(id).getInventory();
+            return ((GameCharacter) this.entityManager.getEntity(id)).getInventory();
         }
         return null;
     }
 
     private boolean verifyId(UUID id) {
-        // Loops through hashmap to ensure .get doesn't return null
-        for (var i : this.characterEntities.entrySet()) {
-            if (i.getKey() == id) {
-                return true;
-            }
-        }
-        return false;
+        return this.entityManager.getEntity(id) != null && this.entityManager.getEntity(id) instanceof GameCharacter;
     }
 }

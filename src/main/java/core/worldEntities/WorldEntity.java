@@ -10,9 +10,6 @@ import java.util.UUID;
  * Represents an entity within a level's World.
  * <p>
  * A WorldEntity has a unique ID and is represented as a Box2D Body within the World.
- *
- * TODO check with ben if we should make WorldEntity properties protected
- *      and only have public getters/setters in WorldManager
  */
 public class WorldEntity {
 
@@ -41,4 +38,16 @@ public class WorldEntity {
     public Body getBody() {
         return body;
     }
+
+    public void setLinearVelocity(UUID id, Vector2 velocity) {
+        this.body.setLinearVelocity(velocity);
+    }
+
+    /**
+     * Set the entity's velocity such that it reaches the target position in the specified amount of time `dt`.
+     */
+    public void setTeleportVelocity(UUID id, Vector2 target, float dt) {
+        this.body.setLinearVelocity(target.cpy().sub(body.getPosition().cpy()).scl(1 / dt));
+    }
+
 }

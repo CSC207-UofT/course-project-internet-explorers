@@ -7,6 +7,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import core.input.CharacterInputDevice;
+import core.worldEntities.types.characters.GameCharacter;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -36,6 +39,28 @@ public class WorldEntityManager {
         Body body = world.createBody(bodyDef);
         createFixtures(body, fixtureDefs);
         entity.setBody(body);
+        this.entities.put(entity.id, entity);
+    }
+
+    /**
+    * Creates a GameCharacter
+     * If a game character is being created, an input device is passed to handle the inputs
+    * @param entity      The entity to register
+    * @param bodyDef     Box2D representation details
+    * @param inputDeviceType type of inputs the entity will receive
+    * @param fixtureDefs Box2D representation details
+    */
+    protected void register(WorldEntity entity, BodyDef bodyDef, Class<? extends CharacterInputDevice> inputDeviceType,
+                            FixtureDef... fixtureDefs) {
+        Body body = world.createBody(bodyDef);
+        createFixtures(body, fixtureDefs);
+        entity.setBody(body);
+
+        if (entity instanceof GameCharacter) {
+            ((GameCharacter) entity).setInputDeviceType(inputDeviceType);
+        } else {
+            throw new RuntimeException(entity.id + "does not represent a GameCharacter");
+        }
         this.entities.put(entity.id, entity);
     }
 
@@ -73,18 +98,6 @@ public class WorldEntityManager {
 
     public WorldEntity getEntity(UUID id) {
         return entities.get(id);
-    }
-
-    public void setLinearVelocity(UUID id, Vector2 velocity) {
-        entities.get(id).getBody().setLinearVelocity(velocity);
-    }
-
-    /**
-     * Set the entity's velocity such that it reaches the target position in the specified amount of time `dt`.
-     */
-    public void setTeleportVelocity(UUID id, Vector2 target, float dt) {
-        Body body = entities.get(id).getBody();
-        body.setLinearVelocity(target.cpy().sub(body.getPosition().cpy()).scl(1 / dt));
     }
 
     public void teleport(UUID id, Vector2 target) {

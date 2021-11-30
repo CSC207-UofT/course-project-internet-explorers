@@ -9,7 +9,7 @@ import core.worldEntities.WorldEntityManager;
 import core.worldEntities.WorldEntityWithSprite;
 import java.util.ArrayList;
 
-public class Character extends WorldEntityWithSprite {
+public class GameCharacter extends WorldEntityWithSprite {
 
     /*
      * Class that defines the main attributes of the classes Player, Enemy and Defender in the game.
@@ -25,7 +25,7 @@ public class Character extends WorldEntityWithSprite {
     private ArrayList<Item> inventory;
     private Class<? extends CharacterInputDevice> inputDeviceType;
 
-    public Character() {
+    public GameCharacter() {
         super();
         this.team = "";
         this.health = 0;
@@ -63,10 +63,6 @@ public class Character extends WorldEntityWithSprite {
 
     public void setInventory(ArrayList<Item> inventory) {
         this.inventory = inventory;
-    }
-
-    public void setVelocity(Vector2 velocity) {
-        this.getBody().setLinearVelocity(velocity);
     }
 
     public void setInputDeviceType(Class<? extends CharacterInputDevice> inputDeviceType) {
