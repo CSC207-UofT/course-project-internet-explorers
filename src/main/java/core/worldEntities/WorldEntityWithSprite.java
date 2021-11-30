@@ -10,8 +10,8 @@ public class WorldEntityWithSprite extends WorldEntity {
     private Sprite sprite;
     private Vector2 offset;
 
-    public WorldEntityWithSprite(WorldEntityManager entityManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
-        super(entityManager, bodyDef, fixtureDefs);
+    public WorldEntityWithSprite() {
+        super();
     }
 
     public void setSprite(Sprite sprite) {
@@ -20,7 +20,7 @@ public class WorldEntityWithSprite extends WorldEntity {
     }
 
     protected Sprite getSprite() {
-        sprite.setRotation(body.getAngle() * 57.29578f);
+        sprite.setRotation(this.getBody().getAngle() * 57.29578f);
 
         Vector2 pos = this.getPosition().add(offset);
         sprite.setPosition(pos.x, pos.y);

@@ -26,7 +26,7 @@ public class TestCharacter {
 
         BodyDef def = new BodyDef();
 
-        player = new Character(entityManager, def);
+        player = new Character();
     }
 
     @AfterEach

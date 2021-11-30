@@ -32,7 +32,7 @@ public class TestWorldEntity {
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.StaticBody;
 
-        WorldEntity entity = new WorldEntity(entityManager, def);
+        WorldEntity entity = new WorldEntity();
 
         assertNotNull(entity.id, "Entity UUID was not set.");
         assertNotNull(entityManager.getEntity(entity.id), "WorldManager can't get the entity by UUID.");
@@ -55,7 +55,7 @@ public class TestWorldEntity {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
 
-        new WorldEntity(entityManager, bodyDef, fixtureDef);
+        new WorldEntity();
 
         circle.dispose();
 
@@ -77,7 +77,7 @@ public class TestWorldEntity {
         fixtureDef1.shape = circle;
         fixtureDef2.shape = square;
 
-        new WorldEntity(entityManager, bodyDef, fixtureDef1, fixtureDef2);
+        new WorldEntity();
 
         circle.dispose();
         square.dispose();

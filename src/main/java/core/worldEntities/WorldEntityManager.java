@@ -31,13 +31,12 @@ public class WorldEntityManager {
      * @param entity      The entity to register
      * @param bodyDef     Box2D representation details
      * @param fixtureDefs Box2D representation details
-     * @return The WorldEntity's representation as a Box2D Body.
      */
-    protected Body register(WorldEntity entity, BodyDef bodyDef, FixtureDef... fixtureDefs) {
+    protected void register(WorldEntity entity, BodyDef bodyDef, FixtureDef... fixtureDefs) {
         Body body = world.createBody(bodyDef);
         createFixtures(body, fixtureDefs);
+        entity.setBody(body);
         this.entities.put(entity.id, entity);
-        return body;
     }
 
     /**
@@ -77,19 +76,19 @@ public class WorldEntityManager {
     }
 
     public void setLinearVelocity(UUID id, Vector2 velocity) {
-        entities.get(id).body.setLinearVelocity(velocity);
+        entities.get(id).getBody().setLinearVelocity(velocity);
     }
 
     /**
      * Set the entity's velocity such that it reaches the target position in the specified amount of time `dt`.
      */
     public void setTeleportVelocity(UUID id, Vector2 target, float dt) {
-        Body body = entities.get(id).body;
+        Body body = entities.get(id).getBody();
         body.setLinearVelocity(target.cpy().sub(body.getPosition().cpy()).scl(1 / dt));
     }
 
     public void teleport(UUID id, Vector2 target) {
-        Body body = entities.get(id).body;
+        Body body = entities.get(id).getBody();
         body.setTransform(target, body.getAngle());
     }
 }

@@ -39,7 +39,7 @@ public class TestInventory {
         WorldEntityManager entityManager = new WorldEntityManager(world);
         characterManager = new CharacterManager(entityManager);
 
-        test_player = new Character(entityManager, new BodyDef());
+        test_player = new Character();
     }
 
     @AfterEach

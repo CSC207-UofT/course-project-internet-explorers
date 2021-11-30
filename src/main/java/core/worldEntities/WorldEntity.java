@@ -20,13 +20,12 @@ public class WorldEntity {
      * The Box2D Body representing this WorldEntity in the World.
      * The Body's position is also the position of this WorldEntity.
      */
-    protected final Body body;
+    private Body body;
     public final UUID id;
 
-    public WorldEntity(WorldEntityManager entityManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
+    public WorldEntity() {
         this.id = UUID.randomUUID();
-
-        this.body = entityManager.register(this, bodyDef, fixtureDefs);
+        this.body = null;
     }
 
     public Vector2 getPosition() {
@@ -36,6 +35,8 @@ public class WorldEntity {
     public void setPosition(Vector2 position) {
         this.body.getPosition().set(position);
     }
+
+    public void setBody(Body body) {this.body = body;}
 
     public Body getBody() {
         return body;

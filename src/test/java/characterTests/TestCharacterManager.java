@@ -32,9 +32,9 @@ public class TestCharacterManager {
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
 
-        player1 = new Character(entityManager, def);
-        player2 = new Character(entityManager, def);
-        player3 = new Character(entityManager, def);
+        player1 = new Character();
+        player2 = new Character();
+        player3 = new Character();
     }
 
     @AfterEach

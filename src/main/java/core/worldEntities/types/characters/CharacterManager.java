@@ -25,8 +25,9 @@ public class CharacterManager {
 
     /**
      * Adds a WorldEntity in the entityManager to this CharacterManager.
-     * <p>
      * The WorldEntity must be already added to the entityManager and must be a subclass of GameCharacter.
+     * TODO: Remove this and replace any calls to character entities with ones from entity manager
+     *      using the ID and checking for instance of character
      */
     public void addCharacter(UUID id, Class<? extends CharacterInputDevice> inputDeviceType) {
         if (entityManager.getEntity(id) instanceof Character character) {
@@ -48,6 +49,7 @@ public class CharacterManager {
     public void processInputs(float dt, Map<UUID, CharacterInput> inputs) {
         inputs.forEach((id, input) -> {
             // normalize input direction then scale by desired speed in m/s
+            // TODO: Change it to call setVelocity from the Character class
             entityManager.setLinearVelocity(id, input.direction().nor().scl(10f));
 
             // TODO separate movement/usage into separate methods (also consult with ben)

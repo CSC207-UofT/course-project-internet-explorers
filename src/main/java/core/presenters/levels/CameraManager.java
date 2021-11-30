@@ -75,7 +75,7 @@ public class CameraManager {
      * TODO replace with a separate class so that user input is handled elsewhere.
      */
     public void enterDebugFreecamMode() {
-        subjectID = new WorldEntity(entityManager, new BodyDef()).id;
+        subjectID = new WorldEntity().id;
         debugFreecam = true;
     }
 
