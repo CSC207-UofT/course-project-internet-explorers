@@ -1,6 +1,6 @@
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import core.ScreenManager;
+import core.presenters.ScreenManager;
 
 class DesktopLauncher {
 
@@ -10,6 +10,7 @@ class DesktopLauncher {
         config.width = ScreenManager.WIDTH;
         config.height = ScreenManager.HEIGHT;
         config.resizable = false;
+        config.forceExit = false;
         new LwjglApplication(new ScreenManager(), config);
     }
 }

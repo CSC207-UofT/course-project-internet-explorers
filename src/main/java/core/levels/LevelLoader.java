@@ -1,15 +1,14 @@
 package core.levels;
 
-import core.characters.GameCharacter;
-import core.world.Spawner;
+import static core.worldEntities.DemoSpawners.createEnemySpawner;
 
+import core.worldEntities.Spawner;
+import core.worldEntities.types.characters.Character;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import static core.world.DemoSpawners.createEnemySpawner;
 
 public class LevelLoader {
 
@@ -50,7 +49,7 @@ public class LevelLoader {
         lvl.setCurrentTime(currentTime);
         double numEnemies = Math.floor(lvl.getCurrentTime() / lvl.getSpawnTime());
         for (int i = 0; i < numEnemies; i++) {
-            List<Spawner<GameCharacter>> enemiesUpdated = lvl.getEnemySpawns();
+            List<Spawner<Character>> enemiesUpdated = lvl.getEnemySpawns();
             enemiesUpdated.remove(0);
             lvl.setEnemySpawns(enemiesUpdated);
         }
@@ -63,10 +62,10 @@ public class LevelLoader {
      * @param numOfEnemies wanted to be spawned in this level
      * @return enemies list
      */
-    private static List<Spawner<GameCharacter>> createEnemyList(int numOfEnemies) {
-        List<Spawner<GameCharacter>> enemies = new ArrayList<>();
+    private static List<Spawner<Character>> createEnemyList(int numOfEnemies) {
+        List<Spawner<Character>> enemies = new ArrayList<>();
         for (int i = 0; i < numOfEnemies; i++) {
-            Spawner<GameCharacter> enemySpawner = createEnemySpawner();
+            Spawner<Character> enemySpawner = createEnemySpawner();
             enemySpawner.addSpawnCallback(character -> character.setTeam("enemy"));
             enemies.add(enemySpawner);
         }

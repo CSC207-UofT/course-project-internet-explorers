@@ -1,9 +1,8 @@
 package core.input;
 
-import core.characters.CharacterManager;
 import core.levels.LevelManager;
-import core.screens.HUD.HudManager;
-
+import core.presenters.HUD.HudManager;
+import core.worldEntities.types.characters.CharacterManager;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -34,20 +33,20 @@ public class InputController {
      * @param dt the frame time
      */
     public void handleInputs(float dt) {
-        HashMap<UUID, CharacterInput> res = new HashMap<>();
+        HashMap<UUID, CharacterInput> characterInputMap = new HashMap<>();
         characterManager.characterEntities.forEach((id, character) -> {
             // Check what kind of input the character wants, then supply that input from our InputDevice
             if (character.getInputDeviceType().equals(KeyboardInputDevice.class)) {
-                res.put(id, keyboardInputDevice.getCharacterInput());
+                characterInputMap.put(id, keyboardInputDevice.getCharacterInput());
             } else if (character.getInputDeviceType().equals(AIInputDevice.class)) {
-                res.put(id, aiInputDevice.getCharacterInput());
+                characterInputMap.put(id, aiInputDevice.getCharacterInput());
             } else {
                 // If no input type is set, use default inputs (which do nothing)
-                res.put(id, CharacterInputDevice.DEFAULT.getCharacterInput());
+                characterInputMap.put(id, CharacterInputDevice.DEFAULT.getCharacterInput());
             }
         });
 
-        characterManager.processInputs(dt, res);
+        characterManager.processInputs(dt, characterInputMap);
 
         if (keyboardInputDevice.getHudInput().toggleInventory()) {
             hudManager.toggleInventory();
