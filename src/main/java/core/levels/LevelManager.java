@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Use-Case class for LevelState.
- * Implements methods for rendering level and advancing the level's World.
+ * Implements methods for advancing the level's World.
  */
 public class LevelManager {
 
