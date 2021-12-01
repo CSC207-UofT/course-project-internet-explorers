@@ -6,7 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import core.input.AIInputDevice;
 import core.input.InputController;
@@ -38,6 +40,8 @@ public class LevelGameplayController implements Screen {
     private Box2DDebugRenderer box2DDebugRenderer;
     private HudManager hud;
     private InputController inputController;
+    private OrthogonalTiledMapRenderer mapRenderer;
+    private SpriteBatch batch;
 
     public LevelGameplayController(Supplier<LevelState> levelSupplier) {
         this.levelSupplier = levelSupplier;
@@ -54,6 +58,8 @@ public class LevelGameplayController implements Screen {
         this.cameraManager = new CameraManager(levelManager.getUnitScale(), entityManager);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.shapeRenderer = new ShapeRenderer();
+        this.mapRenderer = new OrthogonalTiledMapRenderer(levelManager.getMap(), levelManager.getLevelUnitScale());
+        this.batch = new SpriteBatch();
 
         Spawner<Character> playerSpawner = createPlayerSpawner();
         //TODO: ^This should be a GameCharacter, but GameCharacter currently extends the wrong world entity
@@ -86,6 +92,26 @@ public class LevelGameplayController implements Screen {
         cameraManager.setSubjectID(playerId);
     }
 
+    public void renderMap() {
+        mapRenderer.setView(cameraManager.getCamera());
+        mapRenderer.render();
+    }
+
+    public void renderWorld() {
+        batch.setProjectionMatrix(cameraManager.getCamera().combined);
+        batch.begin();
+        entityManager.draw(batch);
+        batch.end();
+    }
+
+    /**
+     * Invoke `render` on a Box2DDebugRenderer to draw the physics going on in this world.
+     * Used for debugging.
+     */
+    public void renderPhysics() {
+        box2DDebugRenderer.render(levelManager.getWorld(), cameraManager.getCamera().combined);
+    }
+
     @Override
     public void render(float dt) {
         Gdx.gl.glClearColor(0.7f, 0.7f, 0.7f, 1);
@@ -97,8 +123,8 @@ public class LevelGameplayController implements Screen {
 
         cameraManager.update(dt);
 
-        levelManager.renderMap(cameraManager.getCamera());
-        levelManager.renderWorld(cameraManager.getCamera());
+        renderMap();
+        renderWorld();
 
         // TODO move following code to the CameraManager
         // draw a red dot which marks the spot tracked by the camera (for debugging)
@@ -109,7 +135,7 @@ public class LevelGameplayController implements Screen {
         shapeRenderer.end();
 
         // TODO only do this in debug mode
-        levelManager.renderPhysics(box2DDebugRenderer, cameraManager.getCamera());
+        renderPhysics();
 
         hud.draw();
     }

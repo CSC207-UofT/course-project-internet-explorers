@@ -1,11 +1,8 @@
 package core.levels;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import core.input.AIInputDevice;
 import core.input.KeyboardInputDevice;
 import core.worldEntities.Spawner;
@@ -25,17 +22,14 @@ public class LevelManager {
 
     private final LevelState level;
     private final TiledMap map;
-    private final OrthogonalTiledMapRenderer mapRenderer;
     private final WorldEntityManager entityManager;
-    private final SpriteBatch batch;
 
     public LevelManager(LevelState level) {
         this.level = level;
         map = new TmxMapLoader().load(level.getMapPath());
-        this.mapRenderer = new OrthogonalTiledMapRenderer(map, level.getUnitScale());
         this.entityManager = new WorldEntityManager(level.world);
 
-        this.batch = new SpriteBatch();
+
 
         // assign all enemies to current entityManager
         List<Spawner<Character>> enemiesUpdated = level.getEnemySpawns();
@@ -143,26 +137,6 @@ public class LevelManager {
         objectOutputStream.close();
     }
 
-    public void renderMap(OrthographicCamera camera) {
-        mapRenderer.setView(camera);
-        mapRenderer.render();
-    }
-
-    public void renderWorld(OrthographicCamera camera) {
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        entityManager.draw(batch);
-        batch.end();
-    }
-
-    /**
-     * Invoke `render` on a Box2DDebugRenderer to draw the physics going on in this world.
-     * Used for debugging.
-     */
-    public void renderPhysics(Box2DDebugRenderer renderer, OrthographicCamera camera) {
-        renderer.render(level.world, camera.combined);
-    }
-
     public float getUnitScale() {
         return level.getUnitScale();
     }
@@ -189,5 +163,17 @@ public class LevelManager {
 
     public int getTime() {
         return (int) Math.floor(level.getCurrentTime());
+    }
+
+    public TiledMap getMap() {
+        return map;
+    }
+
+    public float getLevelUnitScale(){
+        return level.getUnitScale();
+    }
+
+    public World getWorld(){
+        return level.world;
     }
 }
