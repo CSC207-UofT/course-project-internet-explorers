@@ -10,10 +10,6 @@ public class WorldEntityWithSprite extends WorldEntity {
     private Sprite sprite;
     private Vector2 offset;
 
-    public WorldEntityWithSprite() {
-        super();
-    }
-
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
         this.offset = new Vector2(-sprite.getOriginX(), -sprite.getOriginY());

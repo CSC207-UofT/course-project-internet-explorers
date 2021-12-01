@@ -22,7 +22,6 @@ public class WorldEntity {
 
     public WorldEntity() {
         this.id = UUID.randomUUID();
-        this.body = null;
     }
 
     public Vector2 getPosition() {
@@ -39,15 +38,8 @@ public class WorldEntity {
         return body;
     }
 
-    public void setLinearVelocity(UUID id, Vector2 velocity) {
+    public void setLinearVelocity(Vector2 velocity) {
         this.body.setLinearVelocity(velocity);
-    }
-
-    /**
-     * Set the entity's velocity such that it reaches the target position in the specified amount of time `dt`.
-     */
-    public void setTeleportVelocity(UUID id, Vector2 target, float dt) {
-        this.body.setLinearVelocity(target.cpy().sub(body.getPosition().cpy()).scl(1 / dt));
     }
 
     public UUID getId() { return this.id; }

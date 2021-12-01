@@ -29,7 +29,7 @@ public class CharacterManager {
         inputs.forEach((id, input) -> {
             // normalize input direction then scale by desired speed in m/s
             // Moved this to be a setter in the entity class
-            entityManager.getEntity(id).setLinearVelocity(id, input.direction().nor().scl(10f));
+            entityManager.getEntity(id).setLinearVelocity(input.direction().nor().scl(10f));
 
             // TODO separate movement/usage into separate methods (also consult with ben)
             if (input.using()) {
@@ -43,20 +43,14 @@ public class CharacterManager {
         /*
          * Decreases character health by damage
          * */
-        if (verifyId(id)) {
-            ((GameCharacter) this.entityManager.getEntity(id)).setHealth(((GameCharacter)
-                    this.entityManager.getEntity(id)).getHealth() - damage);
-        }
+        verifyId(id).setHealth(verifyId(id).getHealth() - damage);
     }
 
     public void updateLevel(UUID id) {
         /*
          * Increases the level of a character following the completion of a wave
          * */
-        if (verifyId(id)) {
-            ((GameCharacter) this.entityManager.getEntity(id)).setLevel(((GameCharacter)
-                    this.entityManager.getEntity(id)).getLevel() + 1);
-        }
+        verifyId(id).setLevel(verifyId(id).getLevel() + 1);
     }
 
     /***
@@ -68,10 +62,8 @@ public class CharacterManager {
          * Checks if the item is in the character's inventory and then returns true if it is.
          * Ensures that there are no issues when controller class calls a UsageDelegate
          * */
-        if (verifyId(id)) {
-            return ((GameCharacter) this.entityManager.getEntity(id)).getInventory().contains(item);
-        }
-        return false;
+        return verifyId(id).getInventory().contains(item);
+
     }
 
     public boolean selectItem(UUID id, Item item) {
@@ -79,15 +71,13 @@ public class CharacterManager {
          * Checks if item is in inventory, then moves it to the first index at which item would be used
          * Returns True if item successfully selected, false if not
          * */
-        if (verifyId(id)) {
-            if (((GameCharacter) this.entityManager.getEntity(id)).getInventory().contains(item)) {
-                Collections.swap(
-                        ((GameCharacter) this.entityManager.getEntity(id)).getInventory(),
-                    0,
-                        ((GameCharacter) this.entityManager.getEntity(id)).getInventory().indexOf(item)
-                );
-                return true;
-            }
+        if (verifyId(id).getInventory().contains(item)) {
+            Collections.swap(
+                    verifyId(id).getInventory(),
+                0,
+                    verifyId(id).getInventory().indexOf(item)
+            );
+            return true;
         }
         return false;
     }
@@ -96,9 +86,7 @@ public class CharacterManager {
         /*
          * Adds item to the inventory
          * */
-        if (verifyId(id)) {
-            ((GameCharacter) this.entityManager.getEntity(id)).getInventory().add(item);
-        }
+        verifyId(id).getInventory().add(item);
     }
 
     public boolean removeInventory(UUID id, Item item) {
@@ -106,12 +94,10 @@ public class CharacterManager {
          * Checks if item is in inventory, then removes if it is
          * Returns True if item successfully removed, false if not
          * */
-        if (verifyId(id)) {
-            if (((GameCharacter) this.entityManager.getEntity(id)).getInventory().contains(item)) {
-                ((GameCharacter) this.entityManager.getEntity(id)).getInventory().remove(item);
+            if (verifyId(id).getInventory().contains(item)) {
+                verifyId(id).getInventory().remove(item);
                 return true;
             }
-        }
         return false;
     }
 
@@ -120,13 +106,20 @@ public class CharacterManager {
          * Returns inventory contents and displays them
          * Returns null if character id cannot be found
          * */
-        if (verifyId(id)) {
-            return ((GameCharacter) this.entityManager.getEntity(id)).getInventory();
-        }
-        return null;
+            return  verifyId(id).getInventory();
+
     }
 
-    private boolean verifyId(UUID id) {
-        return this.entityManager.getEntity(id) != null && this.entityManager.getEntity(id) instanceof GameCharacter;
+    /*
+    * Returns the worldEntity casted as a GameCharacter if the entity is an instance
+    * Otherwise throws an exception
+    * */
+    private GameCharacter verifyId(UUID id) {
+        try {
+                return (GameCharacter) this.entityManager.getEntity(id);
+            } catch(RuntimeException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Entity with id: " + id + " is not of type GameCharacter.");
+        }
     }
 }

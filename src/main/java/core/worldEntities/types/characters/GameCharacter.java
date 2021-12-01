@@ -26,7 +26,6 @@ public class GameCharacter extends WorldEntityWithSprite {
     private Class<? extends CharacterInputDevice> inputDeviceType;
 
     public GameCharacter() {
-        super();
         this.team = "";
         this.health = 0;
         this.level = 0;

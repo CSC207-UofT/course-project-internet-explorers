@@ -16,6 +16,7 @@ public class CameraManager {
     protected OrthographicCamera camera;
     protected float unitScale;
     private final WorldEntityManager entityManager;
+    private WorldEntity subject;
     private UUID subjectID;
     private boolean debugFreecam;
 
@@ -75,7 +76,9 @@ public class CameraManager {
      * TODO replace with a separate class so that user input is handled elsewhere.
      */
     public void enterDebugFreecamMode() {
-        subjectID = new WorldEntity().id;
+        subject = new WorldEntity();
+        subjectID = subject.getId();
+        this.entityManager.register(subject);
         debugFreecam = true;
     }
 
@@ -95,7 +98,7 @@ public class CameraManager {
         // m/s
         float speed = 10;
         float zoomFactor = unitScale / camera.zoom;
-        entityManager.setLinearVelocity(subjectID, new Vector2(dx, dy).nor().scl(speed * dt / zoomFactor));
+        entityManager.getEntity(subjectID).setLinearVelocity(new Vector2(dx, dy).nor().scl(speed * dt / zoomFactor));
 
         if (Gdx.input.isKeyPressed(Input.Keys.O) && camera.zoom > 0.5 * unitScale) {
             camera.zoom *= 0.97f;

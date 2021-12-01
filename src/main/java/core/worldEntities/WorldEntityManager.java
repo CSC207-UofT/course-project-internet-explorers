@@ -65,6 +65,15 @@ public class WorldEntityManager {
     }
 
     /**
+     * Creates an entity that is not directly displayed in the overworld
+     * @param entity      The entity to register
+     */
+    public void register(WorldEntity entity) {
+
+        this.entities.put(entity.id, entity);
+    }
+
+    /**
      * Adds Box2D fixtures to the specified WorldEntity's Box2D Body.
      *
      * @param entityId The target entity's id
@@ -101,8 +110,7 @@ public class WorldEntityManager {
     }
 
     public void teleport(UUID id, Vector2 target) {
-        Body body = entities.get(id).getBody();
-        body.setTransform(target, body.getAngle());
+        entities.get(id).getBody().setTransform(target, entities.get(id).getBody().getAngle());
     }
 
     public int getNumEntities() {
