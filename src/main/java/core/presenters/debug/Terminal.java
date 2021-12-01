@@ -2,7 +2,6 @@ package core.presenters.debug;
 
 import com.badlogic.gdx.Gdx;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -10,6 +9,8 @@ import org.apache.commons.cli.*;
 
 /**
  * basic terminal i/o for debugging purposes
+ *
+ * This is a use-case class for Command objects which express functions achievable through a Terminal.
  */
 public class Terminal implements Runnable {
 
@@ -29,6 +30,7 @@ public class Terminal implements Runnable {
     }
 
     /**
+     * Entity class which represents a command that can be invoked by users, a.k.a. the devs.
      * @param name Name used to identify and invoke the command.
      * @param options Options object specifying options.
      * @param handler Callback function to handle parsed input to the command.
@@ -57,6 +59,10 @@ public class Terminal implements Runnable {
         this(System.in, System.out);
     }
 
+    /**
+     * Start this Terminal on a new thread.
+     * Exits following any new input when `shouldClose` is set.
+     */
     @Override
     public void run() {
         System.out.print("\n\n  ~ debug terminal ~");
@@ -82,6 +88,9 @@ public class Terminal implements Runnable {
         } while (!shouldClose);
     }
 
+    /**
+     * Adds a simple exit command to quit the game.
+     */
     private void addQuitCommand() {
         registerCommand(
             new Command(
@@ -96,10 +105,16 @@ public class Terminal implements Runnable {
         );
     }
 
+    /**
+     * Adds basic echo command used to ensure the Terminal is working as expected.
+     */
     private void addEchoCommand() {
         registerCommand(new Command("echo", new Options(), (l, out) -> out.println(String.join(" ", l.getArgs()))));
     }
 
+    /**
+     * Entrypoint used for manually testing the Terminal on its own.
+     */
     public static void main(String[] args) {
         new Thread(new Terminal()).start();
     }
