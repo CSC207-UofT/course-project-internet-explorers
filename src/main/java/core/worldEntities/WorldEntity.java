@@ -50,4 +50,5 @@ public class WorldEntity {
         this.body.setLinearVelocity(target.cpy().sub(body.getPosition().cpy()).scl(1 / dt));
     }
 
+    public UUID getId() { return this.id; }
 }

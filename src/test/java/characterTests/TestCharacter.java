@@ -8,30 +8,20 @@ import com.badlogic.gdx.physics.box2d.World;
 import core.inventory.Item;
 import core.inventory.items.*;
 import core.worldEntities.WorldEntityManager;
-import core.worldEntities.types.characters.Character;
+import core.worldEntities.types.characters.GameCharacter;
 import java.util.ArrayList;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestCharacter {
 
-    Character player;
-    World world;
+    GameCharacter player;
 
     @BeforeEach
     public void setup() {
-        world = new World(new Vector2(0, 0), true);
-        WorldEntityManager entityManager = new WorldEntityManager(world);
-
-        BodyDef def = new BodyDef();
-
-        player = new Character();
-    }
-
-    @AfterEach
-    public void teardown() {
-        world.dispose();
+        player = new GameCharacter();
     }
 
     @Test

@@ -35,7 +35,7 @@ public class WorldEntityManager {
      * @param bodyDef     Box2D representation details
      * @param fixtureDefs Box2D representation details
      */
-    protected void register(WorldEntity entity, BodyDef bodyDef, FixtureDef... fixtureDefs) {
+    public void register(WorldEntity entity, BodyDef bodyDef, FixtureDef... fixtureDefs) {
         Body body = world.createBody(bodyDef);
         createFixtures(body, fixtureDefs);
         entity.setBody(body);
@@ -50,7 +50,7 @@ public class WorldEntityManager {
     * @param inputDeviceType type of inputs the entity will receive
     * @param fixtureDefs Box2D representation details
     */
-    protected void register(WorldEntity entity, BodyDef bodyDef, Class<? extends CharacterInputDevice> inputDeviceType,
+    public void register(WorldEntity entity, BodyDef bodyDef, Class<? extends CharacterInputDevice> inputDeviceType,
                             FixtureDef... fixtureDefs) {
         Body body = world.createBody(bodyDef);
         createFixtures(body, fixtureDefs);
@@ -103,5 +103,9 @@ public class WorldEntityManager {
     public void teleport(UUID id, Vector2 target) {
         Body body = entities.get(id).getBody();
         body.setTransform(target, body.getAngle());
+    }
+
+    public int getNumEntities() {
+        return this.entities.size();
     }
 }
