@@ -12,6 +12,9 @@ import java.util.List;
 
 public class LevelLoader {
 
+    // TODO: create template for loading a level
+    // Info needed: map, unitscale -- if game saved: currentTime
+
     /**
      * Load a new LevelState
      * @return LevelState

@@ -45,6 +45,10 @@ public class LevelGameplayController implements Screen {
 
     @Override
     public void show() {
+        // TODO: implement template design pattern?
+        // split following into needed info from LevelLoader
+        // i.e. methods for map, unitscale, currentTime
+        // when game is saved, override currentTime to saved time -- eventually add other info (enemies whatnot)
         this.levelManager = new LevelManager(levelSupplier.get());
         this.entityManager = levelManager.getEntityManager();
         this.characterManager = new CharacterManager(entityManager);

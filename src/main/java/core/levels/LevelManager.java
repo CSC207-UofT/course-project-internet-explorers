@@ -28,6 +28,7 @@ public class LevelManager {
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final WorldEntityManager entityManager;
     private final SpriteBatch batch;
+    // TODO: add attribute for storing spawner list
 
     public LevelManager(LevelState level) {
         this.level = level;
@@ -37,11 +38,13 @@ public class LevelManager {
 
         this.batch = new SpriteBatch();
 
+        // TODO: assign following to attribute held within this class
         // assign all enemies to current entityManager
         List<Spawner<Character>> enemiesUpdated = level.getEnemySpawns();
         for (Spawner<Character> spawner : enemiesUpdated) {
             spawner.setEntityManager(this.entityManager);
         }
+        // TODO: no need to set enemy spawns once dependency fixed
         level.setEnemySpawns(enemiesUpdated);
     }
 

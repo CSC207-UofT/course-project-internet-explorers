@@ -2,7 +2,7 @@ package core.levels;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import core.worldEntities.Spawner;
+import core.worldEntities.Spawner; // TODO: remove once dependency is fixed
 import core.worldEntities.types.characters.Character;
 import java.io.Serializable;
 import java.util.List;
@@ -18,6 +18,7 @@ public class LevelState implements Serializable {
     private boolean levelFinished;
     protected transient float currentTime;
     protected int score;
+    // TODO: move this list to LevelManager
     protected List<Spawner<Character>> enemySpawns;
     private float spawnTime;
 
@@ -89,10 +90,10 @@ public class LevelState implements Serializable {
         levelFinished = true;
     }
 
+    // TODO: remove once dependency is fixed
     public List<Spawner<Character>> getEnemySpawns() {
         return enemySpawns;
     }
-
     public void setEnemySpawns(List<Spawner<Character>> enemySpawns) {
         this.enemySpawns = enemySpawns;
     }
