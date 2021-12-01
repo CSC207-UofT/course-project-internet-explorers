@@ -15,12 +15,24 @@ import java.util.function.Supplier;
  */
 public class Spawner<T extends WorldEntity> {
 
+    /**
+     * The EntityManager with which to register the spawned WorldEntity.
+     */
     private WorldEntityManager entityManager;
+
+    // Must pass in the type T, can't use the class type annotation directly
     public final Class<T> type;
 
+    /**
+     * Supplier functions for the WorldEntity's Box2D Body and Fixture definitions.
+     */
     private Supplier<BodyDef> bodyDefSupplier;
     private Supplier<FixtureDef[]> fixtureDefsSupplier;
 
+    /**
+     * Callbacks which take the spawned WorldEntity to perform additional configuration.
+     * Callbacks are invoked in ArrayList order.
+     */
     private final ArrayList<Consumer<T>> spawnCallbacks;
 
     public Spawner(Class<T> type) {
@@ -31,6 +43,11 @@ public class Spawner<T extends WorldEntity> {
         spawnCallbacks = new ArrayList<>();
     }
 
+    /**
+     * Create and register the WorldEntity specified by this Spawner.
+     *
+     * @return the created WorldEntity
+     */
     public WorldEntity spawn() {
         BodyDef bodyDef = bodyDefSupplier.get();
 
@@ -80,10 +97,6 @@ public class Spawner<T extends WorldEntity> {
 
         return rectangle;
     }
-
-    //    public static <K> Spawner<K extends WorldEntityWithSprite> createSpriteBasedEntitySpawner(Class<? extends WorldEntityWithSprite>, Vector2 position, Sprite sprite) {
-    //
-    //    }
 
     public static <K extends WorldEntityWithSprite> Spawner<K> createSpriteBasedEntitySpawner(
         Class<K> type,
