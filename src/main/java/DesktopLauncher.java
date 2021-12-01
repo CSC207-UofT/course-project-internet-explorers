@@ -1,5 +1,6 @@
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import core.config.Config;
 import core.config.ConfigController;
 import core.config.ConfigurableSetting;
 import core.presenters.ScreenManager;
@@ -11,7 +12,7 @@ class DesktopLauncher {
 
         private static final LwjglApplicationConfiguration lwjglConfig = new LwjglApplicationConfiguration();
 
-        public static final ConfigurableSetting<Integer> fps = new ConfigurableSetting<>(
+        public static final ConfigurableSetting<Integer> fps = Config.add(
             Integer.class,
             "fps",
             "FPS limit when game window is active.",
@@ -21,7 +22,7 @@ class DesktopLauncher {
             Integer::parseUnsignedInt
         );
 
-        public static final ConfigurableSetting<Boolean> resizable = new ConfigurableSetting<>(
+        public static final ConfigurableSetting<Boolean> resizable = Config.add(
             Boolean.class,
             "resizable",
             // TODO change note to (Requires restart) once saving/loading configs is implemented
@@ -32,7 +33,7 @@ class DesktopLauncher {
             Boolean::parseBoolean
         );
 
-        public static final ConfigurableSetting<Integer> width = new ConfigurableSetting<>(
+        public static final ConfigurableSetting<Integer> width = Config.add(
             Integer.class,
             "width",
             "Initial width of the game window.",
@@ -42,7 +43,7 @@ class DesktopLauncher {
             Integer::parseUnsignedInt
         );
 
-        public static final ConfigurableSetting<Integer> height = new ConfigurableSetting<>(
+        public static final ConfigurableSetting<Integer> height = Config.add(
             Integer.class,
             "height",
             "Initial height of the game window.",

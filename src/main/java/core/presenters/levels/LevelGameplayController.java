@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import core.config.Config;
 import core.config.ConfigurableSetting;
 import core.input.AIInputDevice;
 import core.input.InputController;
@@ -40,7 +41,7 @@ public class LevelGameplayController implements Screen {
     private HudManager hud;
     private InputController inputController;
 
-    private final ConfigurableSetting<Boolean> render_physics = new ConfigurableSetting<>(
+    private final ConfigurableSetting<Boolean> render_physics = Config.add(
         Boolean.class,
         "render_physics",
         "Whether physics bodies should be rendered.",

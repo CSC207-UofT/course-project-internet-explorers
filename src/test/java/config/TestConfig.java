@@ -17,7 +17,7 @@ public class TestConfig {
         int initialValue = (int) ((Math.random() - 0.5) * 400);
         int newValue;
 
-        ConfigurableSetting<Integer> setting = new ConfigurableSetting<>(Integer.class, name, desc, initialValue, Integer::parseInt);
+        ConfigurableSetting<Integer> setting = Config.add(Integer.class, name, desc, initialValue, Integer::parseInt);
 
         Assertions.assertEquals(setting.get(), initialValue, "Can set initial value.");
         Assertions.assertEquals(Config.get(name), setting.get(), "Can get value via Config.");
@@ -42,7 +42,7 @@ public class TestConfig {
         int initialValue = 1;
         int newValue;
 
-        ConfigurableSetting<Integer> setting = new ConfigurableSetting<>(
+        ConfigurableSetting<Integer> setting = Config.add(
             Integer.class,
             name,
             desc,
@@ -69,8 +69,8 @@ public class TestConfig {
 
     @Test
     public void testCantRegisterDuplicateSetting() {
-        new ConfigurableSetting<>(Integer.class, "name", "desc", 2, Integer::parseInt);
-        Executable registerDuplicateSetting = () -> new ConfigurableSetting<>(Integer.class, "name", "desc", 2, Integer::parseInt);
+        Config.add(Integer.class, "name", "desc", 2, Integer::parseInt);
+        Executable registerDuplicateSetting = () -> Config.add(Integer.class, "name", "desc", 2, Integer::parseInt);
         Assertions.assertThrows(RuntimeException.class, registerDuplicateSetting, "Can't register settings with duplicate names.");
     }
 }
