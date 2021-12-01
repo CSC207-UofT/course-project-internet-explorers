@@ -3,7 +3,7 @@ package core.presenters;
 import com.badlogic.gdx.Game;
 import core.presenters.menus.MainMenuScreen;
 
-public class ScreenManager extends Game {
+public class ScreenController extends Game {
 
     public static final int WIDTH = 1024;
     public static final int HEIGHT = 768;
