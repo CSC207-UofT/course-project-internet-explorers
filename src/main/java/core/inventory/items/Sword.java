@@ -22,12 +22,14 @@ public class Sword extends Weapon {
     private final int range;
     private final int damage;
     public UUID id;
+    static final int SWORD_DAMAGE = 3;
+    static final int SWORD_RANGE = 2;
 
     public Sword(int level) {
         this.level = level;
         this.size = this.level;
-        this.range = this.level * 2;
-        this.damage = this.level * 3;
+        this.range = this.level * SWORD_RANGE;
+        this.damage = this.level * SWORD_DAMAGE;
         this.id = UUID.randomUUID();
     }
 
