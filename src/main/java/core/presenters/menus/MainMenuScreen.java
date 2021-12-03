@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.levels.LevelLoader;
 import core.presenters.ScreenController;
-import core.presenters.levels.LevelGameplayController;
+import core.presenters.levels.LevelGameplayPresenter;
 
 public class MainMenuScreen extends Menu {
 
@@ -52,7 +52,7 @@ public class MainMenuScreen extends Menu {
         button.setPosition(PLAY_BUTTON_X, PLAY_BUTTON_Y);
         button.setSize(PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);
 
-        button.addListener(createExitButtonListener(new LevelGameplayController(LevelLoader::getLevel1)));
+        button.addListener(createExitButtonListener(new LevelGameplayPresenter(LevelLoader::getLevel1)));
 
         return button;
     }
