@@ -18,7 +18,7 @@ import core.inventory.items.Dagger;
 import core.inventory.items.Sword;
 import core.levels.LevelManager;
 import core.levels.LevelState;
-import core.presenters.HUD.HudManager;
+import core.presenters.HUD.HudPresenter;
 import core.worldEntities.Spawner;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
@@ -38,7 +38,7 @@ public class LevelGameplayController implements Screen {
     private CharacterManager characterManager;
     private WorldEntityManager entityManager;
     private Box2DDebugRenderer box2DDebugRenderer;
-    private HudManager hud;
+    private HudPresenter hud;
     private InputController inputController;
     private OrthogonalTiledMapRenderer mapRenderer;
     private SpriteBatch batch;
@@ -73,7 +73,7 @@ public class LevelGameplayController implements Screen {
         characterManager.addInventory(playerId, sword);
         characterManager.addInventory(playerId, dagger);
 
-        this.hud = new HudManager(this.characterManager, this.levelManager, playerId);
+        this.hud = new HudPresenter(this.characterManager, this.levelManager, playerId);
         this.inputController = new InputController(characterManager, hud, levelManager);
 
         Spawner<?> enemySpawner = createEnemySpawner();

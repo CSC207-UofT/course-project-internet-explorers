@@ -1,7 +1,7 @@
 package core.input;
 
 import core.levels.LevelManager;
-import core.presenters.HUD.HudManager;
+import core.presenters.HUD.HudPresenter;
 import core.worldEntities.types.characters.CharacterManager;
 import java.util.HashMap;
 import java.util.UUID;
@@ -15,12 +15,12 @@ public class InputController {
     // input consumers: these use-case classes take inputs do something with them
     // TODO separate types of inputs
     protected final CharacterManager characterManager;
-    protected final HudManager hudManager;
+    protected final HudPresenter hudManager;
     protected final AIInputDevice aiInputDevice;
     protected final KeyboardInputDevice keyboardInputDevice;
     protected final LevelManager levelManager;
 
-    public InputController(CharacterManager characterManager, HudManager hudManager, LevelManager levelManager) {
+    public InputController(CharacterManager characterManager, HudPresenter hudManager, LevelManager levelManager) {
         this.characterManager = characterManager;
         this.hudManager = hudManager;
         this.levelManager = levelManager;

@@ -18,9 +18,9 @@ import core.worldEntities.types.characters.CharacterManager;
 import java.util.UUID;
 
 /***
- * Controller/Presenter class (?) for displaying all heads-up-display
+ * Presenter class for displaying all heads-up-display
  */
-public class HudManager implements Disposable {
+public class HudPresenter implements Disposable {
 
     private final Stage stage;
     private final Viewport viewport;
@@ -47,7 +47,7 @@ public class HudManager implements Disposable {
 
     private final LevelManager levelManager;
 
-    public HudManager(CharacterManager characterManager, LevelManager levelManager, UUID id) {
+    public HudPresenter(CharacterManager characterManager, LevelManager levelManager, UUID id) {
         //define tracking variables
         this.levelManager = levelManager;
         sb = new SpriteBatch();
