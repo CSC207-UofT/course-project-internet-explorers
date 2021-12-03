@@ -38,6 +38,8 @@ public class LevelGameplayController implements Screen {
     private Box2DDebugRenderer box2DDebugRenderer;
     private HudManager hud;
     private InputController inputController;
+    static final int SWORD_LEVEL = 1;
+    static final int DAGGER_LEVEL = 1;
 
     public LevelGameplayController(Supplier<LevelState> levelSupplier) {
         this.levelSupplier = levelSupplier;
@@ -61,8 +63,8 @@ public class LevelGameplayController implements Screen {
         UUID playerId = playerSpawner.spawn().id;
         characterManager.addCharacter(playerId, KeyboardInputDevice.class);
 
-        Item sword = new Sword(1);
-        Item dagger = new Dagger(1);
+        Item sword = new Sword(SWORD_LEVEL);
+        Item dagger = new Dagger(DAGGER_LEVEL);
 
         characterManager.addInventory(playerId, sword);
         characterManager.addInventory(playerId, dagger);
