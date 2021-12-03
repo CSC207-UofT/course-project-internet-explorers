@@ -22,12 +22,14 @@ public class Dagger extends Weapon {
     private final int range;
     private final int damage;
     public UUID id;
+    static final int DAGGER_DAMAGE = 2;
+    static final int DAGGER_RANGE = 1;
 
     public Dagger(int level) {
         this.level = level;
         this.size = this.level;
-        this.range = this.level;
-        this.damage = this.level * 2;
+        this.range = this.level * DAGGER_RANGE;
+        this.damage = this.level * DAGGER_DAMAGE;
         this.id = UUID.randomUUID();
     }
 
