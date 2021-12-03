@@ -29,9 +29,8 @@ import java.util.function.Supplier;
 /**
  * Runs the gameplay of a Level.
  */
-public class LevelGameplayPresenter implements Screen {
+public class LevelGameplayPresenter<priavte> implements Screen {
 
-    private final Supplier<LevelState> levelSupplier;
     private CameraManager cameraManager;
     private ShapeRenderer shapeRenderer;
     private LevelManager levelManager;
@@ -42,18 +41,17 @@ public class LevelGameplayPresenter implements Screen {
     private InputController inputController;
     private OrthogonalTiledMapRenderer mapRenderer;
     private SpriteBatch batch;
+    private final LevelGameplayController levelGameplayController;
 
-    public LevelGameplayPresenter(Supplier<LevelState> levelSupplier) {
-        this.levelSupplier = levelSupplier;
+    public LevelGameplayPresenter(LevelGameplayController levelGameplayController) {
+       this.levelGameplayController = levelGameplayController;
     }
 
     @Override
     public void show() {
-        this.levelManager = new LevelManager(levelSupplier.get());
-        this.entityManager = levelManager.getEntityManager();
-        this.characterManager = new CharacterManager(entityManager);
-
-        levelManager.addGameCharacterRegistrationCallbacks(characterManager);
+        this.levelManager = levelGameplayController.getLevelManager();
+        this.characterManager = levelGameplayController.getCharacterManager();
+        this.entityManager = levelGameplayController.getEntityManager();
 
         this.cameraManager = new CameraManager(levelManager.getUnitScale(), entityManager);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
@@ -61,32 +59,10 @@ public class LevelGameplayPresenter implements Screen {
         this.mapRenderer = new OrthogonalTiledMapRenderer(levelManager.getMap(), levelManager.getLevelUnitScale());
         this.batch = new SpriteBatch();
 
-        Spawner<Character> playerSpawner = createPlayerSpawner();
-        playerSpawner.setEntityManager(entityManager);
-        UUID playerId = playerSpawner.spawn().id;
-        characterManager.addCharacter(playerId, KeyboardInputDevice.class);
-
-        Item sword = new Sword(1);
-        Item dagger = new Dagger(1);
-
-        characterManager.addInventory(playerId, sword);
-        characterManager.addInventory(playerId, dagger);
+        UUID playerId = levelGameplayController.getPlayerId();
 
         this.hud = new HudPresenter(this.characterManager, this.levelManager, playerId);
         this.inputController = new InputController(characterManager, hud, levelManager);
-
-        Spawner<?> enemySpawner = createEnemySpawner();
-        enemySpawner.setEntityManager(entityManager);
-        UUID enemyId = enemySpawner.spawn().id;
-        characterManager.addCharacter(enemyId, AIInputDevice.class);
-
-        Spawner<?> defenderSpawner = createDefenderSpawner();
-        defenderSpawner.setEntityManager(entityManager);
-        defenderSpawner.spawn();
-
-        Spawner<?> mapBorderSpawner = createMapBorderSpawner();
-        mapBorderSpawner.setEntityManager(entityManager);
-        mapBorderSpawner.spawn();
 
         cameraManager.setSubjectID(playerId);
     }
