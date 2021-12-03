@@ -16,6 +16,9 @@ import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.UUID;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +43,7 @@ public class TestInventory {
         characterManager = new CharacterManager(entityManager);
 
         test_player = new Character(entityManager, new BodyDef());
+        characterManager.addCharacter(test_player.id);
     }
 
     @AfterEach
@@ -65,10 +69,12 @@ public class TestInventory {
     void testInventory() {
         Item sword = new Sword(1);
         Item dagger = new Dagger(2);
-        test_player.getInventory().add(sword);
-        test_player.getInventory().add(dagger);
+        ArrayList<Item> list = new ArrayList<>();
+        list.add(sword);
+        list.add(dagger);
+        test_player.setInventory(list);
 
-        ArrayList<Item> inventory = characterManager.openInventory(test_player.id);
+        ArrayList<Item> inventory = test_player.getInventory();
         ArrayList<Item> comparison = new ArrayList<>();
         comparison.add(sword);
         comparison.add(dagger);
@@ -79,8 +85,11 @@ public class TestInventory {
     void testSelect() {
         Item sword = new Sword(1);
         Item dagger = new Dagger(2);
-        test_player.getInventory().add(sword);
-        test_player.getInventory().add(dagger);
-        assertTrue(characterManager.selectItem(test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))));
+        ArrayList<Item> list = new ArrayList<>();
+        list.add(sword);
+        list.add(dagger);
+        test_player.setInventory(list);
+        assertTrue(characterManager.selectItem
+                (test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))));
     }
 }
