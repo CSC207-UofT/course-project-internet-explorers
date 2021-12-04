@@ -12,19 +12,27 @@ import java.util.List;
 
 public class LevelLoader {
 
-    // TODO: create template for loading a level
-    // Info needed: map, unitscale -- if game saved: currentTime
-
     /**
      * Load a new LevelState
      * @return LevelState
      */
     public static LevelState getLevel1() {
-        // Initialize LevelState and assign enemy spawns
-        LevelState lvl = new LevelState("maps/demo.tmx");
-        lvl.setEnemySpawns(createEnemyList(5));
-        lvl.setUnitScale(1 / 64f);
+        // Initialize LevelState
+        LevelState lvl = commonSetup();
+        lvl.setLevelDifficulty("L1");
 
+        return lvl;
+    }
+
+    /**
+     * Initiate level at given levelDifficulty
+     *
+     * @return LevelState with assigned levelDifficulty
+     *
+     */
+    public LevelState initializeLevel(String levelDifficulty){
+        LevelState lvl = commonSetup();
+        lvl.setLevelDifficulty(levelDifficulty);
         return lvl;
     }
 
@@ -45,33 +53,22 @@ public class LevelLoader {
 
         // Initialize LevelState and assign enemy spawns
         LevelState lvl = new LevelState("maps/demo.tmx");
-        lvl.setEnemySpawns(createEnemyList(5));
         lvl.setUnitScale(1 / 64f);
 
         // Take current time and adjust enemyList
         lvl.setCurrentTime(currentTime);
-        double numEnemies = Math.floor(lvl.getCurrentTime() / lvl.getSpawnTime());
-        for (int i = 0; i < numEnemies; i++) {
-            List<Spawner<Character>> enemiesUpdated = lvl.getEnemySpawns();
-            enemiesUpdated.remove(0);
-            lvl.setEnemySpawns(enemiesUpdated);
-        }
 
         return lvl;
     }
 
     /**
-     * Creates list of enemies to be spawned in level
-     * @param numOfEnemies wanted to be spawned in this level
-     * @return enemies list
+     * Return LevelState at its most simple setup
+     *
+     * @return Most basic setup of LevelState
      */
-    private static List<Spawner<Character>> createEnemyList(int numOfEnemies) {
-        List<Spawner<Character>> enemies = new ArrayList<>();
-        for (int i = 0; i < numOfEnemies; i++) {
-            Spawner<Character> enemySpawner = createEnemySpawner();
-            enemySpawner.addSpawnCallback(character -> character.setTeam("enemy"));
-            enemies.add(enemySpawner);
-        }
-        return enemies;
+    public static LevelState commonSetup(){
+        LevelState lvl = new LevelState("maps/demo.tmx");
+        lvl.setUnitScale(1 / 64f);
+        return lvl;
     }
 }

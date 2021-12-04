@@ -15,7 +15,11 @@ import core.worldEntities.types.characters.CharacterManager;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static core.worldEntities.DemoSpawners.createEnemySpawner;
 
 /**
  * Use-Case class for LevelState.
@@ -28,7 +32,9 @@ public class LevelManager {
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final WorldEntityManager entityManager;
     private final SpriteBatch batch;
-    // TODO: add attribute for storing spawner list
+    protected HashMap<String, Integer> levelDifficultyToEnemies;
+    protected List<Spawner<Character>> enemySpawns;
+
 
     public LevelManager(LevelState level) {
         this.level = level;
@@ -38,14 +44,13 @@ public class LevelManager {
 
         this.batch = new SpriteBatch();
 
-        // TODO: assign following to attribute held within this class
+        this.levelDifficultyToEnemies = createLevelDifficultyToEnemies();
+        // create enemy list based on difficulty of level
+        this.enemySpawns = createEnemyList(levelDifficultyToEnemies.get(level.getLevelDifficulty()));
         // assign all enemies to current entityManager
-        List<Spawner<Character>> enemiesUpdated = level.getEnemySpawns();
-        for (Spawner<Character> spawner : enemiesUpdated) {
+        for (Spawner<Character> spawner : enemySpawns) {
             spawner.setEntityManager(this.entityManager);
         }
-        // TODO: no need to set enemy spawns once dependency fixed
-        level.setEnemySpawns(enemiesUpdated);
     }
 
     /**
@@ -55,7 +60,7 @@ public class LevelManager {
      * @param characterManager the CharacterManager to add the created GameCharacters to
      */
     public void addGameCharacterRegistrationCallbacks(CharacterManager characterManager) {
-        for (Spawner<?> spawner : level.getEnemySpawns()) {
+        for (Spawner<?> spawner : enemySpawns) {
             if (spawner.type.equals(Character.class)) {
                 spawner.addSpawnCallback(e -> {
                     if (e instanceof Character character) {
@@ -100,7 +105,7 @@ public class LevelManager {
      */
     private void updateEnemies() {
         // Spawning enemies in world
-        List<Spawner<Character>> enemies = level.getEnemySpawns();
+        List<Spawner<Character>> enemies = enemySpawns;
 
         if (enemies.isEmpty()) {
             // If all enemies have been spawned, check if game is won or not
@@ -113,10 +118,48 @@ public class LevelManager {
         if (level.getCurrentTime() >= level.getSpawnTime()) {
             Spawner<Character> enemy = enemies.remove(0);
             enemy.spawn();
-            level.setEnemySpawns(enemies);
+            enemySpawns = enemies;
             level.setScore(level.getScore() + 1);
             level.setSpawnTime(level.getSpawnTime() + 15);
         }
+    }
+
+    /**
+     * Create HashMap holding levelDifficulty as key, and number of enemies that correspond to
+     * that levelDifficulty, as value
+     *
+     * @return HashMap containing levelDifficulty mapped to number of enemies
+     */
+    private static HashMap<String, Integer> createLevelDifficultyToEnemies() {
+        HashMap<String, Integer> my_dict = new HashMap<>();
+        for (int i=0; i<10; i++){
+            my_dict.put("L" + (i+5), i+5);
+        }
+        return my_dict;
+    }
+
+    /**
+     * Creates list of enemies to be spawned in level
+     * @param numOfEnemies wanted to be spawned in this level
+     * @return enemies list
+     */
+    private List<Spawner<Character>> createEnemyList(int numOfEnemies) {
+        List<Spawner<Character>> enemies = new ArrayList<>();
+        if (level.getCurrentTime() == 0) {
+            for (int i = 0; i < numOfEnemies; i++) {
+                Spawner<Character> enemySpawner = createEnemySpawner();
+                enemySpawner.addSpawnCallback(character -> character.setTeam("enemy"));
+                enemies.add(enemySpawner);
+            }
+        } else{
+            double numEnemies = Math.floor(level.getCurrentTime() / level.getSpawnTime());
+            for (int i = 0; i < numEnemies; i++) {
+                enemies = enemySpawns;
+                enemies.remove(0);
+                enemySpawns = enemies;
+            }
+        }
+        return enemies;
     }
 
     /**

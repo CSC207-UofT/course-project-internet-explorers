@@ -2,7 +2,6 @@ package core.levels;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import core.worldEntities.Spawner; // TODO: remove once dependency is fixed
 import core.worldEntities.types.characters.Character;
 import java.io.Serializable;
 import java.util.List;
@@ -18,9 +17,8 @@ public class LevelState implements Serializable {
     private boolean levelFinished;
     protected transient float currentTime;
     protected int score;
-    // TODO: move this list to LevelManager
-    protected List<Spawner<Character>> enemySpawns;
     private float spawnTime;
+    private String levelDifficulty;
 
     // unitScale measured in m/px
     // represents in-game size of map tiles
@@ -29,7 +27,7 @@ public class LevelState implements Serializable {
     //  * tiles are 32px by 32px
     private float unitScale;
 
-    protected LevelState(String mapPath) {
+    public LevelState(String mapPath) {
         this.world = new World(new Vector2(0, 0), true);
         this.mapPath = mapPath;
         this.currentTime = 0;
@@ -90,11 +88,8 @@ public class LevelState implements Serializable {
         levelFinished = true;
     }
 
-    // TODO: remove once dependency is fixed
-    public List<Spawner<Character>> getEnemySpawns() {
-        return enemySpawns;
-    }
-    public void setEnemySpawns(List<Spawner<Character>> enemySpawns) {
-        this.enemySpawns = enemySpawns;
-    }
+    public String getLevelDifficulty() { return levelDifficulty; }
+
+    public void setLevelDifficulty(String levelDifficulty) { this.levelDifficulty = levelDifficulty; }
+
 }
