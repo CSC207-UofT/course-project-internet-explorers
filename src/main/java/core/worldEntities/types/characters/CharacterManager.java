@@ -6,6 +6,7 @@ import core.inventory.Item;
 import core.inventory.Weapon;
 import core.inventory.WeaponUsageDelegate;
 import core.worldEntities.WorldEntityManager;
+import core.worldEntities.health.TakesDamage;
 import java.util.*;
 
 public class CharacterManager {
@@ -32,6 +33,8 @@ public class CharacterManager {
         if (entityManager.getEntity(id) instanceof Character character) {
             this.characterEntities.put(character.id, character);
             character.setInputDeviceType(inputDeviceType);
+
+            character.getCollisionBehaviours().add(TakesDamage.takeDamageOnCollision);
         } else {
             throw new RuntimeException("Couldn't find a GameCharacter with the specified UUID: " + id);
         }

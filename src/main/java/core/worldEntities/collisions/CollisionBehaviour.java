@@ -8,7 +8,7 @@ import java.util.function.BiConsumer;
  * @param <A>
  * @param <B>
  */
-public class CollisionBehaviour<A extends WorldEntity, B> {
+public class CollisionBehaviour<A, B> {
 
     public final Class<A> typeA;
     public final Class<B> typeB;

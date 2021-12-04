@@ -17,15 +17,15 @@ public class CollisionManager implements ContactListener {
         Object a = contact.getFixtureA().getBody().getUserData();
         Object b = contact.getFixtureB().getBody().getUserData();
 
-        if (a instanceof HasCollisionBehaviour<?> participantA) {
-            (participantA.getCollisionBehaviour()).forEach(collisionBehaviour ->
+        if (a instanceof HasCollisionBehaviours participantA) {
+            (participantA.getCollisionBehaviours()).forEach(collisionBehaviour ->
                     collisionBehaviour.doCollisionBehaviourIfNecessary((WorldEntity) a, (WorldEntity) b)
                 );
         }
 
-        if (b instanceof HasCollisionBehaviour<?> participantB) {
+        if (b instanceof HasCollisionBehaviours participantB) {
             participantB
-                .getCollisionBehaviour()
+                .getCollisionBehaviours()
                 .forEach(collisionBehaviour -> collisionBehaviour.doCollisionBehaviourIfNecessary((WorldEntity) b, (WorldEntity) a));
         }
     }

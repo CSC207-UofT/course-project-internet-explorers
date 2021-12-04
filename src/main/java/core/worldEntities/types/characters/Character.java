@@ -8,12 +8,11 @@ import core.inventory.Item;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.WorldEntityWithSprite;
 import core.worldEntities.collisions.CollisionBehaviour;
-import core.worldEntities.collisions.HasCollisionBehaviour;
-import core.worldEntities.health.DealsDamage;
+import core.worldEntities.collisions.HasCollisionBehaviours;
 import core.worldEntities.health.TakesDamage;
 import java.util.ArrayList;
 
-public class Character extends WorldEntityWithSprite implements TakesDamage, HasCollisionBehaviour<Character> {
+public class Character extends WorldEntityWithSprite implements TakesDamage, HasCollisionBehaviours {
 
     /*
      * Class that defines the main attributes of the classes Player, Enemy and Defender in the game.
@@ -28,7 +27,7 @@ public class Character extends WorldEntityWithSprite implements TakesDamage, Has
     private int level;
     private ArrayList<Item> inventory;
     private Class<? extends CharacterInputDevice> inputDeviceType;
-    private ArrayList<CollisionBehaviour<Character, ?>> collisionBehaviours;
+    private final ArrayList<CollisionBehaviour<?, ?>> collisionBehaviours;
 
     public Character(WorldEntityManager entityManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
         super(entityManager, bodyDef, fixtureDefs);
@@ -38,17 +37,6 @@ public class Character extends WorldEntityWithSprite implements TakesDamage, Has
         this.inventory = new ArrayList<>();
 
         this.collisionBehaviours = new ArrayList<>();
-        this.collisionBehaviours.add(
-                new CollisionBehaviour<>(
-                    Character.class,
-                    DealsDamage.class,
-                    (character, dealsDamage) -> {
-                        character.takeDamage(dealsDamage.dealDamage());
-                        // TODO remove once we have a proper way of displaying health
-                        System.out.println(health);
-                    }
-                )
-            );
     }
 
     public String getTeam() {
@@ -102,7 +90,7 @@ public class Character extends WorldEntityWithSprite implements TakesDamage, Has
     }
 
     @Override
-    public ArrayList<CollisionBehaviour<Character, ?>> getCollisionBehaviour() {
+    public ArrayList<CollisionBehaviour<?, ?>> getCollisionBehaviours() {
         return this.collisionBehaviours;
     }
 }
