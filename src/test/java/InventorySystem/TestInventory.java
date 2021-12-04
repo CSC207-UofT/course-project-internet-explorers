@@ -52,16 +52,16 @@ public class TestInventory {
 
     @Test
     void testDamage() {
-        Item sword = new Sword(1);
+        Weapon sword = new Sword(1);
         Item dagger = new Dagger(2);
         test_player.getInventory().add(sword);
         test_player.getInventory().add(dagger);
         Weapon weapon = (Weapon) test_player.getInventory().get(0);
-        assertEquals(3, weapon.getDamage());
+        assertEquals(sword.getDamage(), weapon.getDamage());
     }
 
     @Test
-    void testInventory() {
+    void testSetInventory() {
         Item sword = new Sword(1);
         Item dagger = new Dagger(2);
         ArrayList<Item> list = new ArrayList<>();
@@ -69,11 +69,11 @@ public class TestInventory {
         list.add(dagger);
         test_player.setInventory(list);
 
-        ArrayList<Item> inventory = test_player.getInventory();
         ArrayList<Item> comparison = new ArrayList<>();
         comparison.add(sword);
         comparison.add(dagger);
-        assertEquals(comparison, inventory);
+
+        assertEquals(comparison, test_player.getInventory());
     }
 
     @Test
