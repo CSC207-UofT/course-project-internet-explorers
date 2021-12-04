@@ -18,7 +18,6 @@ import core.worldEntities.types.characters.CharacterManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,10 +48,6 @@ public class TestInventory {
     @AfterEach
     public void teardown() {
         world.dispose();
-    }
-
-    public static void main(String[] args) {
-        System.out.println(Gdx.files.getLocalStoragePath());
     }
 
     @Test
@@ -89,7 +84,6 @@ public class TestInventory {
         list.add(sword);
         list.add(dagger);
         test_player.setInventory(list);
-        assertTrue(characterManager.selectItem
-                (test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))));
+        assertTrue(characterManager.selectItem(test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))));
     }
 }
