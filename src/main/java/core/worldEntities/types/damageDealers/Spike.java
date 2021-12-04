@@ -9,12 +9,14 @@ import core.worldEntities.health.DealsDamage;
 
 public class Spike extends WorldEntityWithSprite implements DealsDamage {
 
+    //DamageCarrier - each DealsDamage
+
     public Spike(WorldEntityManager entityManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
         super(entityManager, bodyDef, fixtureDefs);
     }
 
     @Override
     public Damage dealDamage() {
-        return new Damage(1f);
+        return new Damage(1f, null);
     }
 }

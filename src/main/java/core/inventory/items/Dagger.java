@@ -3,7 +3,10 @@ package core.inventory.items;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import core.inventory.ItemUsageDelegate;
 import core.inventory.Weapon;
+import core.worldEntities.health.Damage;
+
 import java.util.UUID;
 
 public class Dagger extends Weapon {
@@ -15,19 +18,20 @@ public class Dagger extends Weapon {
      * @param level: level of Dagger
      * @param range: range of Dagger
      * @param damage: damage of Dagger
+     * @param
      * */
 
     private final int size;
     private int level;
     private final int range;
-    private final int damage;
+    private final Damage damage;
     public UUID id;
 
     public Dagger(int level) {
         this.level = level;
         this.size = this.level;
         this.range = this.level;
-        this.damage = this.level * 2;
+        this.damage = new Damage(this.level * 2, null);
         this.id = UUID.randomUUID();
     }
 
@@ -81,7 +85,12 @@ public class Dagger extends Weapon {
     }
 
     @Override
-    public int getDamage() {
+    public ItemUsageDelegate getUsageDelegate() {
+        return null;
+    }
+
+    @Override
+    public Damage getDamage() {
         return damage;
     }
 }

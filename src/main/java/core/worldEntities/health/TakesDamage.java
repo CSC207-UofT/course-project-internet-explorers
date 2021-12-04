@@ -7,6 +7,7 @@ public interface TakesDamage extends HasHealth {
         setHealth(getHealth() - damage.amount());
     }
 
+    // TODO move somewhere less confusing
     CollisionBehaviour<TakesDamage, DealsDamage> takeDamageOnCollision = new CollisionBehaviour<>(
         TakesDamage.class,
         DealsDamage.class,

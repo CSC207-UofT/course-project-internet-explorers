@@ -10,4 +10,5 @@ public interface Item {
     int getSize();
     UUID getID();
     ImageButton createInventorySlot(int i);
+    ItemUsageDelegate getUsageDelegate();
 }

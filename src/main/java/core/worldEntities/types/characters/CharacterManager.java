@@ -4,7 +4,8 @@ import core.input.CharacterInput;
 import core.input.CharacterInputDevice;
 import core.inventory.Item;
 import core.inventory.Weapon;
-import core.inventory.WeaponUsageDelegate;
+import core.inventory.ItemUsageDelegate;
+import core.levels.LevelManager;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.health.TakesDamage;
 import java.util.*;
@@ -18,10 +19,13 @@ public class CharacterManager {
 
     public HashMap<UUID, Character> characterEntities;
     private final WorldEntityManager entityManager;
+    private final LevelManager levelManager;
 
-    public CharacterManager(WorldEntityManager entityManager) {
+    public CharacterManager(LevelManager levelManager) {
         this.characterEntities = new HashMap<>();
-        this.entityManager = entityManager;
+        this.levelManager = levelManager;
+        // TODO clean this up; always getEntityManager instead of storing
+        this.entityManager = levelManager.getEntityManager();
     }
 
     /**
@@ -55,8 +59,7 @@ public class CharacterManager {
 
             // TODO separate movement/usage into separate methods (also consult with ben)
             if (input.using()) {
-                WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
-                usageDelegate.use((Weapon) this.characterEntities.get(id).getInventory().get(0));
+                useSelectedItem(id);
             }
         });
     }
@@ -110,6 +113,22 @@ public class CharacterManager {
             }
         }
         return false;
+    }
+
+    /**
+     * gets the item currently selected by the specified character
+     */
+    private Item getSelectedItem(UUID id) {
+        if (verifyId(id)) {
+            return this.characterEntities.get(id).getInventory().get(0);
+        }
+        // TODO ensure next statement is removed once stuff is merged
+        throw new RuntimeException("this is fixed in commit to be merged");
+    }
+
+    private void useSelectedItem(UUID id) {
+        // TODO make & use id-based item manager system
+        getSelectedItem(id).getUsageDelegate().use(levelManager, id, getSelectedItem(id));
     }
 
     public void addInventory(UUID id, Item item) {

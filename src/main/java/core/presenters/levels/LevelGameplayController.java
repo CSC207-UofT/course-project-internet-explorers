@@ -48,7 +48,7 @@ public class LevelGameplayController implements Screen {
     public void show() {
         this.levelManager = new LevelManager(levelSupplier.get());
         this.entityManager = levelManager.getEntityManager();
-        this.characterManager = new CharacterManager(entityManager);
+        this.characterManager = new CharacterManager(levelManager);
 
         levelManager.addGameCharacterRegistrationCallbacks(characterManager);
 
