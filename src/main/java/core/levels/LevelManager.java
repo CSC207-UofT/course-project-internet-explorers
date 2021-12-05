@@ -57,9 +57,9 @@ public class LevelManager {
                 spawner.addSpawnCallback(e -> {
                     if (e instanceof Character character) {
                         if (character.getTeam().equals("player")) {
-                            characterManager.addCharacter(character.id, KeyboardInputDevice.class);
+                            characterManager.setInputDeviceType(character.getId(), KeyboardInputDevice.class);
                         } else if (character.getTeam().equals("enemy")) {
-                            characterManager.addCharacter(character.id, AIInputDevice.class);
+                            characterManager.setInputDeviceType(character.getId(), AIInputDevice.class);
                         }
                     }
                 });

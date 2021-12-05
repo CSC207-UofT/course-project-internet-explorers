@@ -68,17 +68,17 @@ public class LevelGameplayController implements Screen {
 
         Spawner<Character> playerSpawner = createPlayerSpawner();
         playerSpawner.setEntityManager(entityManager);
-        UUID playerId = playerSpawner.spawn().id;
-        characterManager.addCharacter(playerId, KeyboardInputDevice.class);
+        playerSpawner.addSpawnCallback(player -> characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class));
+        UUID playerId = playerSpawner.spawn().getId();
 
         Item sword = new Sword(1);
         Item dagger = new Dagger(1);
 
-        characterManager.addInventory(playerId, sword);
-        characterManager.addInventory(playerId, dagger);
+        characterManager.addInventoryItem(playerId, sword);
+        characterManager.addInventoryItem(playerId, dagger);
 
         this.hud = new HudManager(this.characterManager, this.levelManager, playerId);
-        this.inputController = new InputController(characterManager, hud, levelManager);
+        this.inputController = new InputController(entityManager, characterManager, hud, levelManager);
 
         Spawner<Spike> spikeSpawner = createSpikeSpawner();
         spikeSpawner.setEntityManager(entityManager);
@@ -86,8 +86,8 @@ public class LevelGameplayController implements Screen {
 
         Spawner<?> enemySpawner = createEnemySpawner();
         enemySpawner.setEntityManager(entityManager);
-        UUID enemyId = enemySpawner.spawn().id;
-        characterManager.addCharacter(enemyId, AIInputDevice.class);
+        enemySpawner.addSpawnCallback(enemy -> characterManager.setInputDeviceType(enemy.getId(), AIInputDevice.class));
+        enemySpawner.spawn();
 
         Spawner<?> defenderSpawner = createDefenderSpawner();
         defenderSpawner.setEntityManager(entityManager);

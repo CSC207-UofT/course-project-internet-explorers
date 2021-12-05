@@ -1,11 +1,8 @@
 package core.worldEntities.types.characters;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Body;
 import core.input.CharacterInputDevice;
 import core.inventory.Item;
-import core.worldEntities.WorldEntityManager;
 import core.worldEntities.WorldEntityWithSprite;
 import core.worldEntities.collisions.CollisionBehaviour;
 import core.worldEntities.collisions.HasCollisionBehaviours;
@@ -23,20 +20,15 @@ public class Character extends WorldEntityWithSprite implements TakesDamage, Has
      * */
 
     private String team;
-    private float health;
-    private int level;
-    private ArrayList<Item> inventory;
-    private Class<? extends CharacterInputDevice> inputDeviceType;
-    private final ArrayList<CollisionBehaviour<?, ?>> collisionBehaviours;
+    private float health = 0;
+    private int level = 0;
+    private ArrayList<Item> inventory = new ArrayList<>();
+    private Class<? extends CharacterInputDevice> inputDeviceType = CharacterInputDevice.class;
+    private final ArrayList<CollisionBehaviour<?, ?>> collisionBehaviours = new ArrayList<>();
 
-    public Character(WorldEntityManager entityManager, BodyDef bodyDef, FixtureDef... fixtureDefs) {
-        super(entityManager, bodyDef, fixtureDefs);
-        this.team = "";
-        this.health = 0;
-        this.level = 0;
-        this.inventory = new ArrayList<>();
-
-        this.collisionBehaviours = new ArrayList<>();
+    public Character(Body body) {
+        super(body);
+        this.collisionBehaviours.add(TakesDamage.takeDamageOnCollision);
     }
 
     public String getTeam() {
@@ -56,10 +48,6 @@ public class Character extends WorldEntityWithSprite implements TakesDamage, Has
         this.health = health;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
     public int getLevel() {
         return this.level;
     }
@@ -74,11 +62,6 @@ public class Character extends WorldEntityWithSprite implements TakesDamage, Has
 
     public void setInventory(ArrayList<Item> inventory) {
         this.inventory = inventory;
-    }
-
-    // TODO remove
-    public void setVelocity(Vector2 velocity) {
-        this.getBody().setLinearVelocity(velocity);
     }
 
     public void setInputDeviceType(Class<? extends CharacterInputDevice> inputDeviceType) {
