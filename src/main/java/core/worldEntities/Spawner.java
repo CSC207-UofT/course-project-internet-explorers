@@ -32,20 +32,11 @@ public class Spawner<T extends WorldEntity> {
     }
 
     public WorldEntity spawn() {
-        BodyDef bodyDef = bodyDefSupplier.get();
+        T entity = entityManager.createEntity(type, bodyDefSupplier.get(), fixtureDefsSupplier.get());
 
-        try {
-            T entity = type
-                .getConstructor(WorldEntityManager.class, BodyDef.class, FixtureDef[].class)
-                .newInstance(entityManager, bodyDef, fixtureDefsSupplier.get());
+        spawnCallbacks.forEach(c -> c.accept(entity));
 
-            spawnCallbacks.forEach(c -> c.accept(entity));
-
-            return entity;
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to spawn a WorldEntity of type " + type + ".");
-        }
+        return entity;
     }
 
     public void setEntityManager(WorldEntityManager entityManager) {

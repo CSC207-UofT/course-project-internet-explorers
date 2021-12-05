@@ -34,9 +34,13 @@ public class CharacterManager {
             // TODO separate movement/usage into separate methods (also consult with ben)
             if (input.using()) {
                 WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
-                usageDelegate.use((Weapon) ((GameCharacter) this.entityManager.getEntity(id)).getInventory().get(0));
+                usageDelegate.use((Weapon) ((Character) this.entityManager.getEntity(id)).getInventory().get(0));
             }
         });
+    }
+
+    public void setInputDeviceType(UUID id, Class<? extends CharacterInputDevice> inputDeviceType) {
+        verifyId(id).setInputDeviceType(inputDeviceType);
     }
 
     public void updateHealth(UUID id, int damage) {
@@ -63,7 +67,6 @@ public class CharacterManager {
          * Ensures that there are no issues when controller class calls a UsageDelegate
          * */
         return verifyId(id).getInventory().contains(item);
-
     }
 
     public boolean selectItem(UUID id, Item item) {
@@ -72,11 +75,7 @@ public class CharacterManager {
          * Returns True if item successfully selected, false if not
          * */
         if (verifyId(id).getInventory().contains(item)) {
-            Collections.swap(
-                    verifyId(id).getInventory(),
-                0,
-                    verifyId(id).getInventory().indexOf(item)
-            );
+            Collections.swap(verifyId(id).getInventory(), 0, verifyId(id).getInventory().indexOf(item));
             return true;
         }
         return false;
@@ -94,10 +93,10 @@ public class CharacterManager {
          * Checks if item is in inventory, then removes if it is
          * Returns True if item successfully removed, false if not
          * */
-            if (verifyId(id).getInventory().contains(item)) {
-                verifyId(id).getInventory().remove(item);
-                return true;
-            }
+        if (verifyId(id).getInventory().contains(item)) {
+            verifyId(id).getInventory().remove(item);
+            return true;
+        }
         return false;
     }
 
@@ -106,20 +105,19 @@ public class CharacterManager {
          * Returns inventory contents and displays them
          * Returns null if character id cannot be found
          * */
-            return  verifyId(id).getInventory();
-
+        return verifyId(id).getInventory();
     }
 
     /*
-    * Returns the worldEntity casted as a GameCharacter if the entity is an instance
-    * Otherwise throws an exception
-    * */
-    private GameCharacter verifyId(UUID id) {
+     * Returns the worldEntity casted as a GameCharacter if the entity is an instance
+     * Otherwise throws an exception
+     * */
+    private Character verifyId(UUID id) {
         try {
-                return (GameCharacter) this.entityManager.getEntity(id);
-            } catch(RuntimeException e) {
-                e.printStackTrace();
-                throw new RuntimeException("Entity with id: " + id + " is not of type GameCharacter.");
+            return (Character) this.entityManager.getEntity(id);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Entity with id: " + id + " is not of type GameCharacter.");
         }
     }
 }

@@ -32,11 +32,10 @@ public class TestWorldEntity {
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.StaticBody;
 
-        WorldEntity entity = new WorldEntity();
-        entityManager.register(entity);
+        WorldEntity entity = entityManager.createEntity(WorldEntity.class, new BodyDef());
 
-        assertNotNull(entity.id, "Entity UUID was not set.");
-        assertNotNull(entityManager.getEntity(entity.id), "WorldManager can't get the entity by UUID.");
+        assertNotNull(entity.getId(), "Entity UUID was not set.");
+        assertNotNull(entityManager.getEntity(entity.getId()), "WorldManager can't get the entity by UUID.");
 
         assertAll(
             "Default position, size, and offset were all set to 0.",
@@ -56,7 +55,7 @@ public class TestWorldEntity {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
 
-        entityManager.register(new WorldEntity(), bodyDef, fixtureDef);
+        entityManager.createEntity(WorldEntity.class, bodyDef, fixtureDef);
 
         circle.dispose();
 
@@ -78,7 +77,7 @@ public class TestWorldEntity {
         fixtureDef1.shape = circle;
         fixtureDef2.shape = square;
 
-        new WorldEntity();
+        entityManager.createEntity(WorldEntity.class, bodyDef, fixtureDef1, fixtureDef2);
 
         circle.dispose();
         square.dispose();

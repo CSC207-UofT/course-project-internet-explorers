@@ -2,6 +2,8 @@ package core.input;
 
 import core.levels.LevelManager;
 import core.presenters.HUD.HudManager;
+import core.worldEntities.WorldEntityManager;
+import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import java.util.HashMap;
 import java.util.UUID;
@@ -14,13 +16,20 @@ public class InputController {
 
     // input consumers: these use-case classes take inputs do something with them
     // TODO separate types of inputs
+    protected final WorldEntityManager worldEntityManager;
     protected final CharacterManager characterManager;
     protected final HudManager hudManager;
     protected final AIInputDevice aiInputDevice;
     protected final KeyboardInputDevice keyboardInputDevice;
     protected final LevelManager levelManager;
 
-    public InputController(CharacterManager characterManager, HudManager hudManager, LevelManager levelManager) {
+    public InputController(
+        WorldEntityManager worldEntityManager,
+        CharacterManager characterManager,
+        HudManager hudManager,
+        LevelManager levelManager
+    ) {
+        this.worldEntityManager = worldEntityManager;
         this.characterManager = characterManager;
         this.hudManager = hudManager;
         this.levelManager = levelManager;
@@ -34,17 +43,21 @@ public class InputController {
      */
     public void handleInputs(float dt) {
         HashMap<UUID, CharacterInput> characterInputMap = new HashMap<>();
-        characterManager.characterEntities.forEach((id, character) -> {
-            // Check what kind of input the character wants, then supply that input from our InputDevice
-            if (character.getInputDeviceType().equals(KeyboardInputDevice.class)) {
-                characterInputMap.put(id, keyboardInputDevice.getCharacterInput());
-            } else if (character.getInputDeviceType().equals(AIInputDevice.class)) {
-                characterInputMap.put(id, aiInputDevice.getCharacterInput());
-            } else {
-                // If no input type is set, use default inputs (which do nothing)
-                characterInputMap.put(id, CharacterInputDevice.DEFAULT.getCharacterInput());
-            }
-        });
+        worldEntityManager
+            .getEntities()
+            .forEach((id, entity) -> {
+                if (entity instanceof Character character) {
+                    // Check what kind of input the character wants, then supply that input from our InputDevice
+                    if (character.getInputDeviceType().equals(KeyboardInputDevice.class)) {
+                        characterInputMap.put(id, keyboardInputDevice.getCharacterInput());
+                    } else if (character.getInputDeviceType().equals(AIInputDevice.class)) {
+                        characterInputMap.put(id, aiInputDevice.getCharacterInput());
+                    } else {
+                        // If no input type is set, use default inputs (which do nothing)
+                        characterInputMap.put(id, CharacterInputDevice.DEFAULT.getCharacterInput());
+                    }
+                }
+            });
 
         characterManager.processInputs(dt, characterInputMap);
 

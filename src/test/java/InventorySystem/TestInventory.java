@@ -7,15 +7,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import core.inventory.Item;
 import core.inventory.Weapon;
 import core.inventory.items.*;
 import core.worldEntities.WorldEntityManager;
-import core.worldEntities.types.characters.GameCharacter;
+import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import java.util.ArrayList;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +26,7 @@ public class TestInventory {
     World world;
     CharacterManager characterManager;
 
-    GameCharacter test_player;
+    Character test_player;
 
     @BeforeAll
     static void makeApp() {
@@ -39,7 +39,7 @@ public class TestInventory {
         WorldEntityManager entityManager = new WorldEntityManager(world);
         characterManager = new CharacterManager(entityManager);
 
-        test_player = new GameCharacter();
+        test_player = entityManager.createEntity(Character.class, new BodyDef());
     }
 
     @AfterEach
@@ -68,7 +68,7 @@ public class TestInventory {
         test_player.getInventory().add(sword);
         test_player.getInventory().add(dagger);
 
-        ArrayList<Item> inventory = characterManager.openInventory(test_player.id);
+        ArrayList<Item> inventory = characterManager.openInventory(test_player.getId());
         ArrayList<Item> comparison = new ArrayList<>();
         comparison.add(sword);
         comparison.add(dagger);
@@ -81,6 +81,8 @@ public class TestInventory {
         Item dagger = new Dagger(2);
         test_player.getInventory().add(sword);
         test_player.getInventory().add(dagger);
-        assertTrue(characterManager.selectItem(test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))));
+        assertTrue(
+            characterManager.selectItem(test_player.getId(), test_player.getInventory().get(test_player.getInventory().indexOf(sword)))
+        );
     }
 }

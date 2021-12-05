@@ -7,9 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import core.input.CharacterInputDevice;
-import core.worldEntities.types.characters.GameCharacter;
-
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -31,46 +29,23 @@ public class WorldEntityManager {
      * Creates a WorldEntity's representation in the World,
      * and adds it to the collection of managed entities.
      *
-     * @param entity      The entity to register
+     * @param <T> the type of WorldEntity to create
      * @param bodyDef     Box2D representation details
      * @param fixtureDefs Box2D representation details
+     * @return The WorldEntity.
      */
-    public void register(WorldEntity entity, BodyDef bodyDef, FixtureDef... fixtureDefs) {
-        Body body = world.createBody(bodyDef);
+    public <T extends WorldEntity> T createEntity(Class<T> type, BodyDef bodyDef, FixtureDef... fixtureDefs) {
+        Body body = this.world.createBody(bodyDef);
         createFixtures(body, fixtureDefs);
-        entity.setBody(body);
-        this.entities.put(entity.id, entity);
-    }
 
-    /**
-    * Creates a GameCharacter
-     * If a game character is being created, an input device is passed to handle the inputs
-    * @param entity      The entity to register
-    * @param bodyDef     Box2D representation details
-    * @param inputDeviceType type of inputs the entity will receive
-    * @param fixtureDefs Box2D representation details
-    */
-    public void register(WorldEntity entity, BodyDef bodyDef, Class<? extends CharacterInputDevice> inputDeviceType,
-                            FixtureDef... fixtureDefs) {
-        Body body = world.createBody(bodyDef);
-        createFixtures(body, fixtureDefs);
-        entity.setBody(body);
-
-        if (entity instanceof GameCharacter) {
-            ((GameCharacter) entity).setInputDeviceType(inputDeviceType);
-        } else {
-            throw new RuntimeException(entity.id + "does not represent a GameCharacter");
+        try {
+            T entity = type.getConstructor(Body.class).newInstance(body);
+            this.entities.put(entity.getId(), entity);
+            return entity;
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to spawn a WorldEntity of type " + type + ".");
         }
-        this.entities.put(entity.id, entity);
-    }
-
-    /**
-     * Creates an entity that is not directly displayed in the overworld
-     * @param entity      The entity to register
-     */
-    public void register(WorldEntity entity) {
-
-        this.entities.put(entity.id, entity);
     }
 
     /**
@@ -111,6 +86,10 @@ public class WorldEntityManager {
 
     public void teleport(UUID id, Vector2 target) {
         entities.get(id).getBody().setTransform(target, entities.get(id).getBody().getAngle());
+    }
+
+    public Map<UUID, WorldEntity> getEntities() {
+        return this.entities;
     }
 
     public int getNumEntities() {

@@ -16,7 +16,6 @@ public class CameraManager {
     protected OrthographicCamera camera;
     protected float unitScale;
     private final WorldEntityManager entityManager;
-    private WorldEntity subject;
     private UUID subjectID;
     private boolean debugFreecam;
 
@@ -76,9 +75,9 @@ public class CameraManager {
      * TODO replace with a separate class so that user input is handled elsewhere.
      */
     public void enterDebugFreecamMode() {
-        subject = new WorldEntity();
-        subjectID = subject.getId();
-        this.entityManager.register(subject);
+        BodyDef def = new BodyDef();
+        def.position.set(camera.position.x, camera.position.y);
+        subjectID = entityManager.createEntity(WorldEntity.class, def).getId();
         debugFreecam = true;
     }
 

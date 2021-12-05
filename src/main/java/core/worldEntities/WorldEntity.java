@@ -2,8 +2,6 @@ package core.worldEntities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import java.util.UUID;
 
 /**
@@ -17,10 +15,11 @@ public class WorldEntity {
      * The Box2D Body representing this WorldEntity in the World.
      * The Body's position is also the position of this WorldEntity.
      */
-    private Body body;
-    public final UUID id;
+    protected final Body body;
+    private final UUID id;
 
-    public WorldEntity() {
+    public WorldEntity(Body body) {
+        this.body = body;
         this.id = UUID.randomUUID();
     }
 
@@ -32,8 +31,6 @@ public class WorldEntity {
         this.body.getPosition().set(position);
     }
 
-    public void setBody(Body body) {this.body = body;}
-
     public Body getBody() {
         return body;
     }
@@ -42,5 +39,7 @@ public class WorldEntity {
         this.body.setLinearVelocity(velocity);
     }
 
-    public UUID getId() { return this.id; }
+    public UUID getId() {
+        return id;
+    }
 }
