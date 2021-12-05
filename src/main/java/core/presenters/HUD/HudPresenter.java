@@ -23,19 +23,10 @@ import java.util.UUID;
 public class HudPresenter implements Disposable {
 
     private final Stage stage;
-    private final Viewport viewport;
-
-    //score && time tracking variables
-    private final Integer worldTimer;
-    private static Integer score;
-    private boolean timeUp;
 
     //Labels for displaying game info on the overlay
     private final Label countTimeLabel;
-    private final Label timeLabel;
-    private final Label linkLabel;
     private final Label winLabel;
-    private static Label scoreLabel;
 
     private boolean inventoryIsOpen;
     private final InventoryWindow playerInventory;
@@ -52,23 +43,20 @@ public class HudPresenter implements Disposable {
         this.levelManager = levelManager;
         sb = new SpriteBatch();
 
-        worldTimer = 0;
-        score = 0;
-
         playerInventory = new InventoryWindow(characterManager, id);
         pauseWindow = new PauseWindow();
 
-        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
+        Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
         BitmapFont winFont = new BitmapFont();
         winFont.getData().setScale(2);
 
         //define labels using the String, and a Label style consisting of a font and color
-        countTimeLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        linkLabel = new Label("POINTS", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        countTimeLabel = new Label("", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        Label scoreLabel = new Label("0", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        Label timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        Label linkLabel = new Label("POINTS", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         winLabel = new Label("", new Label.LabelStyle(winFont, Color.WHITE));
         winLabel.setAlignment(Align.center);
 
@@ -144,18 +132,5 @@ public class HudPresenter implements Disposable {
             stage.addActor(pauseWindow);
         }
         isPauseOpen = !isPauseOpen;
-    }
-
-    // These methods are unused at the moment, but may be useful later
-    public boolean isTimeUp() {
-        return timeUp;
-    }
-
-    public static Label getScoreLabel() {
-        return scoreLabel;
-    }
-
-    public static Integer getScore() {
-        return score;
     }
 }
