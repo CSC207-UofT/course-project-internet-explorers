@@ -56,7 +56,6 @@ public class LevelGameplayController implements Screen {
         this.shapeRenderer = new ShapeRenderer();
 
         Spawner<Character> playerSpawner = createPlayerSpawner();
-        //TODO: ^This should be a GameCharacter, but GameCharacter currently extends the wrong world entity
         playerSpawner.setEntityManager(entityManager);
         playerSpawner.addSpawnCallback(player -> characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class));
         UUID playerId = playerSpawner.spawn().getId();
