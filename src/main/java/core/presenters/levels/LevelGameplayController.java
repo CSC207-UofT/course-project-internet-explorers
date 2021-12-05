@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import core.config.Config;
+import core.config.ConfigurableSetting;
 import core.input.AIInputDevice;
 import core.input.InputController;
 import core.input.KeyboardInputDevice;
@@ -21,6 +23,7 @@ import core.worldEntities.Spawner;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
+import core.worldEntities.types.damageDealers.Spike;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -38,6 +41,14 @@ public class LevelGameplayController implements Screen {
     private Box2DDebugRenderer box2DDebugRenderer;
     private HudManager hud;
     private InputController inputController;
+
+    private final ConfigurableSetting<Boolean> render_physics = Config.add(
+        Boolean.class,
+        "render_physics",
+        "Whether physics bodies should be rendered.",
+        false,
+        Boolean::parseBoolean
+    );
 
     public LevelGameplayController(Supplier<LevelState> levelSupplier) {
         this.levelSupplier = levelSupplier;
@@ -68,6 +79,10 @@ public class LevelGameplayController implements Screen {
 
         this.hud = new HudManager(this.characterManager, this.levelManager, playerId);
         this.inputController = new InputController(entityManager, characterManager, hud, levelManager);
+
+        Spawner<Spike> spikeSpawner = createSpikeSpawner();
+        spikeSpawner.setEntityManager(entityManager);
+        spikeSpawner.spawn();
 
         Spawner<?> enemySpawner = createEnemySpawner();
         enemySpawner.setEntityManager(entityManager);
@@ -107,8 +122,9 @@ public class LevelGameplayController implements Screen {
         shapeRenderer.circle(cameraManager.getSubjectPosition().x, cameraManager.getSubjectPosition().y, 0.1f, 16);
         shapeRenderer.end();
 
-        // TODO only do this in debug mode
-        levelManager.renderPhysics(box2DDebugRenderer, cameraManager.getCamera());
+        if (render_physics.get()) {
+            levelManager.renderPhysics(box2DDebugRenderer, cameraManager.getCamera());
+        }
 
         hud.draw();
     }

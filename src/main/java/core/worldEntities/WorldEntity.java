@@ -19,16 +19,14 @@ public class WorldEntity {
     private final UUID id;
 
     public WorldEntity(Body body) {
-        this.body = body;
         this.id = UUID.randomUUID();
+
+        this.body = body;
+        this.body.setUserData(this);
     }
 
     public Vector2 getPosition() {
         return this.body.getPosition().cpy();
-    }
-
-    public void setPosition(Vector2 position) {
-        this.body.getPosition().set(position);
     }
 
     public Body getBody() {

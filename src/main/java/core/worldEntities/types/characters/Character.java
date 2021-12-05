@@ -4,9 +4,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import core.input.CharacterInputDevice;
 import core.inventory.Item;
 import core.worldEntities.WorldEntityWithSprite;
+import core.worldEntities.collisions.CollisionBehaviour;
+import core.worldEntities.collisions.HasCollisionBehaviours;
+import core.worldEntities.health.TakesDamage;
 import java.util.ArrayList;
 
-public class Character extends WorldEntityWithSprite {
+public class Character extends WorldEntityWithSprite implements TakesDamage, HasCollisionBehaviours {
 
     /*
      * Class that defines the main attributes of the classes Player, Enemy and Defender in the game.
@@ -17,10 +20,11 @@ public class Character extends WorldEntityWithSprite {
      * */
 
     private String team;
-    private int health;
+    private float health;
     private int level;
     private ArrayList<Item> inventory;
     private Class<? extends CharacterInputDevice> inputDeviceType = CharacterInputDevice.class;
+    private final ArrayList<CollisionBehaviour<?, ?>> collisionBehaviours = new ArrayList<>();
 
     public Character(Body body) {
         super(body);
@@ -28,6 +32,8 @@ public class Character extends WorldEntityWithSprite {
         this.health = 0;
         this.level = 0;
         this.inventory = new ArrayList<>();
+
+        this.collisionBehaviours.add(TakesDamage.takeDamageOnCollision);
     }
 
     public String getTeam() {
@@ -38,11 +44,12 @@ public class Character extends WorldEntityWithSprite {
         this.team = team;
     }
 
-    public int getHealth() {
+    public float getHealth() {
         return this.health;
     }
 
-    public void setHealth(int health) {
+    @Override
+    public void setHealth(float health) {
         this.health = health;
     }
 
@@ -68,5 +75,10 @@ public class Character extends WorldEntityWithSprite {
 
     public Class<? extends CharacterInputDevice> getInputDeviceType() {
         return inputDeviceType;
+    }
+
+    @Override
+    public ArrayList<CollisionBehaviour<?, ?>> getCollisionBehaviours() {
+        return this.collisionBehaviours;
     }
 }
