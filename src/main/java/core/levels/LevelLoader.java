@@ -4,24 +4,47 @@ import static core.worldEntities.DemoSpawners.createEnemySpawner;
 
 import core.worldEntities.Spawner;
 import core.worldEntities.types.characters.Character;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LevelLoader {
 
     /**
+     * save file contents:
+     *
+     */
+
+    final int SELECTED_LEVEL = 1;
+    
+    public static SavedLevel getSelectedLevel() {
+        // load file for selected level
+        
+        // for now, use manual method
+        return getLevel1();
+    }
+    
+    /**
      * Load a new LevelState
      * @return LevelState
      */
-    public static LevelState getLevel1() {
-        // Initialize LevelState
-        LevelState lvl = commonSetup();
-        lvl.setLevelDifficulty("L1");
+    public static LevelState getLevel1(){
 
-        return lvl;
+
+//        // Initialize LevelState
+        LevelState lvl = commonSetup();
+//        lvl.setLevelDifficulty("L1");
+
+//        try {
+//            LevelState lvl = loadState("LevelOne");
+            lvl.setLevelDifficulty("L1");
+
+            return lvl;
+//        } catch (IOException | ClassNotFoundException e){
+//            e.printStackTrace();
+//            throw new RuntimeException("rawr");
+//        }
     }
 
     /**
@@ -44,16 +67,15 @@ public class LevelLoader {
      * @throws IOException relating to savedState.txt
      * @throws ClassNotFoundException relating to reading objects in
      */
-    public static LevelState loadState() throws IOException, ClassNotFoundException {
+    public static LevelState loadState(String fileName) throws IOException, ClassNotFoundException {
         // Take file that has saved level state
-        FileInputStream fileInputStream = new FileInputStream("savedState.txt");
+        FileInputStream fileInputStream = new FileInputStream(fileName + ".txt");
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
-        float currentTime = (float) objectInputStream.readObject();
+        float currentTime = (float) objectInputStream.readFloat();
 
         // Initialize LevelState and assign enemy spawns
-        LevelState lvl = new LevelState("maps/demo.tmx");
-        lvl.setUnitScale(1 / 64f);
+        LevelState lvl = commonSetup();
 
         // Take current time and adjust enemyList
         lvl.setCurrentTime(currentTime);
@@ -70,5 +92,15 @@ public class LevelLoader {
         LevelState lvl = new LevelState("maps/demo.tmx");
         lvl.setUnitScale(1 / 64f);
         return lvl;
+    }
+
+    public static void main(String[] args) throws IOException{
+        FileOutputStream fileOutputStream = new FileOutputStream("LevelOne.txt");
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+        objectOutputStream.writeFloat(0f);
+
+        objectOutputStream.flush();
+        objectOutputStream.close();
     }
 }
