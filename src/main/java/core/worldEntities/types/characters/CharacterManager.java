@@ -28,13 +28,11 @@ public class CharacterManager {
     public void processInputs(float dt, Map<UUID, CharacterInput> inputs) {
         inputs.forEach((id, input) -> {
             // normalize input direction then scale by desired speed in m/s
-            // Moved this to be a setter in the entity class
             entityManager.getEntity(id).setLinearVelocity(input.direction().nor().scl(10f));
 
-            // TODO separate movement/usage into separate methods (also consult with ben)
             if (input.using()) {
                 WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
-                usageDelegate.use((Weapon) ((Character) this.entityManager.getEntity(id)).getInventory().get(0));
+                usageDelegate.use((Weapon) verifyId(id).getInventory().get(0));
             }
         });
     }
@@ -43,17 +41,10 @@ public class CharacterManager {
         verifyId(id).setInputDeviceType(inputDeviceType);
     }
 
-    public void updateHealth(UUID id, int damage) {
-        /*
-         * Decreases character health by damage
-         * */
-        verifyId(id).setHealth(verifyId(id).getHealth() - damage);
-    }
-
-    public void updateLevel(UUID id) {
-        /*
-         * Increases the level of a character following the completion of a wave
-         * */
+    /*
+     * Increases the level of a character following the completion of a wave
+     * */
+    public void incrementLevel(UUID id) {
         verifyId(id).setLevel(verifyId(id).getLevel() + 1);
     }
 
@@ -61,19 +52,19 @@ public class CharacterManager {
      *This section implements character behaviors in relation to their inventory
      */
 
-    public boolean canUseItem(UUID id, Item item) {
-        /*
-         * Checks if the item is in the character's inventory and then returns true if it is.
-         * Ensures that there are no issues when controller class calls a UsageDelegate
-         * */
+    /*
+     * Checks if the item is in the character's inventory and then returns true if it is.
+     * Ensures that there are no issues when controller class calls a UsageDelegate
+     * */
+    public boolean hasItem(UUID id, Item item) {
         return verifyId(id).getInventory().contains(item);
     }
 
-    public boolean selectItem(UUID id, Item item) {
-        /*
-         * Checks if item is in inventory, then moves it to the first index at which item would be used
-         * Returns True if item successfully selected, false if not
-         * */
+    /*
+     * Checks if item is in inventory, then moves it to the first index at which item would be used
+     * Returns True if item successfully selected, false if not
+     * */
+    public boolean swapSelectedItem(UUID id, Item item) {
         if (verifyId(id).getInventory().contains(item)) {
             Collections.swap(verifyId(id).getInventory(), 0, verifyId(id).getInventory().indexOf(item));
             return true;
@@ -81,18 +72,18 @@ public class CharacterManager {
         return false;
     }
 
-    public void addInventory(UUID id, Item item) {
-        /*
-         * Adds item to the inventory
-         * */
+    /*
+     * Adds item to the inventory
+     * */
+    public void addInventoryItem(UUID id, Item item) {
         verifyId(id).getInventory().add(item);
     }
 
-    public boolean removeInventory(UUID id, Item item) {
-        /*
-         * Checks if item is in inventory, then removes if it is
-         * Returns True if item successfully removed, false if not
-         * */
+    /*
+     * Checks if item is in inventory, then removes if it is
+     * Returns True if item successfully removed, false if not
+     * */
+    public boolean removeInventoryItem(UUID id, Item item) {
         if (verifyId(id).getInventory().contains(item)) {
             verifyId(id).getInventory().remove(item);
             return true;
@@ -100,16 +91,12 @@ public class CharacterManager {
         return false;
     }
 
-    public ArrayList<Item> openInventory(UUID id) {
-        /*
-         * Returns inventory contents and displays them
-         * Returns null if character id cannot be found
-         * */
+    public ArrayList<Item> getInventory(UUID id) {
         return verifyId(id).getInventory();
     }
 
     /*
-     * Returns the worldEntity casted as a GameCharacter if the entity is an instance
+     * Returns the worldEntity cast as a GameCharacter if the entity is an instance
      * Otherwise throws an exception
      * */
     private Character verifyId(UUID id) {

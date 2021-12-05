@@ -15,7 +15,7 @@ public class WorldEntity {
      * The Box2D Body representing this WorldEntity in the World.
      * The Body's position is also the position of this WorldEntity.
      */
-    protected final Body body;
+    private final Body body;
     private final UUID id;
 
     public WorldEntity(Body body) {

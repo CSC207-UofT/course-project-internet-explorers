@@ -42,30 +42,24 @@ public class TestCharacterManager {
     }
 
     @org.junit.Test
-    public void testUpdateHealth() {
-        cm.updateHealth(character.getId(), 50);
-        assertEquals(character.getHealth(), 50);
-    }
-
-    @org.junit.Test
     public void testUpdateLevel() {
-        cm.updateLevel(character.getId());
+        cm.incrementLevel(character.getId());
         assertEquals(character.getLevel(), 1);
     }
 
     @org.junit.Test
     public void testAddInventory() {
-        cm.addInventory(character.getId(), sword);
+        cm.addInventoryItem(character.getId(), sword);
         assertEquals(character.getInventory().size(), 1);
     }
 
     @org.junit.Test
     public void testCanUseItem() {
-        assertTrue(cm.canUseItem(character.getId(), sword));
+        assertTrue(cm.hasItem(character.getId(), sword));
     }
 
     @org.junit.Test
     public void testRemoveInventory() {
-        assertTrue(cm.removeInventory(character.getId(), sword));
+        assertTrue(cm.removeInventoryItem(character.getId(), sword));
     }
 }

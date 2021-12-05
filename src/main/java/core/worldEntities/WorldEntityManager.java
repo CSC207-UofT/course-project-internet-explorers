@@ -84,15 +84,7 @@ public class WorldEntityManager {
         return entities.get(id);
     }
 
-    public void teleport(UUID id, Vector2 target) {
-        entities.get(id).getBody().setTransform(target, entities.get(id).getBody().getAngle());
-    }
-
     public Map<UUID, WorldEntity> getEntities() {
         return this.entities;
-    }
-
-    public int getNumEntities() {
-        return this.entities.size();
     }
 }

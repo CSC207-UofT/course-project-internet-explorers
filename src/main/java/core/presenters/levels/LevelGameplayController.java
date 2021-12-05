@@ -63,8 +63,8 @@ public class LevelGameplayController implements Screen {
         Item sword = new Sword(1);
         Item dagger = new Dagger(1);
 
-        characterManager.addInventory(playerId, sword);
-        characterManager.addInventory(playerId, dagger);
+        characterManager.addInventoryItem(playerId, sword);
+        characterManager.addInventoryItem(playerId, dagger);
 
         this.hud = new HudManager(this.characterManager, this.levelManager, playerId);
         this.inputController = new InputController(entityManager, characterManager, hud, levelManager);

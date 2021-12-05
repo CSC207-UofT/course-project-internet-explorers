@@ -9,7 +9,7 @@ public class WorldEntityWithSprite extends WorldEntity {
     private Sprite sprite;
     private Vector2 offset;
 
-    protected WorldEntityWithSprite(Body body) {
+    public WorldEntityWithSprite(Body body) {
         super(body);
     }
 
@@ -19,6 +19,7 @@ public class WorldEntityWithSprite extends WorldEntity {
     }
 
     protected Sprite getSprite() {
+        // convert body rotation from radians to degrees
         sprite.setRotation(this.getBody().getAngle() * 57.29578f);
 
         Vector2 pos = this.getPosition().add(offset);
