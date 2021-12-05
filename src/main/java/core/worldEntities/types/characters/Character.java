@@ -20,19 +20,14 @@ public class Character extends WorldEntityWithSprite implements TakesDamage, Has
      * */
 
     private String team;
-    private float health;
-    private int level;
-    private ArrayList<Item> inventory;
+    private float health = 0;
+    private int level = 0;
+    private ArrayList<Item> inventory = new ArrayList<>();
     private Class<? extends CharacterInputDevice> inputDeviceType = CharacterInputDevice.class;
     private final ArrayList<CollisionBehaviour<?, ?>> collisionBehaviours = new ArrayList<>();
 
     public Character(Body body) {
         super(body);
-        this.team = "";
-        this.health = 0;
-        this.level = 0;
-        this.inventory = new ArrayList<>();
-
         this.collisionBehaviours.add(TakesDamage.takeDamageOnCollision);
     }
 
