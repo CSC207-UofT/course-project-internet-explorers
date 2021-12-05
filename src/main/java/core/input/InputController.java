@@ -15,14 +15,14 @@ public class InputController {
     // input consumers: these use-case classes take inputs do something with them
     // TODO separate types of inputs
     protected final CharacterManager characterManager;
-    protected final HudPresenter hudManager;
+    protected final HudPresenter hudPresenter;
     protected final AIInputDevice aiInputDevice;
     protected final KeyboardInputDevice keyboardInputDevice;
     protected final LevelManager levelManager;
 
-    public InputController(CharacterManager characterManager, HudPresenter hudManager, LevelManager levelManager) {
+    public InputController(CharacterManager characterManager, HudPresenter hudPresenter, LevelManager levelManager) {
         this.characterManager = characterManager;
-        this.hudManager = hudManager;
+        this.hudPresenter = hudPresenter;
         this.levelManager = levelManager;
         this.aiInputDevice = new AIInputDevice();
         this.keyboardInputDevice = new KeyboardInputDevice();
@@ -49,11 +49,11 @@ public class InputController {
         characterManager.processInputs(dt, characterInputMap);
 
         if (keyboardInputDevice.getHudInput().toggleInventory()) {
-            hudManager.toggleInventory();
+            hudPresenter.toggleInventory();
         }
 
         if (keyboardInputDevice.getHudInput().togglePause()) {
-            hudManager.togglePauseWindow();
+            hudPresenter.togglePauseWindow();
 
             if (!levelManager.isLevelPaused()) {
                 levelManager.pause();

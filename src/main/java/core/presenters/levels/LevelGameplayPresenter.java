@@ -1,7 +1,5 @@
 package core.presenters.levels;
 
-import static core.worldEntities.DemoSpawners.*;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -10,26 +8,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import core.input.AIInputDevice;
 import core.input.InputController;
-import core.input.KeyboardInputDevice;
-import core.inventory.Item;
-import core.inventory.items.Dagger;
-import core.inventory.items.Sword;
 import core.levels.LevelManager;
-import core.levels.LevelState;
 import core.presenters.HUD.HudPresenter;
-import core.worldEntities.Spawner;
 import core.worldEntities.WorldEntityManager;
-import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 /**
  * Runs the gameplay of a Level.
  */
-public class LevelGameplayPresenter<priavte> implements Screen {
+public class LevelGameplayPresenter implements Screen {
 
     private CameraManager cameraManager;
     private ShapeRenderer shapeRenderer;
@@ -44,7 +33,7 @@ public class LevelGameplayPresenter<priavte> implements Screen {
     private final LevelGameplayController levelGameplayController;
 
     public LevelGameplayPresenter(LevelGameplayController levelGameplayController) {
-       this.levelGameplayController = levelGameplayController;
+        this.levelGameplayController = levelGameplayController;
     }
 
     @Override
