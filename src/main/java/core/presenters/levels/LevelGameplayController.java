@@ -41,12 +41,12 @@ public class LevelGameplayController implements Screen {
 
     @Override
     public void show() {
+        this.entityManager = levelManager.getEntityManager();
+        this.characterManager = new CharacterManager(entityManager);
+
         levelManager.initializeLevel(selectedLevel.get());
         // add to LevelManager.initializeLevel
         levelManager.addGameCharacterRegistrationCallbacks(characterManager);
-
-        this.entityManager = levelManager.getEntityManager();
-        this.characterManager = new CharacterManager(entityManager);
 
         createSpawners();
         initiatePlayerInventory();
