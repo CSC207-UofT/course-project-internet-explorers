@@ -23,6 +23,7 @@ public class LevelManager {
     private LevelState activeLevel;
     private TiledMap map;
     private WorldEntityManager entityManager;
+    static final int SPAWN_FREQUENCY = 15;
 
     // TODO use level loader to load appropriate level once implemented
     public void initializeLevel(String name) {
@@ -74,7 +75,7 @@ public class LevelManager {
             return;
         }
 
-        // Stepping physics simulation
+        // Step physics simulation with box2d default velocity and position iterations
         activeLevel.world.step(Math.min(dt, 0.5f), 6, 2);
 
         // Elapsing time in world
@@ -105,7 +106,7 @@ public class LevelManager {
             enemy.spawn();
             activeLevel.setEnemySpawns(enemies);
             activeLevel.setScore(activeLevel.getScore() + 1);
-            activeLevel.setSpawnTime(activeLevel.getSpawnTime() + 15);
+            activeLevel.setSpawnTime(activeLevel.getSpawnTime() + SPAWN_FREQUENCY);
         }
     }
 

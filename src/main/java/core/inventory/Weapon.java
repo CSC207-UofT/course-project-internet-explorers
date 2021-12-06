@@ -4,16 +4,15 @@ import java.util.UUID;
 
 public abstract class Weapon implements Item {
 
+    public static int DEFAULT_LEVEL = 1;
+
     private String texturePath;
-    private int size;
     private int level;
     private int damage;
     private int range;
     public UUID id;
 
     public abstract int getDamage();
-
-    public abstract int getSize();
 
     public abstract int getLevel();
 

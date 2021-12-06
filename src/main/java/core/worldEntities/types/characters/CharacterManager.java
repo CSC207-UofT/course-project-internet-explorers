@@ -27,8 +27,8 @@ public class CharacterManager {
      */
     public void processInputs(float dt, Map<UUID, CharacterInput> inputs) {
         inputs.forEach((id, input) -> {
-            // normalize input direction then scale by desired speed in m/s
-            entityManager.getEntity(id).setLinearVelocity(input.direction().nor().scl(10f));
+            // normalize input direction then scale by desired speed
+            entityManager.getEntity(id).setLinearVelocity(input.direction().nor().scl(Character.SPEED));
 
             if (input.using()) {
                 WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
