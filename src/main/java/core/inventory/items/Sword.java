@@ -23,6 +23,10 @@ public class Sword extends Weapon {
     static final int SWORD_DAMAGE_PER_LEVEL = 3;
     static final int SWORD_RANGE_PER_LEVEL = 2;
 
+    public Sword() {
+        this(Weapon.DEFAULT_LEVEL);
+    }
+
     public Sword(int level) {
         setLevel(level);
         this.id = UUID.randomUUID();

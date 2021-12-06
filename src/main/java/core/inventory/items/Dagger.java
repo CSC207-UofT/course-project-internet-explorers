@@ -23,6 +23,10 @@ public class Dagger extends Weapon {
     static final int DAGGER_DAMAGE_PER_LEVEL = 2;
     static final int DAGGER_RANGE_PER_LEVEL = 1;
 
+    public Dagger() {
+        this(Weapon.DEFAULT_LEVEL);
+    }
+
     public Dagger(int level) {
         setLevel(level);
         this.id = UUID.randomUUID();

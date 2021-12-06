@@ -21,8 +21,6 @@ import java.util.UUID;
 
 public class LevelGameplayController implements Screen {
 
-    static final int SWORD_LEVEL = 1;
-    static final int DAGGER_LEVEL = 1;
     private static final ConfigurableSetting<String> selectedLevel = Config.add(
         String.class,
         "selected-level",
@@ -77,8 +75,8 @@ public class LevelGameplayController implements Screen {
         playerSpawner.setEntityManager(entityManager);
         playerSpawner.addSpawnCallback(player -> {
             characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class);
-            characterManager.addInventoryItem(playerId, new Dagger(DAGGER_LEVEL));
-            characterManager.addInventoryItem(playerId, new Sword(SWORD_LEVEL));
+            characterManager.addInventoryItem(playerId, new Dagger());
+            characterManager.addInventoryItem(playerId, new Sword());
         });
         this.playerId = playerSpawner.spawn().getId();
 
