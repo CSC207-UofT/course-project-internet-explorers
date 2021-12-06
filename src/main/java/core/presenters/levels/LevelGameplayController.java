@@ -75,10 +75,11 @@ public class LevelGameplayController implements Screen {
         playerSpawner.setEntityManager(entityManager);
         playerSpawner.addSpawnCallback(player -> {
             characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class);
-            characterManager.addInventoryItem(playerId, new Dagger());
-            characterManager.addInventoryItem(playerId, new Sword());
+            characterManager.addInventoryItem(player.getId(), new Dagger());
+            characterManager.addInventoryItem(player.getId(), new Sword());
+            this.playerId = player.getId();
         });
-        this.playerId = playerSpawner.spawn().getId();
+        playerSpawner.spawn();
 
         Spawner<Spike> spikeSpawner = createSpikeSpawner();
         spikeSpawner.setEntityManager(entityManager);
