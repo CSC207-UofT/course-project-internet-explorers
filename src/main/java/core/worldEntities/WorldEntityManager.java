@@ -39,7 +39,6 @@ public class WorldEntityManager {
     public <T extends WorldEntity> T createEntity(Class<T> type, BodyDef bodyDef, FixtureDef... fixtureDefs) {
         Body body = this.world.createBody(bodyDef);
         createFixtures(body, fixtureDefs);
-
         try {
             T entity = type.getConstructor(Body.class).newInstance(body);
             this.entities.put(entity.getId(), entity);
@@ -48,6 +47,14 @@ public class WorldEntityManager {
             e.printStackTrace();
             throw new RuntimeException("Failed to spawn a WorldEntity of type " + type + ".");
         }
+    }
+
+    /**
+     * Removes an entity from this World.
+     * @param id the id of the entity to delete
+     */
+    public void deleteEntity(UUID id) {
+        world.destroyBody(this.entities.remove(id).getBody());
     }
 
     /**
