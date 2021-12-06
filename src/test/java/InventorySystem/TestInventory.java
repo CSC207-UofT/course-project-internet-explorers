@@ -29,16 +29,14 @@ public class TestInventory {
     CharacterManager characterManager;
 
     Character test_player;
-
-
+    ArrayList<Item> inv = new ArrayList<>();
+    Weapon sword = new Sword(1);
+    Item dagger = new Dagger(2);
 
     @BeforeAll
     static void makeApp() {
         new LwjglApplication(new ApplicationAdapter() {}, new LwjglApplicationConfiguration());
     }
-    Weapon sword = new Sword(1);
-    Item dagger = new Dagger(2);
-    ArrayList<Item> inv = new ArrayList<>();
 
     @BeforeEach
     public void setup() {
@@ -66,16 +64,16 @@ public class TestInventory {
 
     @Test
     void testSelect() {
-        assertTrue(characterManager.selectItem
-                (test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))));
+        assertTrue(characterManager.selectItem(test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))));
     }
+
     @Test
     void testAdd() {
         Item sword1 = new Sword(3);
         characterManager.addInventory(test_player.id, sword1);
-        assertTrue(characterManager.selectItem
-                (test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword1))));
+        assertTrue(characterManager.selectItem(test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword1))));
     }
+
     @Test
     void testRemove() {
         characterManager.removeInventory(test_player.id, sword);
