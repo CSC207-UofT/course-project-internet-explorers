@@ -9,6 +9,7 @@ import core.input.AIInputDevice;
 import core.input.InputController;
 import core.input.KeyboardInputDevice;
 import core.inventory.items.Dagger;
+import core.inventory.items.Defender;
 import core.inventory.items.Sword;
 import core.levels.LevelManager;
 import core.presenters.HUD.HudPresenter;
@@ -78,6 +79,7 @@ public class LevelGameplayController implements Screen {
             characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class);
             characterManager.addInventoryItem(player.getId(), new Dagger());
             characterManager.addInventoryItem(player.getId(), new Sword());
+            characterManager.addInventoryItem(player.getId(), new Defender());
             this.playerId = player.getId();
         });
         playerSpawner.spawn();
