@@ -19,6 +19,9 @@ public class Character extends WorldEntityWithSprite {
      * @param inventory: The Items the GameCharacter is able to use at a given point in the game
      * */
 
+    // measured in m/s
+    public static float SPEED = 10f;
+
     private String team;
     private int health;
     private int level;
