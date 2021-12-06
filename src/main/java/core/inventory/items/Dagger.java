@@ -11,13 +11,11 @@ public class Dagger extends Weapon {
     /*
      * Dagger weapon object stored in inventory for use
      * @param texture: texture of Dagger
-     * @param size: size of Dagger
      * @param level: level of Dagger
      * @param range: range of Dagger
      * @param damage: damage of Dagger
      * */
 
-    private int size;
     private int level;
     private int range;
     private int damage;
@@ -45,7 +43,6 @@ public class Dagger extends Weapon {
     @Override
     public void setLevel(int level) {
         this.level = level;
-        this.size = level;
         this.range = level * DAGGER_RANGE_PER_LEVEL;
         this.damage = level * DAGGER_DAMAGE_PER_LEVEL;
     }
@@ -53,11 +50,6 @@ public class Dagger extends Weapon {
     @Override
     public int getLevel() {
         return level;
-    }
-
-    @Override
-    public int getSize() {
-        return size;
     }
 
     @Override

@@ -11,13 +11,11 @@ public class Sword extends Weapon {
     /*
      * Sword weapon object stored in inventory for use
      * @param texture: texture of Sword
-     * @param size: size of Sword
      * @param level: level of Sword
      * @param range: range of Sword
      * @param damage: damage of Sword
      * */
 
-    private int size;
     private int level;
     private int range;
     private int damage;
@@ -45,7 +43,6 @@ public class Sword extends Weapon {
     @Override
     public void setLevel(int level) {
         this.level = level;
-        this.size = level;
         this.range = level * SWORD_RANGE_PER_LEVEL;
         this.damage = level * SWORD_DAMAGE_PER_LEVEL;
     }
@@ -53,11 +50,6 @@ public class Sword extends Weapon {
     @Override
     public int getLevel() {
         return level;
-    }
-
-    @Override
-    public int getSize() {
-        return size;
     }
 
     @Override
