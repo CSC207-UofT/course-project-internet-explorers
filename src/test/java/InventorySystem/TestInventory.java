@@ -3,7 +3,6 @@ package InventorySystem;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.math.Vector2;
@@ -27,6 +26,9 @@ public class TestInventory {
     CharacterManager characterManager;
 
     Character test_player;
+    ArrayList<Item> inv = new ArrayList<>();
+    Weapon sword = new Sword(1);
+    Item dagger = new Dagger(2);
 
     @BeforeAll
     static void makeApp() {
@@ -40,6 +42,9 @@ public class TestInventory {
         characterManager = new CharacterManager(entityManager);
 
         test_player = entityManager.createEntity(Character.class, new BodyDef());
+        inv.add(sword);
+        inv.add(dagger);
+        test_player.setInventory(inv);
     }
 
     @AfterEach
@@ -47,45 +52,37 @@ public class TestInventory {
         world.dispose();
     }
 
-    public static void main(String[] args) {
-        System.out.println(Gdx.files.getLocalStoragePath());
-    }
-
     @Test
     void testDamage() {
-        Item sword = new Sword(1);
-        Item dagger = new Dagger(2);
-        test_player.getInventory().add(sword);
-        test_player.getInventory().add(dagger);
         Weapon weapon = (Weapon) test_player.getInventory().get(0);
-        assertEquals(3, weapon.getDamage());
-    }
-
-    @Test
-    void testInventory() {
-        Item sword = new Sword(1);
-        Item dagger = new Dagger(2);
-        test_player.getInventory().add(sword);
-        test_player.getInventory().add(dagger);
-
-        ArrayList<Item> inventory = characterManager.getInventory(test_player.getId());
-        ArrayList<Item> comparison = new ArrayList<>();
-        comparison.add(sword);
-        comparison.add(dagger);
-        assertEquals(comparison, inventory);
+        assertEquals(sword.getDamage(), weapon.getDamage());
     }
 
     @Test
     void testSelect() {
-        Item sword = new Sword(1);
-        Item dagger = new Dagger(2);
-        test_player.getInventory().add(sword);
-        test_player.getInventory().add(dagger);
         assertTrue(
             characterManager.swapSelectedItem(
                 test_player.getId(),
                 test_player.getInventory().get(test_player.getInventory().indexOf(sword))
             )
         );
+    }
+
+    @Test
+    void testAdd() {
+        Item sword1 = new Sword(3);
+        characterManager.addInventoryItem(test_player.getId(), sword1);
+        assertTrue(
+            characterManager.swapSelectedItem(
+                test_player.getId(),
+                test_player.getInventory().get(test_player.getInventory().indexOf(sword1))
+            )
+        );
+    }
+
+    @Test
+    void testRemove() {
+        characterManager.removeInventoryItem(test_player.getId(), sword);
+        assertFalse(characterManager.swapSelectedItem(test_player.getId(), sword));
     }
 }
