@@ -17,19 +17,16 @@ public class Sword extends Weapon {
      * @param damage: damage of Sword
      * */
 
-    private final int size;
+    private int size;
     private int level;
-    private final int range;
-    private final int damage;
+    private int range;
+    private int damage;
     public UUID id;
     static final int SWORD_DAMAGE_PER_LEVEL = 3;
     static final int SWORD_RANGE_PER_LEVEL = 2;
 
     public Sword(int level) {
-        this.level = level;
-        this.size = this.level;
-        this.range = this.level * SWORD_RANGE_PER_LEVEL;
-        this.damage = this.level * SWORD_DAMAGE_PER_LEVEL;
+        setLevel(level);
         this.id = UUID.randomUUID();
     }
 
@@ -46,8 +43,11 @@ public class Sword extends Weapon {
     }
 
     @Override
-    public int getSize() {
-        return size;
+    public void setLevel(int level) {
+        this.level = level;
+        this.size = level;
+        this.range = level * SWORD_RANGE_PER_LEVEL;
+        this.damage = level * SWORD_DAMAGE_PER_LEVEL;
     }
 
     @Override
@@ -56,8 +56,8 @@ public class Sword extends Weapon {
     }
 
     @Override
-    public void setLevel(int new_level) {
-        this.level = new_level;
+    public int getSize() {
+        return size;
     }
 
     @Override

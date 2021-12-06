@@ -17,19 +17,16 @@ public class Dagger extends Weapon {
      * @param damage: damage of Dagger
      * */
 
-    private final int size;
+    private int size;
     private int level;
-    private final int range;
-    private final int damage;
+    private int range;
+    private int damage;
     public UUID id;
     static final int DAGGER_DAMAGE_PER_LEVEL = 2;
     static final int DAGGER_RANGE_PER_LEVEL = 1;
 
     public Dagger(int level) {
-        this.level = level;
-        this.size = this.level;
-        this.range = this.level * DAGGER_RANGE_PER_LEVEL;
-        this.damage = this.level * DAGGER_DAMAGE_PER_LEVEL;
+        setLevel(level);
         this.id = UUID.randomUUID();
     }
 
@@ -46,8 +43,11 @@ public class Dagger extends Weapon {
     }
 
     @Override
-    public int getSize() {
-        return size;
+    public void setLevel(int level) {
+        this.level = level;
+        this.size = level;
+        this.range = level * DAGGER_RANGE_PER_LEVEL;
+        this.damage = level * DAGGER_DAMAGE_PER_LEVEL;
     }
 
     @Override
@@ -56,8 +56,8 @@ public class Dagger extends Weapon {
     }
 
     @Override
-    public void setLevel(int new_level) {
-        this.level = new_level;
+    public int getSize() {
+        return size;
     }
 
     @Override
