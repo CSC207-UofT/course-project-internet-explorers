@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import core.inventory.Item;
 import core.inventory.Weapon;
 import core.inventory.items.*;
+import core.levels.LevelManager;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
@@ -38,10 +39,11 @@ public class TestInventory {
     @BeforeEach
     public void setup() {
         world = new World(new Vector2(0, 0), true);
-        WorldEntityManager entityManager = new WorldEntityManager(world);
-        characterManager = new CharacterManager(entityManager);
+        LevelManager levelManager = new LevelManager();
+        levelManager.initializeEmptyLevel();
+        characterManager = new CharacterManager(levelManager);
 
-        test_player = entityManager.createEntity(Character.class, new BodyDef());
+        test_player = levelManager.getEntityManager().createEntity(Character.class, new BodyDef());
         inv.add(sword);
         inv.add(dagger);
         test_player.setInventory(inv);

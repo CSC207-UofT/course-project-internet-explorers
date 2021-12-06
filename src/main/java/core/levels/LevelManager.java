@@ -2,6 +2,7 @@ package core.levels;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import core.input.AIInputDevice;
 import core.input.KeyboardInputDevice;
@@ -24,6 +25,11 @@ public class LevelManager {
     private TiledMap map;
     private WorldEntityManager entityManager;
     static final int SPAWN_FREQUENCY = 15;
+
+    // TODO REMOVE (THIS IS FOR TESTING, LOAD TEST LEVELS ONCE POSSIBLE)
+    public void initializeEmptyLevel() {
+        this.entityManager = new WorldEntityManager(new World(new Vector2(), true));
+    }
 
     // TODO use level loader to load appropriate level once implemented
     public void initializeLevel(String name) {

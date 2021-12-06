@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import core.inventory.items.Sword;
+import core.levels.LevelManager;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
@@ -27,13 +28,15 @@ public class TestCharacterManager {
     @Before
     public void setup() {
         world = new World(new Vector2(0, 0), true);
-        entityManager = new WorldEntityManager(world);
+        LevelManager levelManager = new LevelManager();
+        levelManager.initializeEmptyLevel();
+        entityManager = levelManager.getEntityManager();
         character = entityManager.createEntity(Character.class, new BodyDef());
 
         character.setHealth(100);
         sword = new Sword(2);
 
-        cm = new CharacterManager(entityManager);
+        cm = new CharacterManager(levelManager);
     }
 
     @AfterEach
