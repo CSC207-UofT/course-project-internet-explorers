@@ -91,7 +91,7 @@ public class HudPresenter implements Disposable {
         }
 
         // updates the time label continuously
-        countTimeLabel.setText(this.levelManager.getTime());
+        countTimeLabel.setText(this.levelManager.getIntegerTime());
         stage.draw();
     }
 

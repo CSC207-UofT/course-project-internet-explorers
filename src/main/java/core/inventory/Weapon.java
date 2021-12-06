@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import core.levels.LevelEvent;
 import core.levels.LevelManager;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.health.Damage;
@@ -39,8 +40,16 @@ public abstract class Weapon implements Item {
                 createBodyDef(entityManager.getEntity(user_id).getPosition()),
                 createFixtureDef((float) weapon.getRange())
             );
-            damageRegion.setDeletionTime(levelManager.getTime() + 500);
             damageRegion.setDamage(new Damage(weapon.getDamage().amount(), user_id));
+
+            levelManager.addLevelEvent(
+                new LevelEvent(
+                    levelManager.getTime() + 0.1f,
+                    levelManager_ -> {
+                        levelManager.getEntityManager().deleteEntity(damageRegion.getId());
+                    }
+                )
+            );
         }
 
         private static BodyDef createBodyDef(Vector2 position) {

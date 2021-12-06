@@ -20,15 +20,10 @@ import core.worldEntities.health.DealsDamage;
  */
 public class CircularDamageRegion extends WorldEntity implements DealsDamage {
 
-    private float deletionTime;
     private Damage damage;
 
     public CircularDamageRegion(Body body) {
         super(body);
-    }
-
-    public void setDeletionTime(float deletionTime) {
-        this.deletionTime = deletionTime;
     }
 
     public void setDamage(Damage damage) {

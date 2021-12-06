@@ -27,7 +27,7 @@ public class LevelGameplayPresenter {
         Boolean.class,
         "render_physics",
         "Whether physics bodies should be rendered.",
-        false,
+        true,
         Boolean::parseBoolean
     );
 

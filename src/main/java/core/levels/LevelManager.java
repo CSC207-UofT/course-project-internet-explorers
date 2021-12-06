@@ -183,8 +183,12 @@ public class LevelManager {
         return activeLevel.levelPaused;
     }
 
-    public int getTime() {
+    public int getIntegerTime() {
         return (int) Math.floor(activeLevel.getCurrentTime());
+    }
+
+    public float getTime() {
+        return activeLevel.getCurrentTime();
     }
 
     public TiledMap getMap() {
