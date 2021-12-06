@@ -30,10 +30,15 @@ public class TestInventory {
 
     Character test_player;
 
+
+
     @BeforeAll
     static void makeApp() {
         new LwjglApplication(new ApplicationAdapter() {}, new LwjglApplicationConfiguration());
     }
+    Weapon sword = new Sword(1);
+    Item dagger = new Dagger(2);
+    ArrayList<Item> inv = new ArrayList<>();
 
     @BeforeEach
     public void setup() {
@@ -43,6 +48,9 @@ public class TestInventory {
 
         test_player = new Character(entityManager, new BodyDef());
         characterManager.addCharacter(test_player.id);
+        inv.add(sword);
+        inv.add(dagger);
+        test_player.setInventory(inv);
     }
 
     @AfterEach
@@ -52,38 +60,25 @@ public class TestInventory {
 
     @Test
     void testDamage() {
-        Weapon sword = new Sword(1);
-        Item dagger = new Dagger(2);
-        test_player.getInventory().add(sword);
-        test_player.getInventory().add(dagger);
         Weapon weapon = (Weapon) test_player.getInventory().get(0);
         assertEquals(sword.getDamage(), weapon.getDamage());
     }
 
     @Test
-    void testSetInventory() {
-        Item sword = new Sword(1);
-        Item dagger = new Dagger(2);
-        ArrayList<Item> list = new ArrayList<>();
-        list.add(sword);
-        list.add(dagger);
-        test_player.setInventory(list);
-
-        ArrayList<Item> comparison = new ArrayList<>();
-        comparison.add(sword);
-        comparison.add(dagger);
-
-        assertEquals(comparison, test_player.getInventory());
-    }
-
-    @Test
     void testSelect() {
-        Item sword = new Sword(1);
-        Item dagger = new Dagger(2);
-        ArrayList<Item> list = new ArrayList<>();
-        list.add(sword);
-        list.add(dagger);
-        test_player.setInventory(list);
-        assertTrue(characterManager.selectItem(test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))));
+        assertTrue(characterManager.selectItem
+                (test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))));
+    }
+    @Test
+    void testAdd() {
+        Item sword1 = new Sword(3);
+        characterManager.addInventory(test_player.id, sword1);
+        assertTrue(characterManager.selectItem
+                (test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword1))));
+    }
+    @Test
+    void testRemove() {
+        characterManager.removeInventory(test_player.id, sword);
+        assertFalse(characterManager.selectItem(test_player.id, sword));
     }
 }
