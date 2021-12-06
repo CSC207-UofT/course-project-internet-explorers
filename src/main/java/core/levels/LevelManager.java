@@ -28,10 +28,7 @@ public class LevelManager {
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final WorldEntityManager entityManager;
     private final SpriteBatch batch;
-    static final int SPAWN_BUFFER = 15;
-    static final int VELOCITY_ITERATIONS = 6;
-    static final int POSITION_ITERATIONS = 2;
-    static final float MAX_STEP = 0.5f;
+    static final int SPAWN_FREQUENCY = 15;
 
     public LevelManager(LevelState level) {
         this.level = level;
@@ -85,8 +82,8 @@ public class LevelManager {
             return;
         }
 
-        // Stepping physics simulation
-        level.world.step(Math.min(dt, MAX_STEP), VELOCITY_ITERATIONS, POSITION_ITERATIONS);
+        // Stepping physics simulation with box2d default velocity and position
+        level.world.step(Math.min(dt, 0.5f), 6, 2);
 
         // Elapsing time in world
         level.setCurrentTime(level.getCurrentTime() + dt);
@@ -116,7 +113,7 @@ public class LevelManager {
             enemy.spawn();
             level.setEnemySpawns(enemies);
             level.setScore(level.getScore() + 1);
-            level.setSpawnTime(level.getSpawnTime() + SPAWN_BUFFER);
+            level.setSpawnTime(level.getSpawnTime() + SPAWN_FREQUENCY);
         }
     }
 
