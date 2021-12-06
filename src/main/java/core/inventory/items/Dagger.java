@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.inventory.ItemUsageDelegate;
 import core.inventory.Weapon;
 import core.worldEntities.health.Damage;
-
 import java.util.UUID;
 
 public class Dagger extends Weapon {
@@ -14,24 +13,24 @@ public class Dagger extends Weapon {
     /*
      * Dagger weapon object stored in inventory for use
      * @param texture: texture of Dagger
-     * @param size: size of Dagger
      * @param level: level of Dagger
      * @param range: range of Dagger
      * @param damage: damage of Dagger
-     * @param
      * */
 
-    private final int size;
     private int level;
-    private final int range;
-    private final Damage damage;
+    private int range;
+    private Damage damage;
     public UUID id;
+    static final int DAMAGE_PER_LEVEL = 2;
+    static final int RANGE_PER_LEVEL = 1;
+
+    public Dagger() {
+        this(Weapon.DEFAULT_LEVEL);
+    }
 
     public Dagger(int level) {
-        this.level = level;
-        this.size = this.level;
-        this.range = this.level;
-        this.damage = new Damage(this.level * 2, null);
+        setLevel(level);
         this.id = UUID.randomUUID();
     }
 
@@ -48,18 +47,15 @@ public class Dagger extends Weapon {
     }
 
     @Override
-    public int getSize() {
-        return size;
+    public void setLevel(int level) {
+        this.level = level;
+        this.range = level * RANGE_PER_LEVEL;
+        this.damage = new Damage(level * DAMAGE_PER_LEVEL, null);
     }
 
     @Override
     public int getLevel() {
         return level;
-    }
-
-    @Override
-    public void setLevel(int new_level) {
-        this.level = new_level;
     }
 
     @Override
@@ -82,11 +78,6 @@ public class Dagger extends Weapon {
         }
 
         return new ImageButton(style);
-    }
-
-    @Override
-    public ItemUsageDelegate getUsageDelegate() {
-        return null;
     }
 
     @Override

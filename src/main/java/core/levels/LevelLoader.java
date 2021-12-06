@@ -17,10 +17,12 @@ public class LevelLoader {
      * @return LevelState
      */
     public static LevelState getLevel1() {
+        final int NUM_ENEMIES = 5;
+        final float UNIT_SCALE = 1 / 64f;
         // Initialize LevelState and assign enemy spawns
         LevelState lvl = new LevelState("maps/demo.tmx");
-        lvl.setEnemySpawns(createEnemyList(5));
-        lvl.setUnitScale(1 / 64f);
+        lvl.setEnemySpawns(createEnemyList(NUM_ENEMIES));
+        lvl.setUnitScale(UNIT_SCALE);
 
         return lvl;
     }
@@ -41,9 +43,11 @@ public class LevelLoader {
         float currentTime = (float) objectInputStream.readObject();
 
         // Initialize LevelState and assign enemy spawns
+        final int NUM_ENEMIES = 5;
+        final float UNIT_SCALE = 1 / 64f;
         LevelState lvl = new LevelState("maps/demo.tmx");
-        lvl.setEnemySpawns(createEnemyList(5));
-        lvl.setUnitScale(1 / 64f);
+        lvl.setEnemySpawns(createEnemyList(NUM_ENEMIES));
+        lvl.setUnitScale(UNIT_SCALE);
 
         // Take current time and adjust enemyList
         lvl.setCurrentTime(currentTime);
