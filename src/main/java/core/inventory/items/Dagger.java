@@ -11,25 +11,24 @@ public class Dagger extends Weapon {
     /*
      * Dagger weapon object stored in inventory for use
      * @param texture: texture of Dagger
-     * @param size: size of Dagger
      * @param level: level of Dagger
      * @param range: range of Dagger
      * @param damage: damage of Dagger
      * */
 
-    private final int size;
     private int level;
-    private final int range;
-    private final int damage;
+    private int range;
+    private int damage;
     public UUID id;
-    static final int DAGGER_DAMAGE = 2;
-    static final int DAGGER_RANGE = 1;
+    static final int DAMAGE_PER_LEVEL = 2;
+    static final int RANGE_PER_LEVEL = 1;
+
+    public Dagger() {
+        this(Weapon.DEFAULT_LEVEL);
+    }
 
     public Dagger(int level) {
-        this.level = level;
-        this.size = this.level;
-        this.range = this.level * DAGGER_RANGE;
-        this.damage = this.level * DAGGER_DAMAGE;
+        setLevel(level);
         this.id = UUID.randomUUID();
     }
 
@@ -46,18 +45,15 @@ public class Dagger extends Weapon {
     }
 
     @Override
-    public int getSize() {
-        return size;
+    public void setLevel(int level) {
+        this.level = level;
+        this.range = level * RANGE_PER_LEVEL;
+        this.damage = level * DAMAGE_PER_LEVEL;
     }
 
     @Override
     public int getLevel() {
         return level;
-    }
-
-    @Override
-    public void setLevel(int new_level) {
-        this.level = new_level;
     }
 
     @Override

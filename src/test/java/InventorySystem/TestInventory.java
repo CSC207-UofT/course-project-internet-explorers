@@ -3,7 +3,6 @@ package InventorySystem;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.math.Vector2;
@@ -16,8 +15,6 @@ import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,8 +41,7 @@ public class TestInventory {
         WorldEntityManager entityManager = new WorldEntityManager(world);
         characterManager = new CharacterManager(entityManager);
 
-        test_player = new Character(entityManager, new BodyDef());
-        characterManager.addCharacter(test_player.id);
+        test_player = entityManager.createEntity(Character.class, new BodyDef());
         inv.add(sword);
         inv.add(dagger);
         test_player.setInventory(inv);
@@ -64,19 +60,29 @@ public class TestInventory {
 
     @Test
     void testSelect() {
-        assertTrue(characterManager.selectItem(test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))));
+        assertTrue(
+            characterManager.swapSelectedItem(
+                test_player.getId(),
+                test_player.getInventory().get(test_player.getInventory().indexOf(sword))
+            )
+        );
     }
 
     @Test
     void testAdd() {
         Item sword1 = new Sword(3);
-        characterManager.addInventory(test_player.id, sword1);
-        assertTrue(characterManager.selectItem(test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword1))));
+        characterManager.addInventoryItem(test_player.getId(), sword1);
+        assertTrue(
+            characterManager.swapSelectedItem(
+                test_player.getId(),
+                test_player.getInventory().get(test_player.getInventory().indexOf(sword1))
+            )
+        );
     }
 
     @Test
     void testRemove() {
-        characterManager.removeInventory(test_player.id, sword);
-        assertFalse(characterManager.selectItem(test_player.id, sword));
+        characterManager.removeInventoryItem(test_player.getId(), sword);
+        assertFalse(characterManager.swapSelectedItem(test_player.getId(), sword));
     }
 }
