@@ -69,8 +69,9 @@ public class TestConfig {
 
     @Test
     public void testCantRegisterDuplicateSetting() {
-        Config.add(Integer.class, "name", "desc", 2, Integer::parseInt);
-        Executable registerDuplicateSetting = () -> Config.add(Integer.class, "name", "desc", 2, Integer::parseInt);
+        String name = UUID.randomUUID().toString();
+        Config.add(Integer.class, name, "desc", 2, Integer::parseInt);
+        Executable registerDuplicateSetting = () -> Config.add(Integer.class, name, "desc", 2, Integer::parseInt);
         Assertions.assertThrows(RuntimeException.class, registerDuplicateSetting, "Can't register settings with duplicate names.");
     }
 }

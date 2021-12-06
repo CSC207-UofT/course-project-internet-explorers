@@ -5,6 +5,7 @@ import core.config.ConfigController;
 import core.presenters.debug.Terminal;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 import java.util.function.Consumer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ public class TestConfigController {
 
     @Test
     public void testCfgCommand() {
-        String name = "name";
+        String name = UUID.randomUUID().toString();
         int initialValue = 3;
         int newValue = 5;
 
@@ -62,13 +63,13 @@ public class TestConfigController {
 
         Assertions.assertEquals(
             name + ": " + initialValue,
-            getTerminalOutput("cfg -get name", (ConfigController::useTerminal)),
+            getTerminalOutput("cfg -get " + name, (ConfigController::useTerminal)),
             "Get option works"
         );
 
         Assertions.assertEquals(
             name + ": " + newValue,
-            getTerminalOutput("cfg -set name " + newValue, (ConfigController::useTerminal)),
+            getTerminalOutput("cfg -set " + name + " " + newValue, (ConfigController::useTerminal)),
             "Set option works"
         );
     }
