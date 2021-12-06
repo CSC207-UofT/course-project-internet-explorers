@@ -1,3 +1,5 @@
+package desktop;
+
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import core.config.Config;
@@ -6,7 +8,7 @@ import core.config.ConfigurableSetting;
 import core.presenters.ScreenController;
 import core.presenters.debug.Terminal;
 
-class DesktopLauncher {
+public class DesktopLauncher {
 
     private static class DesktopConfig {
 
