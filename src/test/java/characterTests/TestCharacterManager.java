@@ -1,10 +1,12 @@
 package characterTests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
+import core.inventory.items.Sword;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
@@ -15,26 +17,23 @@ public class TestCharacterManager {
 
     /*
      * Tests the CharacterManager use case class
-     * */
-    World world;
+     * */World world;
+    WorldEntityManager entityManager;
     CharacterManager cm;
 
-    Character player1;
-    Character player2;
-    Character player3;
+    Character character;
+    Sword sword;
 
     @Before
     public void setup() {
         world = new World(new Vector2(0, 0), true);
-        WorldEntityManager entityManager = new WorldEntityManager(world);
+        entityManager = new WorldEntityManager(world);
+        character = entityManager.createEntity(Character.class, new BodyDef());
+
+        character.setHealth(100);
+        sword = new Sword(2);
+
         cm = new CharacterManager(entityManager);
-
-        BodyDef def = new BodyDef();
-        def.type = BodyDef.BodyType.DynamicBody;
-
-        player1 = new Character(entityManager, def);
-        player2 = new Character(entityManager, def);
-        player3 = new Character(entityManager, def);
     }
 
     @AfterEach
@@ -43,11 +42,24 @@ public class TestCharacterManager {
     }
 
     @org.junit.Test
-    public void testAddCharacter() {
-        cm.addCharacter(player1.id);
-        cm.addCharacter(player2.id);
-        cm.addCharacter(player3.id);
+    public void testUpdateLevel() {
+        cm.incrementLevel(character.getId());
+        assertEquals(character.getLevel(), 1);
+    }
 
-        assertEquals(3, cm.characterEntities.size());
+    @org.junit.Test
+    public void testAddInventory() {
+        cm.addInventoryItem(character.getId(), sword);
+        assertEquals(character.getInventory().size(), 1);
+    }
+
+    @org.junit.Test
+    public void testCanUseItem() {
+        assertTrue(cm.hasItem(character.getId(), sword));
+    }
+
+    @org.junit.Test
+    public void testRemoveInventory() {
+        assertTrue(cm.removeInventoryItem(character.getId(), sword));
     }
 }

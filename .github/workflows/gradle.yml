@@ -5,9 +5,6 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ $default-branch, "staging" ]
-  pull_request:
-    branches: [ $default-branch, "staging" ]
 
 jobs:
   build:

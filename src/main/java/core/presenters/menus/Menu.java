@@ -7,15 +7,15 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import core.presenters.ScreenManager;
+import core.presenters.ScreenController;
 
 public abstract class Menu implements Screen {
 
-    protected final ScreenManager screenManager;
+    protected final ScreenController screenController;
     protected final Stage stage;
 
-    protected Menu(ScreenManager screenManager) {
-        this.screenManager = screenManager;
+    protected Menu(ScreenController screenController) {
+        this.screenController = screenController;
         this.stage = new Stage(new ScreenViewport());
     }
 
@@ -23,7 +23,7 @@ public abstract class Menu implements Screen {
         return new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                screenManager.setScreen(nextScreen);
+                screenController.setScreen(nextScreen);
             }
         };
     }
