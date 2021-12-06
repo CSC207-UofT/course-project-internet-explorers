@@ -2,40 +2,67 @@ package core.presenters.levels;
 
 import static core.worldEntities.DemoSpawners.*;
 
+import com.badlogic.gdx.Screen;
+import core.config.Config;
+import core.config.ConfigurableSetting;
 import core.input.AIInputDevice;
+import core.input.InputController;
 import core.input.KeyboardInputDevice;
 import core.inventory.Item;
 import core.inventory.items.Dagger;
 import core.inventory.items.Sword;
 import core.levels.LevelManager;
-import core.levels.LevelState;
+import core.presenters.HUD.HudPresenter;
 import core.worldEntities.Spawner;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import core.worldEntities.types.damageDealers.Spike;
 import java.util.UUID;
-import java.util.function.Supplier;
 
-public class LevelGameplayController {
+public class LevelGameplayController implements Screen {
 
-    private final LevelManager levelManager;
-    private final WorldEntityManager entityManager;
-    private final CharacterManager characterManager;
+    private static final LevelManager levelManager = new LevelManager();
+    private static final ConfigurableSetting<String> selectedLevel = Config.add(
+        String.class,
+        "selected-level",
+        "Name of the level to load & play when the Play button is clicked.",
+        "demo",
+        s -> s
+    );
+    private LevelGameplayPresenter levelGameplayPresenter;
+    private HudPresenter hudPresenter;
+    private InputController inputController;
+    private WorldEntityManager entityManager;
+    private CharacterManager characterManager;
     private UUID playerId;
 
-    public LevelGameplayController(Supplier<LevelState> levelSupplier) {
-        this.levelManager = new LevelManager(levelSupplier.get());
+    public LevelGameplayController() {}
+
+    @Override
+    public void show() {
+        levelManager.initializeLevel(selectedLevel.get());
+        // add to LevelManager.initializeLevel
+        levelManager.addGameCharacterRegistrationCallbacks(characterManager);
+
         this.entityManager = levelManager.getEntityManager();
         this.characterManager = new CharacterManager(entityManager);
-        levelManager.addGameCharacterRegistrationCallbacks(characterManager);
 
         createSpawners();
         initiatePlayerInventory();
+
+        this.levelGameplayPresenter = new LevelGameplayPresenter(this);
+        this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
+
+        this.inputController = new InputController(entityManager, characterManager, hudPresenter, levelManager);
     }
 
-    public CharacterManager getCharacterManager() {
-        return characterManager;
+    @Override
+    public void render(float dt) {
+        inputController.handleInputs(dt);
+        levelManager.step(dt);
+
+        levelGameplayPresenter.render(dt);
     }
 
     public LevelManager getLevelManager() {
@@ -80,5 +107,33 @@ public class LevelGameplayController {
 
     public UUID getPlayerId() {
         return this.playerId;
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        levelGameplayPresenter.resize();
+    }
+
+    @Override
+    public void pause() {
+        levelManager.pause();
+    }
+
+    @Override
+    public void resume() {
+        levelManager.resume();
+    }
+
+    @Override
+    public void hide() {}
+
+    @Override
+    public void dispose() {
+        levelManager.dispose();
+        hudPresenter.dispose();
+    }
+
+    public HudPresenter getHudPresenter() {
+        return hudPresenter;
     }
 }
