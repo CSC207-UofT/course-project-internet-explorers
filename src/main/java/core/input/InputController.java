@@ -1,7 +1,7 @@
 package core.input;
 
 import core.levels.LevelManager;
-import core.presenters.HUD.HudManager;
+import core.presenters.HUD.HudPresenter;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
@@ -18,7 +18,7 @@ public class InputController {
     // TODO separate types of inputs
     protected final WorldEntityManager worldEntityManager;
     protected final CharacterManager characterManager;
-    protected final HudManager hudManager;
+    protected final HudPresenter hudPresenter;
     protected final AIInputDevice aiInputDevice;
     protected final KeyboardInputDevice keyboardInputDevice;
     protected final LevelManager levelManager;
@@ -26,12 +26,12 @@ public class InputController {
     public InputController(
         WorldEntityManager worldEntityManager,
         CharacterManager characterManager,
-        HudManager hudManager,
+        HudPresenter hudPresenter,
         LevelManager levelManager
     ) {
         this.worldEntityManager = worldEntityManager;
         this.characterManager = characterManager;
-        this.hudManager = hudManager;
+        this.hudPresenter = hudPresenter;
         this.levelManager = levelManager;
         this.aiInputDevice = new AIInputDevice();
         this.keyboardInputDevice = new KeyboardInputDevice();
@@ -62,11 +62,11 @@ public class InputController {
         characterManager.processInputs(dt, characterInputMap);
 
         if (keyboardInputDevice.getHudInput().toggleInventory()) {
-            hudManager.toggleInventory();
+            hudPresenter.toggleInventory();
         }
 
         if (keyboardInputDevice.getHudInput().togglePause()) {
-            hudManager.togglePauseWindow();
+            hudPresenter.togglePauseWindow();
 
             if (!levelManager.isLevelPaused()) {
                 levelManager.pause();

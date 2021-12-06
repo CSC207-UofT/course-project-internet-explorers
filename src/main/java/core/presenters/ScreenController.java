@@ -3,7 +3,7 @@ package core.presenters;
 import com.badlogic.gdx.Game;
 import core.presenters.menus.MainMenuScreen;
 
-public class ScreenManager extends Game {
+public class ScreenController extends Game {
 
     @Override
     public void create() {

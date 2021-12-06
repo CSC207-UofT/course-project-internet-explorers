@@ -8,8 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.config.Config;
 import core.levels.LevelLoader;
-import core.presenters.ScreenManager;
+import core.presenters.ScreenController;
 import core.presenters.levels.LevelGameplayController;
+import core.presenters.levels.LevelGameplayPresenter;
 import javax.swing.*;
 
 public class MainMenuScreen extends Menu {
@@ -27,8 +28,8 @@ public class MainMenuScreen extends Menu {
     private static final int HOW_TO_PLAY_BUTTON_X = Gdx.graphics.getWidth() / 2 - HOW_TO_PLAY_BUTTON_WIDTH / 2;
     private static final int HOW_TO_PLAY_BUTTON_Y = 200;
 
-    public MainMenuScreen(ScreenManager screenManager) {
-        super(screenManager);
+    public MainMenuScreen(ScreenController screenController) {
+        super(screenController);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class MainMenuScreen extends Menu {
         button.setPosition(PLAY_BUTTON_X, PLAY_BUTTON_Y);
         button.setSize(PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);
 
-        button.addListener(createExitButtonListener(new LevelGameplayController(LevelLoader::getLevel1)));
+        button.addListener(createExitButtonListener(new LevelGameplayController()));
 
         return button;
     }
@@ -68,7 +69,7 @@ public class MainMenuScreen extends Menu {
         button.setPosition(HOW_TO_PLAY_BUTTON_X, HOW_TO_PLAY_BUTTON_Y);
         button.setSize(HOW_TO_PLAY_BUTTON_WIDTH, HOW_TO_PLAY_BUTTON_HEIGHT);
 
-        button.addListener(createExitButtonListener(new HowToPlayScreen(screenManager, new MainMenuScreen(screenManager))));
+        button.addListener(createExitButtonListener(new HowToPlayScreen(screenController, new MainMenuScreen(screenController))));
 
         return button;
     }

@@ -1,11 +1,8 @@
 package core.levels;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import core.input.AIInputDevice;
 import core.input.KeyboardInputDevice;
 import core.worldEntities.Spawner;
@@ -19,30 +16,26 @@ import java.util.List;
 
 /**
  * Use-Case class for LevelState.
- * Implements methods for rendering level and advancing the level's World.
+ * Implements methods for advancing the level's World.
  */
 public class LevelManager {
 
-    private final LevelState level;
-    private final TiledMap map;
-    private final OrthogonalTiledMapRenderer mapRenderer;
-    private final WorldEntityManager entityManager;
-    private final SpriteBatch batch;
+    private LevelState activeLevel;
+    private TiledMap map;
+    private WorldEntityManager entityManager;
 
-    public LevelManager(LevelState level) {
-        this.level = level;
-        map = new TmxMapLoader().load(level.getMapPath());
-        this.mapRenderer = new OrthogonalTiledMapRenderer(map, level.getUnitScale());
-        this.entityManager = new WorldEntityManager(level.world);
-
-        this.batch = new SpriteBatch();
+    // TODO use level loader to load appropriate level once implemented
+    public void initializeLevel(String name) {
+        this.activeLevel = LevelLoader.getLevel1();
+        map = new TmxMapLoader().load(activeLevel.getMapPath());
+        this.entityManager = new WorldEntityManager(activeLevel.world);
 
         // assign all enemies to current entityManager
-        List<Spawner<Character>> enemiesUpdated = level.getEnemySpawns();
+        List<Spawner<Character>> enemiesUpdated = activeLevel.getEnemySpawns();
         for (Spawner<Character> spawner : enemiesUpdated) {
             spawner.setEntityManager(this.entityManager);
         }
-        level.setEnemySpawns(enemiesUpdated);
+        activeLevel.setEnemySpawns(enemiesUpdated);
     }
 
     /**
@@ -52,7 +45,7 @@ public class LevelManager {
      * @param characterManager the CharacterManager to add the created GameCharacters to
      */
     public void addGameCharacterRegistrationCallbacks(CharacterManager characterManager) {
-        for (Spawner<?> spawner : level.getEnemySpawns()) {
+        for (Spawner<?> spawner : activeLevel.getEnemySpawns()) {
             if (spawner.type.equals(Character.class)) {
                 spawner.addSpawnCallback(e -> {
                     if (e instanceof Character character) {
@@ -77,15 +70,15 @@ public class LevelManager {
      */
     public void step(float dt) {
         // If level isn't paused, perform step, time elapsing, spawning
-        if (level.getLevelPaused()) {
+        if (activeLevel.getLevelPaused()) {
             return;
         }
 
         // Stepping physics simulation
-        level.world.step(Math.min(dt, 0.5f), 6, 2);
+        activeLevel.world.step(Math.min(dt, 0.5f), 6, 2);
 
         // Elapsing time in world
-        level.setCurrentTime(level.getCurrentTime() + dt);
+        activeLevel.setCurrentTime(activeLevel.getCurrentTime() + dt);
 
         // Spawning enemies in world
         updateEnemies();
@@ -97,22 +90,22 @@ public class LevelManager {
      */
     private void updateEnemies() {
         // Spawning enemies in world
-        List<Spawner<Character>> enemies = level.getEnemySpawns();
+        List<Spawner<Character>> enemies = activeLevel.getEnemySpawns();
 
         if (enemies.isEmpty()) {
             // If all enemies have been spawned, check if game is won or not
-            level.finishedLevel();
+            activeLevel.finishedLevel();
             // if (checkWin()){showWinCondition();} // TODO Roy will implement showWinCondition()
             return;
         }
 
         // Spawn enemy every spawnTime amount of seconds
-        if (level.getCurrentTime() >= level.getSpawnTime()) {
+        if (activeLevel.getCurrentTime() >= activeLevel.getSpawnTime()) {
             Spawner<Character> enemy = enemies.remove(0);
             enemy.spawn();
-            level.setEnemySpawns(enemies);
-            level.setScore(level.getScore() + 1);
-            level.setSpawnTime(level.getSpawnTime() + 15);
+            activeLevel.setEnemySpawns(enemies);
+            activeLevel.setScore(activeLevel.getScore() + 1);
+            activeLevel.setSpawnTime(activeLevel.getSpawnTime() + 15);
         }
     }
 
@@ -123,7 +116,7 @@ public class LevelManager {
      * @return whether win condition has been met or not
      */
     public boolean checkWin() {
-        return level.isLevelFinished();
+        return activeLevel.isLevelFinished();
     }
 
     /**
@@ -137,34 +130,14 @@ public class LevelManager {
         FileOutputStream fileOutputStream = new FileOutputStream("savedState.txt");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-        objectOutputStream.writeFloat(level.getCurrentTime());
+        objectOutputStream.writeFloat(activeLevel.getCurrentTime());
 
         objectOutputStream.flush();
         objectOutputStream.close();
     }
 
-    public void renderMap(OrthographicCamera camera) {
-        mapRenderer.setView(camera);
-        mapRenderer.render();
-    }
-
-    public void renderWorld(OrthographicCamera camera) {
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        entityManager.draw(batch);
-        batch.end();
-    }
-
-    /**
-     * Invoke `render` on a Box2DDebugRenderer to draw the physics going on in this world.
-     * Used for debugging.
-     */
-    public void renderPhysics(Box2DDebugRenderer renderer, OrthographicCamera camera) {
-        renderer.render(level.world, camera.combined);
-    }
-
     public float getUnitScale() {
-        return level.getUnitScale();
+        return activeLevel.getUnitScale();
     }
 
     public WorldEntityManager getEntityManager() {
@@ -176,18 +149,30 @@ public class LevelManager {
     }
 
     public void pause() {
-        level.setLevelPaused(true);
+        activeLevel.setLevelPaused(true);
     }
 
     public void resume() {
-        level.setLevelPaused(false);
+        activeLevel.setLevelPaused(false);
     }
 
     public boolean isLevelPaused() {
-        return level.levelPaused;
+        return activeLevel.levelPaused;
     }
 
     public int getTime() {
-        return (int) Math.floor(level.getCurrentTime());
+        return (int) Math.floor(activeLevel.getCurrentTime());
+    }
+
+    public TiledMap getMap() {
+        return map;
+    }
+
+    public float getLevelUnitScale() {
+        return activeLevel.getUnitScale();
+    }
+
+    public World getWorld() {
+        return activeLevel.world;
     }
 }

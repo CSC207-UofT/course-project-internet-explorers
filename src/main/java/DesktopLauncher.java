@@ -3,7 +3,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import core.config.Config;
 import core.config.ConfigController;
 import core.config.ConfigurableSetting;
-import core.presenters.ScreenManager;
+import core.presenters.ScreenController;
 import core.presenters.debug.Terminal;
 
 class DesktopLauncher {
@@ -59,7 +59,7 @@ class DesktopLauncher {
         DesktopConfig.lwjglConfig.forceExit = false;
 
         // Launch game window
-        new LwjglApplication(new ScreenManager(), DesktopConfig.lwjglConfig);
+        new LwjglApplication(new ScreenController(), DesktopConfig.lwjglConfig);
 
         // Start debug terminal
         Terminal debugTerminal = new Terminal();
