@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import core.config.Config;
+import core.config.ConfigurableSetting;
 import core.input.InputController;
 import core.levels.LevelManager;
 import core.presenters.HUD.HudPresenter;
@@ -32,6 +34,14 @@ public class LevelGameplayPresenter implements Screen {
     private SpriteBatch batch;
     private final LevelGameplayController levelGameplayController;
 
+    private final ConfigurableSetting<Boolean> render_physics = Config.add(
+        Boolean.class,
+        "render_physics",
+        "Whether physics bodies should be rendered.",
+        false,
+        Boolean::parseBoolean
+    );
+
     public LevelGameplayPresenter(LevelGameplayController levelGameplayController) {
         this.levelGameplayController = levelGameplayController;
     }
@@ -51,7 +61,7 @@ public class LevelGameplayPresenter implements Screen {
         UUID playerId = levelGameplayController.getPlayerId();
 
         this.hud = new HudPresenter(this.characterManager, this.levelManager, playerId);
-        this.inputController = new InputController(characterManager, hud, levelManager);
+        this.inputController = new InputController(entityManager, characterManager, hud, levelManager);
 
         cameraManager.setSubjectID(playerId);
     }
@@ -73,7 +83,9 @@ public class LevelGameplayPresenter implements Screen {
      * Used for debugging.
      */
     public void renderPhysics() {
-        box2DDebugRenderer.render(levelManager.getWorld(), cameraManager.getCamera().combined);
+        if (render_physics.get()) {
+            box2DDebugRenderer.render(levelManager.getWorld(), cameraManager.getCamera().combined);
+        }
     }
 
     @Override
@@ -100,7 +112,6 @@ public class LevelGameplayPresenter implements Screen {
 
         // TODO only do this in debug mode
         renderPhysics();
-
         hud.draw();
     }
 

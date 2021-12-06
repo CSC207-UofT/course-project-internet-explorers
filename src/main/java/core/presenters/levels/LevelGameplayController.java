@@ -1,5 +1,7 @@
 package core.presenters.levels;
 
+import static core.worldEntities.DemoSpawners.*;
+
 import core.input.AIInputDevice;
 import core.input.KeyboardInputDevice;
 import core.inventory.Item;
@@ -11,14 +13,11 @@ import core.worldEntities.Spawner;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
-
+import core.worldEntities.types.damageDealers.Spike;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import static core.worldEntities.DemoSpawners.*;
-
 public class LevelGameplayController {
-
 
     private final LevelManager levelManager;
     private final WorldEntityManager entityManager;
@@ -47,16 +46,20 @@ public class LevelGameplayController {
         return entityManager;
     }
 
-    public void createSpawners(){
+    public void createSpawners() {
         Spawner<Character> playerSpawner = createPlayerSpawner();
         playerSpawner.setEntityManager(entityManager);
-        this.playerId = playerSpawner.spawn().id;
-        characterManager.addCharacter(playerId, KeyboardInputDevice.class);
+        playerSpawner.addSpawnCallback(player -> characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class));
+        this.playerId = playerSpawner.spawn().getId();
+
+        Spawner<Spike> spikeSpawner = createSpikeSpawner();
+        spikeSpawner.setEntityManager(entityManager);
+        spikeSpawner.spawn();
 
         Spawner<?> enemySpawner = createEnemySpawner();
         enemySpawner.setEntityManager(entityManager);
-        UUID enemyId = enemySpawner.spawn().id;
-        characterManager.addCharacter(enemyId, AIInputDevice.class);
+        enemySpawner.addSpawnCallback(enemy -> characterManager.setInputDeviceType(enemy.getId(), AIInputDevice.class));
+        enemySpawner.spawn();
 
         Spawner<?> defenderSpawner = createDefenderSpawner();
         defenderSpawner.setEntityManager(entityManager);
@@ -67,15 +70,15 @@ public class LevelGameplayController {
         mapBorderSpawner.spawn();
     }
 
-    public void initiatePlayerInventory(){
+    public void initiatePlayerInventory() {
         Item sword = new Sword(1);
         Item dagger = new Dagger(1);
 
-        characterManager.addInventory(playerId, sword);
-        characterManager.addInventory(playerId, dagger);
+        characterManager.addInventoryItem(playerId, dagger);
+        characterManager.addInventoryItem(playerId, sword);
     }
 
-    public UUID getPlayerId(){
+    public UUID getPlayerId() {
         return this.playerId;
     }
 }

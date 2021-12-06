@@ -5,9 +5,6 @@ import core.presenters.menus.MainMenuScreen;
 
 public class ScreenController extends Game {
 
-    public static final int WIDTH = 1024;
-    public static final int HEIGHT = 768;
-
     @Override
     public void create() {
         this.setScreen(new MainMenuScreen(this));
