@@ -39,24 +39,24 @@ public class LevelState implements Serializable {
     // LevelState
     protected transient float currentTime;
     protected int score;
+    private float spawnInterval;
     // unitScale measured in m/px
     // represents in-game size of map tiles
     // current conventions
     //  * 1 map tile is 1m by 1m
     //  * tiles are 32px by 32px
     private float unitScale;
-    private float spawnInterval;
 
     // SavedLevel extends LevelState implements Serializable
-    private final String mapPath;
-    private int totalSpawns;
+//    private final String mapPath;
+//    private int totalSpawns;
 
     // ActiveLevel extends LevelState
-    protected World world;
-    private TiledMap map;
-    protected List<Spawner<Character>> enemySpawns;
-    protected boolean levelPaused;
-    private boolean levelFinished;
+//    protected World world;
+//    private TiledMap map;
+//    protected List<Spawner<Character>> enemySpawns;
+//    protected boolean levelPaused;
+//    private boolean levelFinished;
 
 
     /**
@@ -86,19 +86,16 @@ public class LevelState implements Serializable {
      *      – saved -> active
      *          - length of enemy spawns = totalEnemies
      *          – no errors when constructor invoked (simply ensure to call constructor)
-     *          
-     *     - saved -> file -> saved -> active is the same as desired active state 
+     *
+     *     - saved -> file -> saved -> active is the same as desired active state
 
      */
 
 
-    public LevelState(String mapPath) {
-        this.world = new World(new Vector2(0, 0), true);
-        this.mapPath = mapPath;
+    public LevelState() {
         this.currentTime = 0;
-        this.levelPaused = false;
         this.spawnInterval = 15;
-        this.levelFinished = false;
+        this.score = 0;
     }
 
     protected void setUnitScale(float unitScale) {
@@ -107,18 +104,6 @@ public class LevelState implements Serializable {
 
     public float getUnitScale() {
         return this.unitScale;
-    }
-
-    public String getMapPath() {
-        return mapPath;
-    }
-
-    public boolean getLevelPaused() {
-        return levelPaused;
-    }
-
-    public void setLevelPaused(boolean set) {
-        this.levelPaused = set;
     }
 
     public float getCurrentTime() {
@@ -144,17 +129,4 @@ public class LevelState implements Serializable {
     public void setSpawnInterval(float spawnInterval) {
         this.spawnInterval = spawnInterval;
     }
-
-    public boolean isLevelFinished() {
-        return levelFinished;
-    }
-
-    public void finishedLevel() {
-        levelFinished = true;
-    }
-
-    public String getLevelDifficulty() {return levelDifficulty;}
-
-    public void setLevelDifficulty(String levelDifficulty) {this.levelDifficulty = levelDifficulty;}
-
 }

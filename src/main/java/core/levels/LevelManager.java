@@ -49,7 +49,7 @@ public class LevelManager {
 
         this.levelDifficultyToEnemies = createLevelDifficultyToEnemies();
         // create enemy list based on difficulty of level
-        this.enemySpawns = createEnemyList(levelDifficultyToEnemies.get(level.getLevelDifficulty()));
+        this.enemySpawns = createEnemyList(savedlevel.getTotalSpawns());
         // assign all enemies to current entityManager
         for (Spawner<Character> spawner : enemySpawns) {
             spawner.setEntityManager(this.entityManager);
