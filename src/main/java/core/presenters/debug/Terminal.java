@@ -1,7 +1,6 @@
 package core.presenters.debug;
 
 import com.badlogic.gdx.Gdx;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.*;
