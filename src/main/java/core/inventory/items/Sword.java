@@ -20,8 +20,8 @@ public class Sword extends Weapon {
     private int range;
     private int damage;
     public UUID id;
-    static final int SWORD_DAMAGE_PER_LEVEL = 3;
-    static final int SWORD_RANGE_PER_LEVEL = 2;
+    static final int DAMAGE_PER_LEVEL = 3;
+    static final int RANGE_PER_LEVEL = 2;
 
     public Sword() {
         this(Weapon.DEFAULT_LEVEL);
@@ -47,8 +47,8 @@ public class Sword extends Weapon {
     @Override
     public void setLevel(int level) {
         this.level = level;
-        this.range = level * SWORD_RANGE_PER_LEVEL;
-        this.damage = level * SWORD_DAMAGE_PER_LEVEL;
+        this.range = level * RANGE_PER_LEVEL;
+        this.damage = level * DAMAGE_PER_LEVEL;
     }
 
     @Override
