@@ -72,14 +72,4 @@ public class Sword extends Weapon {
     public Damage getDamage() {
         return damage;
     }
-
-    public ImageButton createInventorySlot(int index) {
-        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
-        if (index == 0) {
-            style.up = new TextureRegionDrawable(this.getSelectedTexture());
-        } else {
-            style.up = new TextureRegionDrawable(this.getUnselectedTexture());
-        }
-        return new ImageButton(style);
-    }
 }

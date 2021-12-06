@@ -48,7 +48,7 @@ public class InventoryWindow extends Window {
             for (int i = 0; i < playerInventory.size(); i++) {
                 Item item = playerInventory.get(i);
 
-                ImageButton button = item.createInventorySlot(i);
+                ImageButton button = characterManager.createInventorySlot(item, i);
 
                 button.addListener(
                     new ChangeListener() {
