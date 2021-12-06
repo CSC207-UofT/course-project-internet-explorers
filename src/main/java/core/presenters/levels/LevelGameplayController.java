@@ -49,7 +49,6 @@ public class LevelGameplayController implements Screen {
         levelManager.addGameCharacterRegistrationCallbacks(characterManager);
 
         createSpawners();
-        initiatePlayerInventory();
 
         this.levelGameplayPresenter = new LevelGameplayPresenter(this);
         this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
@@ -76,7 +75,11 @@ public class LevelGameplayController implements Screen {
     public void createSpawners() {
         Spawner<Character> playerSpawner = createPlayerSpawner();
         playerSpawner.setEntityManager(entityManager);
-        playerSpawner.addSpawnCallback(player -> characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class));
+        playerSpawner.addSpawnCallback(player -> {
+            characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class);
+            characterManager.addInventoryItem(playerId, new Dagger(DAGGER_LEVEL));
+            characterManager.addInventoryItem(playerId, new Sword(SWORD_LEVEL));
+        });
         this.playerId = playerSpawner.spawn().getId();
 
         Spawner<Spike> spikeSpawner = createSpikeSpawner();
@@ -95,11 +98,6 @@ public class LevelGameplayController implements Screen {
         Spawner<?> mapBorderSpawner = createMapBorderSpawner();
         mapBorderSpawner.setEntityManager(entityManager);
         mapBorderSpawner.spawn();
-    }
-
-    public void initiatePlayerInventory() {
-        characterManager.addInventoryItem(playerId, new Dagger(DAGGER_LEVEL));
-        characterManager.addInventoryItem(playerId, new Sword(SWORD_LEVEL));
     }
 
     public UUID getPlayerId() {
