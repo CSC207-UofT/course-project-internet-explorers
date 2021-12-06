@@ -1,8 +1,6 @@
 package core.inventory.items;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.inventory.Weapon;
 import java.util.UUID;
 
@@ -64,18 +62,6 @@ public class Dagger extends Weapon {
     @Override
     public UUID getID() {
         return id;
-    }
-
-    @Override
-    public ImageButton createInventorySlot(int index) {
-        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
-        if (index == 0) {
-            style.up = new TextureRegionDrawable(this.getSelectedTexture());
-        } else {
-            style.up = new TextureRegionDrawable(this.getUnselectedTexture());
-        }
-
-        return new ImageButton(style);
     }
 
     @Override

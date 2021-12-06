@@ -1,5 +1,7 @@
 package core.worldEntities.types.characters;
 
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.input.CharacterInput;
 import core.input.CharacterInputDevice;
 import core.inventory.Item;
@@ -93,6 +95,17 @@ public class CharacterManager {
 
     public ArrayList<Item> getInventory(UUID id) {
         return verifyId(id).getInventory();
+    }
+
+    public ImageButton createInventorySlot(Item item, int index) {
+        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
+        if (index == 0) {
+            style.up = new TextureRegionDrawable(item.getSelectedTexture());
+        } else {
+            style.up = new TextureRegionDrawable(item.getUnselectedTexture());
+        }
+
+        return new ImageButton(style);
     }
 
     /*

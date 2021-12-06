@@ -8,5 +8,4 @@ public interface Item {
     Texture getSelectedTexture();
     Texture getUnselectedTexture();
     UUID getID();
-    ImageButton createInventorySlot(int i);
 }
