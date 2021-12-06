@@ -5,6 +5,7 @@ import core.inventory.Weapon;
 import core.worldEntities.health.Damage;
 import java.util.UUID;
 
+// TODO extend Item, add own UsageDelegate and fix Weapon usage delegate
 public class Defender extends Weapon {
 
     /*

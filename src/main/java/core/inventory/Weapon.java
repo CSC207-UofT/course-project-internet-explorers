@@ -1,7 +1,8 @@
 package core.inventory;
+
+import static core.worldEntities.DemoSpawners.createDefenseSpawner;
+
 //TODO MAKE CLEAN - remove non-clean imports, create inventory manager, move use method
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -12,10 +13,8 @@ import core.levels.LevelManager;
 import core.worldEntities.Spawner;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.health.Damage;
-import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.damageDealers.CircularDamageRegion;
 import java.util.UUID;
-import static core.worldEntities.DemoSpawners.createDefenseSpawner;
 
 public abstract class Weapon implements Item {
 
@@ -41,12 +40,11 @@ public abstract class Weapon implements Item {
         public void use(LevelManager levelManager, UUID user_id, Weapon weapon) {
             WorldEntityManager entityManager = levelManager.getEntityManager();
 
-            if (weapon instanceof Defender){
-
+            if (weapon instanceof Defender) {
                 Spawner<?> DefenseSpawner = createDefenseSpawner();
                 DefenseSpawner.setEntityManager(entityManager);
                 DefenseSpawner.spawn();
-
+                return;
             }
 
             CircularDamageRegion damageRegion = entityManager.createEntity(
