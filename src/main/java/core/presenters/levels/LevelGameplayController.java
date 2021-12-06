@@ -8,7 +8,6 @@ import core.config.ConfigurableSetting;
 import core.input.AIInputDevice;
 import core.input.InputController;
 import core.input.KeyboardInputDevice;
-import core.inventory.Item;
 import core.inventory.items.Dagger;
 import core.inventory.items.Sword;
 import core.levels.LevelManager;
@@ -22,7 +21,6 @@ import java.util.UUID;
 
 public class LevelGameplayController implements Screen {
 
-    private static final LevelManager levelManager = new LevelManager();
     private static final ConfigurableSetting<String> selectedLevel = Config.add(
         String.class,
         "selected-level",
@@ -30,14 +28,14 @@ public class LevelGameplayController implements Screen {
         "demo",
         s -> s
     );
+
+    private static final LevelManager levelManager = new LevelManager();
     private LevelGameplayPresenter levelGameplayPresenter;
     private HudPresenter hudPresenter;
     private InputController inputController;
-    private WorldEntityManager entityManager;
     private CharacterManager characterManager;
+    private WorldEntityManager entityManager;
     private UUID playerId;
-
-    public LevelGameplayController() {}
 
     @Override
     public void show() {
@@ -49,7 +47,6 @@ public class LevelGameplayController implements Screen {
         levelManager.addGameCharacterRegistrationCallbacks(characterManager);
 
         createSpawners();
-        initiatePlayerInventory();
 
         this.levelGameplayPresenter = new LevelGameplayPresenter(this);
         this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
@@ -76,7 +73,11 @@ public class LevelGameplayController implements Screen {
     public void createSpawners() {
         Spawner<Character> playerSpawner = createPlayerSpawner();
         playerSpawner.setEntityManager(entityManager);
-        playerSpawner.addSpawnCallback(player -> characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class));
+        playerSpawner.addSpawnCallback(player -> {
+            characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class);
+            characterManager.addInventoryItem(playerId, new Dagger());
+            characterManager.addInventoryItem(playerId, new Sword());
+        });
         this.playerId = playerSpawner.spawn().getId();
 
         Spawner<Spike> spikeSpawner = createSpikeSpawner();
@@ -95,14 +96,6 @@ public class LevelGameplayController implements Screen {
         Spawner<?> mapBorderSpawner = createMapBorderSpawner();
         mapBorderSpawner.setEntityManager(entityManager);
         mapBorderSpawner.spawn();
-    }
-
-    public void initiatePlayerInventory() {
-        Item sword = new Sword(1);
-        Item dagger = new Dagger(1);
-
-        characterManager.addInventoryItem(playerId, dagger);
-        characterManager.addInventoryItem(playerId, sword);
     }
 
     public UUID getPlayerId() {
