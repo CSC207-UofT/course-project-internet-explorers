@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class LevelGameplayController implements Screen {
 
-    private static LevelManager levelManager;
+    private static final LevelManager levelManager = new LevelManager();;
     private static final ConfigurableSetting<String> selectedLevel = Config.add(
         String.class,
         "selected-level",
@@ -46,8 +46,9 @@ public class LevelGameplayController implements Screen {
     @Override
     public void show() {
         try {
-            SavedLevel chosenLevel = LevelLoader.loadState("LevelOne");
-            levelManager = new LevelManager(chosenLevel);
+            SavedLevel chosenLevel = LevelLoader.loadState((String) Config.get("selected-level"));
+            levelManager.initializeLevel(chosenLevel);
+
 
 //            levelManager.initializeLevel(selectedLevel.get());
             // add to LevelManager.initializeLevel

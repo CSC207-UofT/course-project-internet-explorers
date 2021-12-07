@@ -17,11 +17,13 @@ import core.levels.LevelManager;
 public class LevelGameplayPresenter {
 
     private final CameraManager cameraManager;
+    private final LevelManager levelManager;
     private final ShapeRenderer shapeRenderer;
     private final LevelGameplayController levelGameplayController;
     private final Box2DDebugRenderer box2DDebugRenderer;
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final SpriteBatch batch;
+
 
     private final ConfigurableSetting<Boolean> render_physics = Config.add(
         Boolean.class,
@@ -33,9 +35,9 @@ public class LevelGameplayPresenter {
 
     public LevelGameplayPresenter(LevelGameplayController levelGameplayController) {
         this.levelGameplayController = levelGameplayController;
-        LevelManager levelManager = levelGameplayController.getLevelManager();
+        this.levelManager = levelGameplayController.getLevelManager();
         this.cameraManager = new CameraManager(levelManager.getUnitScale(), levelGameplayController.getEntityManager());
-        cameraManager.setSubjectID(levelGameplayController.getPlayerId());
+        this.cameraManager.setSubjectID(levelGameplayController.getPlayerId());
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.shapeRenderer = new ShapeRenderer();
         this.mapRenderer = new OrthogonalTiledMapRenderer(levelManager.getMap(), levelManager.getLevelUnitScale());

@@ -19,6 +19,7 @@ public class ActiveLevel extends LevelState {
     private boolean levelFinished;
 
     public ActiveLevel(SavedLevel level) {
+        this.setUnitScale(1 / 64f);
         this.currentTime = level.getCurrentTime();
         this.score = level.getScore();
         this.spawnInterval = level.getSpawnInterval();

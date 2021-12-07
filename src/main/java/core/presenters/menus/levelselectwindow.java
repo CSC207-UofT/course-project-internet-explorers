@@ -36,7 +36,7 @@ public class levelselectwindow extends Window {
                 new ChangeListener() {
                     @Override
                     public void changed (ChangeEvent event, Actor actor) {
-                    Config.set("selected-level", "level " + level );
+                    Config.set("selected-level", "Level " + level );
                     close();
 
                 }

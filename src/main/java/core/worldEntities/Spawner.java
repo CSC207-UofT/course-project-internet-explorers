@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 /**
  * Command class used to spawn WorldEntities.
  */
-public class Spawner<T extends WorldEntity> implements Serializable {
+public class Spawner<T extends WorldEntity> {
 
     /**
      * The EntityManager with which to register the spawned WorldEntity.

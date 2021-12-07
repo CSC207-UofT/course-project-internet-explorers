@@ -28,37 +28,25 @@ import static core.worldEntities.DemoSpawners.createEnemySpawner;
  */
 public class LevelManager {
 
-    private final ActiveLevel level;
+    private ActiveLevel level;
     // private final TiledMap map;
-    private final OrthogonalTiledMapRenderer mapRenderer;
-    private final WorldEntityManager entityManager;
-    private final SpriteBatch batch;
+//    private final OrthogonalTiledMapRenderer mapRenderer;
+    private WorldEntityManager entityManager;
+//    private final SpriteBatch batch;
 //    protected HashMap<String, Integer> levelDifficultyToEnemies;
 //    protected List<Spawner<Character>> enemySpawns;
 
 
-    public LevelManager(SavedLevel savedLevel) throws IOException {
+    public void initializeLevel(SavedLevel savedLevel) throws IOException {
         this.level = new ActiveLevel(savedLevel); // create active level
         this.level.setEnemySpawns(createEnemyList(savedLevel.getTotalSpawns()));
-        // map = new TmxMapLoader().load(level.getMapPath()); //savedlevel
-
-        this.mapRenderer = new OrthogonalTiledMapRenderer(level.getMap(), level.getUnitScale()); // activelevel.map
         this.entityManager = new WorldEntityManager(level.world); // activelevel
-
-        this.batch = new SpriteBatch();
-
-//        this.levelDifficultyToEnemies = createLevelDifficultyToEnemies();
-        // create enemy list based on difficulty of level
-//        this.enemySpawns = createEnemyList(5); // savedlevel.getTotalSpawns
-        // assign all enemies to current entityManager
         List<Spawner<Character>> enemiesUpdated = level.getEnemySpawns();
 
         for (Spawner<Character> spawner : enemiesUpdated) {
             spawner.setEntityManager(this.entityManager);
         }
         level.setEnemySpawns(enemiesUpdated);
-
-//        this.saveState("LevelTest");
     }
 
     /**
@@ -212,17 +200,17 @@ public class LevelManager {
         objectOutputStream.close();
     }
 
-    public void renderMap(OrthographicCamera camera) {
-        mapRenderer.setView(camera);
-        mapRenderer.render();
-    }
-
-    public void renderWorld(OrthographicCamera camera) {
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        entityManager.draw(batch);
-        batch.end();
-    }
+//    public void renderMap(OrthographicCamera camera) {
+//        mapRenderer.setView(camera);
+//        mapRenderer.render();
+//    }
+//
+//    public void renderWorld(OrthographicCamera camera) {
+//        batch.setProjectionMatrix(camera.combined);
+//        batch.begin();
+//        entityManager.draw(batch);
+//        batch.end();
+//    }
 
     /**
      * Invoke `render` on a Box2DDebugRenderer to draw the physics going on in this world.

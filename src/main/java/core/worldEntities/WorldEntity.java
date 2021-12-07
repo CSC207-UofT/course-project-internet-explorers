@@ -11,7 +11,7 @@ import java.util.UUID;
  * <p>
  * A WorldEntity has a unique ID and is represented as a Box2D Body within the World.
  */
-public class WorldEntity implements Serializable {
+public class WorldEntity {
 
     /**
      * The Box2D Body representing this WorldEntity in the World.
