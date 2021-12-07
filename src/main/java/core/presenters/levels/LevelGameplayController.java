@@ -32,6 +32,7 @@ public class LevelGameplayController implements Screen {
     private static final LevelManager levelManager = new LevelManager();
     private LevelGameplayPresenter levelGameplayPresenter;
     private HudPresenter hudPresenter;
+    private CameraManager cameraManager;
     private InputController inputController;
     private CharacterManager characterManager;
     private WorldEntityManager entityManager;
@@ -44,6 +45,8 @@ public class LevelGameplayController implements Screen {
 
         this.entityManager = levelManager.getEntityManager();
         this.characterManager = new CharacterManager(entityManager);
+        this.cameraManager = new CameraManager(levelManager.getUnitScale(), entityManager);
+
         levelManager.addGameCharacterRegistrationCallbacks(characterManager);
 
         createSpawners();
@@ -58,6 +61,7 @@ public class LevelGameplayController implements Screen {
     public void render(float dt) {
         inputController.handleInputs(dt);
         levelManager.step(dt);
+        cameraManager.update(dt);
 
         levelGameplayPresenter.render(dt);
     }
@@ -70,6 +74,10 @@ public class LevelGameplayController implements Screen {
         return entityManager;
     }
 
+    public CameraManager getCameraManager() {
+        return cameraManager;
+    }
+
     public void createSpawners() {
         Spawner<Character> playerSpawner = createPlayerSpawner();
         playerSpawner.setEntityManager(entityManager);
@@ -77,6 +85,8 @@ public class LevelGameplayController implements Screen {
             characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class);
             characterManager.addInventoryItem(player.getId(), new Dagger());
             characterManager.addInventoryItem(player.getId(), new Sword());
+
+            cameraManager.setSubjectID(player.getId());
             this.playerId = player.getId();
         });
         playerSpawner.spawn();
@@ -97,10 +107,6 @@ public class LevelGameplayController implements Screen {
         Spawner<?> mapBorderSpawner = createMapBorderSpawner();
         mapBorderSpawner.setEntityManager(entityManager);
         mapBorderSpawner.spawn();
-    }
-
-    public UUID getPlayerId() {
-        return this.playerId;
     }
 
     @Override
