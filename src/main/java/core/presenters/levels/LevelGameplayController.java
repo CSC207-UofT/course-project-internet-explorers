@@ -130,4 +130,8 @@ public class LevelGameplayController implements Screen {
     public HudPresenter getHudPresenter() {
         return hudPresenter;
     }
+
+    public CharacterManager getCharacterManager() {
+        return characterManager;
+    }
 }

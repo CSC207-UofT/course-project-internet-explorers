@@ -1,7 +1,7 @@
 package presenters;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import core.config.Config;
 import core.presenters.levels.LevelGameplayController;
 import desktop.DesktopLauncher;
@@ -15,6 +15,8 @@ public class TestGraphicsToggle {
 
     @BeforeAll
     static void ensureCanSetGraphicsFalse() {
+        Assertions.assertNotNull(DesktopLauncher.DesktopConfig.renderGraphics, "renderGraphics setting does not exist");
+
         Assertions.assertDoesNotThrow(() -> Config.get(graphicsSettingName), "Graphics rendering setting not found");
 
         Assertions.assertEquals(true, Config.get(graphicsSettingName), "Couldn't get rendering setting value");
@@ -31,18 +33,19 @@ public class TestGraphicsToggle {
 
     @Test
     void testRunGameScreenWithoutGraphics() {
-        Assertions.assertDoesNotThrow(
-            () -> {
-                new LwjglApplication(
-                    new Game() {
-                        @Override
-                        public void create() {
-                            this.setScreen(new LevelGameplayController());
-                        }
-                    }
-                );
-            },
-            "Error thrown when app launched from DesktopController"
+        LevelGameplayController levelGameplayController = new LevelGameplayController();
+
+        new HeadlessApplication(
+            new Game() {
+                @Override
+                public void create() {
+                    this.setScreen(levelGameplayController);
+                }
+            }
         );
+
+        levelGameplayController.show();
+        levelGameplayController.hide();
+        levelGameplayController.dispose();
     }
 }

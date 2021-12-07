@@ -10,9 +10,17 @@ import core.presenters.debug.Terminal;
 
 public class DesktopLauncher {
 
-    private static class DesktopConfig {
+    public static class DesktopConfig {
 
         private static final LwjglApplicationConfiguration lwjglConfig = new LwjglApplicationConfiguration();
+
+        public static final ConfigurableSetting<Boolean> renderGraphics = Config.add(
+            Boolean.class,
+            "render-graphics",
+            "Whether graphics should be rendered.",
+            true,
+            Boolean::parseBoolean
+        );
 
         public static final ConfigurableSetting<Integer> fps = Config.add(
             Integer.class,
