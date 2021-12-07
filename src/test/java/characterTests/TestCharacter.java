@@ -18,15 +18,14 @@ public class TestCharacter {
 
     Character player;
     World world;
+    WorldEntityManager entityManager;
 
     @BeforeEach
     public void setup() {
         world = new World(new Vector2(0, 0), true);
-        WorldEntityManager entityManager = new WorldEntityManager(world);
+        entityManager = new WorldEntityManager(world);
 
-        BodyDef def = new BodyDef();
-
-        player = new Character(entityManager, def);
+        player = entityManager.createEntity(Character.class, new BodyDef());
     }
 
     @AfterEach

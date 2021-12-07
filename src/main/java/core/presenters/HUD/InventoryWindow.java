@@ -22,7 +22,7 @@ public class InventoryWindow extends Window {
         this.setMovable(false);
         this.setPosition(300, 100);
 
-        playerInventory = characterManager.openInventory(playerId);
+        playerInventory = characterManager.getInventory(playerId);
         this.playerId = playerId;
         this.characterManager = characterManager;
         updateInventoryWindow();
@@ -54,7 +54,7 @@ public class InventoryWindow extends Window {
                     new ChangeListener() {
                         @Override
                         public void changed(ChangeEvent event, Actor actor) {
-                            characterManager.selectItem(playerId, item);
+                            characterManager.swapSelectedItem(playerId, item);
                             updateInventoryWindow();
                         }
                     }

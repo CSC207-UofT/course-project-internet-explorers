@@ -2,11 +2,12 @@ package core.worldEntities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import core.worldEntities.collisions.CollisionManager;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -22,22 +23,31 @@ public class WorldEntityManager {
     public WorldEntityManager(World world) {
         this.world = world;
         this.entities = new HashMap<>();
+
+        world.setContactListener(new CollisionManager());
     }
 
     /**
      * Creates a WorldEntity's representation in the World,
      * and adds it to the collection of managed entities.
      *
-     * @param entity      The entity to register
+     * @param <T> the type of WorldEntity to create
      * @param bodyDef     Box2D representation details
      * @param fixtureDefs Box2D representation details
-     * @return The WorldEntity's representation as a Box2D Body.
+     * @return The WorldEntity.
      */
-    protected Body register(WorldEntity entity, BodyDef bodyDef, FixtureDef... fixtureDefs) {
-        Body body = world.createBody(bodyDef);
+    public <T extends WorldEntity> T createEntity(Class<T> type, BodyDef bodyDef, FixtureDef... fixtureDefs) {
+        Body body = this.world.createBody(bodyDef);
         createFixtures(body, fixtureDefs);
-        this.entities.put(entity.id, entity);
-        return body;
+
+        try {
+            T entity = type.getConstructor(Body.class).newInstance(body);
+            this.entities.put(entity.getId(), entity);
+            return entity;
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to spawn a WorldEntity of type " + type + ".");
+        }
     }
 
     /**
@@ -76,20 +86,7 @@ public class WorldEntityManager {
         return entities.get(id);
     }
 
-    public void setLinearVelocity(UUID id, Vector2 velocity) {
-        entities.get(id).body.setLinearVelocity(velocity);
-    }
-
-    /**
-     * Set the entity's velocity such that it reaches the target position in the specified amount of time `dt`.
-     */
-    public void setTeleportVelocity(UUID id, Vector2 target, float dt) {
-        Body body = entities.get(id).body;
-        body.setLinearVelocity(target.cpy().sub(body.getPosition().cpy()).scl(1 / dt));
-    }
-
-    public void teleport(UUID id, Vector2 target) {
-        Body body = entities.get(id).body;
-        body.setTransform(target, body.getAngle());
+    public Map<UUID, WorldEntity> getEntities() {
+        return this.entities;
     }
 }

@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import core.presenters.ScreenManager;
+import core.presenters.ScreenController;
 
 public class HowToPlayScreen extends Menu {
 
@@ -17,8 +17,8 @@ public class HowToPlayScreen extends Menu {
     private final BitmapFont font;
     private final SpriteBatch batch;
 
-    public HowToPlayScreen(ScreenManager screenManager, Screen prevScreen) {
-        super(screenManager);
+    public HowToPlayScreen(ScreenController screenController, Screen prevScreen) {
+        super(screenController);
         this.prevScreen = prevScreen;
         instructions =
             """

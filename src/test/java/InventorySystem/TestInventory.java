@@ -39,7 +39,7 @@ public class TestInventory {
         WorldEntityManager entityManager = new WorldEntityManager(world);
         characterManager = new CharacterManager(entityManager);
 
-        test_player = new Character(entityManager, new BodyDef());
+        test_player = entityManager.createEntity(Character.class, new BodyDef());
     }
 
     @AfterEach
@@ -68,7 +68,7 @@ public class TestInventory {
         test_player.getInventory().add(sword);
         test_player.getInventory().add(dagger);
 
-        ArrayList<Item> inventory = characterManager.openInventory(test_player.id);
+        ArrayList<Item> inventory = characterManager.getInventory(test_player.getId());
         ArrayList<Item> comparison = new ArrayList<>();
         comparison.add(sword);
         comparison.add(dagger);
@@ -81,6 +81,11 @@ public class TestInventory {
         Item dagger = new Dagger(2);
         test_player.getInventory().add(sword);
         test_player.getInventory().add(dagger);
-        assertTrue(characterManager.selectItem(test_player.id, test_player.getInventory().get(test_player.getInventory().indexOf(sword))));
+        assertTrue(
+            characterManager.swapSelectedItem(
+                test_player.getId(),
+                test_player.getInventory().get(test_player.getInventory().indexOf(sword))
+            )
+        );
     }
 }
