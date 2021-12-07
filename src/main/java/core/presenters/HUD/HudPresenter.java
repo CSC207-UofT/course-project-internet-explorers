@@ -15,6 +15,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import core.levels.LevelManager;
 import core.worldEntities.types.characters.CharacterManager;
+
+import java.io.IOException;
 import java.util.UUID;
 
 /***
@@ -44,7 +46,7 @@ public class HudPresenter implements Disposable {
         sb = new SpriteBatch();
 
         playerInventory = new InventoryWindow(characterManager, id);
-        pauseWindow = new PauseWindow();
+        pauseWindow = new PauseWindow(this);
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
         stage = new Stage(viewport, sb);
@@ -132,5 +134,9 @@ public class HudPresenter implements Disposable {
             stage.addActor(pauseWindow);
         }
         isPauseOpen = !isPauseOpen;
+    }
+
+    public void saveState() throws IOException {
+        levelManager.saveState("LevelOne");
     }
 }

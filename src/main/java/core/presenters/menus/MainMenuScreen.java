@@ -8,8 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import core.levels.LevelLoader;
+import core.levels.SavedLevel;
 import core.presenters.ScreenController;
 import core.presenters.levels.LevelGameplayController;
+
+import java.io.IOException;
 
 public class MainMenuScreen extends Menu {
 
@@ -40,7 +44,11 @@ public class MainMenuScreen extends Menu {
         //        stage.addActor(createSpriteDemoButton());
         super.show();
         stage.addActor(createPlayButton());
-        stage.addActor(createLevelButton());
+        try {
+            stage.addActor(createLevelButton());
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         stage.addActor(createHowToPlayButton());
         stage.addActor(createExitButton());
         levelselectwindow = new levelselectwindow();
@@ -65,7 +73,7 @@ public class MainMenuScreen extends Menu {
         return button;
     }
 
-    private ImageButton createLevelButton() {
+    private ImageButton createLevelButton() throws IOException, ClassNotFoundException {
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
         style.up = new TextureRegionDrawable(new Texture("buttons/level_button_inactive.png"));
         style.over = new TextureRegionDrawable(new Texture("buttons/level_button_active.png"));

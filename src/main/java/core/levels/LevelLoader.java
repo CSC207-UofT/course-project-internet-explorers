@@ -18,34 +18,34 @@ public class LevelLoader {
 
     final int SELECTED_LEVEL = 1;
     
-    public static SavedLevel getSelectedLevel() {
+//    public static LevelState getSelectedLevel() {
         // load file for selected level
         
         // for now, use manual method
-        return getLevel1();
-    }
+//        return getLevel1();
+//    }
     
     /**
      * Load a new LevelState
      * @return LevelState
      */
-    public static LevelState getLevel1(){
+//    public static LevelState getLevel1(){
 
 
 //        // Initialize LevelState
-        LevelState lvl = commonSetup();
+//        LevelState lvl = commonSetup();
 //        lvl.setLevelDifficulty("L1");
 
 //        try {
 //            LevelState lvl = loadState("LevelOne");
-            lvl.setLevelDifficulty("L1");
+//            lvl.setLevelDifficulty("L1");
 
-            return lvl;
+//            return lvl;
 //        } catch (IOException | ClassNotFoundException e){
 //            e.printStackTrace();
 //            throw new RuntimeException("rawr");
 //        }
-    }
+//    }
 
     /**
      * Initiate level at given levelDifficulty
@@ -53,11 +53,11 @@ public class LevelLoader {
      * @return LevelState with assigned levelDifficulty
      *
      */
-    public LevelState initializeLevel(String levelDifficulty){
-        LevelState lvl = commonSetup();
-        lvl.setLevelDifficulty(levelDifficulty);
-        return lvl;
-    }
+//    public LevelState initializeLevel(String levelDifficulty){
+//        LevelState lvl = commonSetup();
+//        lvl.setLevelDifficulty(levelDifficulty);
+//        return lvl;
+//    }
 
     /**
      * If savedState file exists, load LevelState given saved information
@@ -67,18 +67,20 @@ public class LevelLoader {
      * @throws IOException relating to savedState.txt
      * @throws ClassNotFoundException relating to reading objects in
      */
-    public static LevelState loadState(String fileName) throws IOException, ClassNotFoundException {
+    public static SavedLevel loadState(String fileName) throws IOException, ClassNotFoundException {
         // Take file that has saved level state
-        FileInputStream fileInputStream = new FileInputStream(fileName + ".txt");
-        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        SavedLevel lvl = new SavedLevel("maps/demo.tmx", 5, 15);
 
-        float currentTime = (float) objectInputStream.readFloat();
+//        FileInputStream fileInputStream = new FileInputStream(fileName + ".txt");
+//        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+//        SavedLevel lvl = (SavedLevel) objectInputStream.readObject();
 
         // Initialize LevelState and assign enemy spawns
-        LevelState lvl = commonSetup();
+//        SavedLevel lvl = new SavedLevel()
 
         // Take current time and adjust enemyList
-        lvl.setCurrentTime(currentTime);
+//        lvl.setCurrentTime(currentTime);
 
         return lvl;
     }
@@ -88,11 +90,11 @@ public class LevelLoader {
      *
      * @return Most basic setup of LevelState
      */
-    public static LevelState commonSetup(){
-        LevelState lvl = new LevelState("maps/demo.tmx");
-        lvl.setUnitScale(1 / 64f);
-        return lvl;
-    }
+//    public static LevelState commonSetup(){
+//        LevelState lvl = new LevelState("maps/demo.tmx");
+//        lvl.setUnitScale(1 / 64f);
+//        return lvl;
+//    }
 
     public static void main(String[] args) throws IOException{
         FileOutputStream fileOutputStream = new FileOutputStream("LevelOne.txt");

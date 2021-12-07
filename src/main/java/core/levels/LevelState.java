@@ -37,9 +37,9 @@ public class LevelState implements Serializable {
  */
 
     // LevelState
-    protected transient float currentTime;
+    protected float currentTime;
     protected int score;
-    private float spawnInterval;
+    protected float spawnInterval;
     // unitScale measured in m/px
     // represents in-game size of map tiles
     // current conventions
@@ -57,46 +57,6 @@ public class LevelState implements Serializable {
 //    protected List<Spawner<Character>> enemySpawns;
 //    protected boolean levelPaused;
 //    private boolean levelFinished;
-
-
-    /**
-     * PLAN OPTIONS
-     *
-     * Things that can be stored
-     *  - current difficulty setting
-     *  - last score & time to beat
-     *  - possible level difficulties (choose level to load) (should also store current diff setting)
-     *      - static config of levelState
-     *      - plus diff setting
-     *  - level state while being played
-     *      - static And active levelState
-     *
-     * Action Items – Storing LevelStates & Selected Level Setting
-     *
-     * 1. Separate representation of stored level state and active level state
-     *      - LevelState parent class of:
-     *          - SavedLevel, ActiveLevel
-     * 2. Manually write method to get SavedLevel for Demo Level
-     * 3. Method to initialize ActiveLevel based on a SavedLevel – can be straight in the constructor of ActiveLevel
-     * 4. Refactoring LevelManager - change to take from ActiveLevel rather than locally stored map / taking world from LevelState, activeSpawns (list of Spawners)
-     * 5. write the serialization - be able to serialize/deserialize a savedstate
-     *      - exportDemoLevel method – export manually written level from step 2 to a level file
-     *
-     * Tests
-     *      – saved -> active
-     *          - length of enemy spawns = totalEnemies
-     *          – no errors when constructor invoked (simply ensure to call constructor)
-     *
-     *     - saved -> file -> saved -> active is the same as desired active state
-
-     */
-
-
-    public LevelState() {
-        this.currentTime = 0;
-        this.spawnInterval = 15;
-        this.score = 0;
-    }
 
     protected void setUnitScale(float unitScale) {
         this.unitScale = unitScale;

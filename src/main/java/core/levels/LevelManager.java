@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import core.input.AIInputDevice;
 import core.input.KeyboardInputDevice;
 import core.worldEntities.Spawner;
@@ -27,33 +28,37 @@ import static core.worldEntities.DemoSpawners.createEnemySpawner;
  */
 public class LevelManager {
 
-    private final LevelState level;
-    private final TiledMap map;
+    private final ActiveLevel level;
+    // private final TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final WorldEntityManager entityManager;
     private final SpriteBatch batch;
-    protected HashMap<String, Integer> levelDifficultyToEnemies;
+//    protected HashMap<String, Integer> levelDifficultyToEnemies;
     protected List<Spawner<Character>> enemySpawns;
 
 
-    public LevelManager(LevelState level) {
-        this.level = level;
+    public LevelManager(SavedLevel savedLevel) throws IOException {
+        this.level = new ActiveLevel(savedLevel); // create active level
+        this.level.setEnemySpawns(createEnemyList(savedLevel.getTotalSpawns()));
+        // map = new TmxMapLoader().load(level.getMapPath()); //savedlevel
 
-        map = new TmxMapLoader().load(level.getMapPath());
-
-
-        this.mapRenderer = new OrthogonalTiledMapRenderer(activelevel.map, level.getUnitScale());
-        this.entityManager = new WorldEntityManager(activelevel.world);
+        this.mapRenderer = new OrthogonalTiledMapRenderer(level.getMap(), level.getUnitScale()); // activelevel.map
+        this.entityManager = new WorldEntityManager(level.world); // activelevel
 
         this.batch = new SpriteBatch();
 
-        this.levelDifficultyToEnemies = createLevelDifficultyToEnemies();
+//        this.levelDifficultyToEnemies = createLevelDifficultyToEnemies();
         // create enemy list based on difficulty of level
-        this.enemySpawns = createEnemyList(savedlevel.getTotalSpawns());
+//        this.enemySpawns = createEnemyList(5); // savedlevel.getTotalSpawns
         // assign all enemies to current entityManager
-        for (Spawner<Character> spawner : enemySpawns) {
+        List<Spawner<Character>> enemiesUpdated = level.getEnemySpawns();
+
+        for (Spawner<Character> spawner : enemiesUpdated) {
             spawner.setEntityManager(this.entityManager);
         }
+        level.setEnemySpawns(enemiesUpdated);
+
+//        this.saveState("LevelTest");
     }
 
     /**
@@ -63,14 +68,14 @@ public class LevelManager {
      * @param characterManager the CharacterManager to add the created GameCharacters to
      */
     public void addGameCharacterRegistrationCallbacks(CharacterManager characterManager) {
-        for (Spawner<?> spawner : enemySpawns) {
+        for (Spawner<?> spawner : level.getEnemySpawns()) {
             if (spawner.type.equals(Character.class)) {
                 spawner.addSpawnCallback(e -> {
                     if (e instanceof Character character) {
                         if (character.getTeam().equals("player")) {
-                            characterManager.addCharacter(character.id, KeyboardInputDevice.class);
+                            characterManager.setInputDeviceType(character.getId(), KeyboardInputDevice.class);
                         } else if (character.getTeam().equals("enemy")) {
-                            characterManager.addCharacter(character.id, AIInputDevice.class);
+                            characterManager.setInputDeviceType(character.getId(), AIInputDevice.class);
                         }
                     }
                 });
@@ -108,7 +113,7 @@ public class LevelManager {
      */
     private void updateEnemies() {
         // Spawning enemies in world
-        List<Spawner<Character>> enemies = enemySpawns;
+        List<Spawner<Character>> enemies = level.getEnemySpawns();
 
         if (enemies.isEmpty()) {
             // If all enemies have been spawned, check if game is won or not
@@ -190,7 +195,8 @@ public class LevelManager {
         FileOutputStream fileOutputStream = new FileOutputStream(fileName + ".txt");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-        objectOutputStream.writeFloat(level.getCurrentTime());
+//        objectOutputStream.writeObject(level);
+
 
         objectOutputStream.flush();
         objectOutputStream.close();
@@ -225,7 +231,7 @@ public class LevelManager {
     }
 
     public void dispose() {
-        map.dispose();
+        level.getMap().dispose();
     }
 
     public void pause() {
@@ -242,5 +248,17 @@ public class LevelManager {
 
     public int getTime() {
         return (int) Math.floor(level.getCurrentTime());
+    }
+
+    public World getWorld(){
+        return this.level.getWorld();
+    }
+
+    public TiledMap getMap(){
+        return this.level.getMap();
+    }
+
+    public float getLevelUnitScale(){
+        return this.level.getUnitScale();
     }
 }

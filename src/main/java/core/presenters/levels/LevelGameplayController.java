@@ -11,18 +11,22 @@ import core.input.KeyboardInputDevice;
 import core.inventory.Item;
 import core.inventory.items.Dagger;
 import core.inventory.items.Sword;
+import core.levels.LevelLoader;
 import core.levels.LevelManager;
+import core.levels.SavedLevel;
 import core.presenters.HUD.HudPresenter;
 import core.worldEntities.Spawner;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import core.worldEntities.types.damageDealers.Spike;
+
+import java.io.IOException;
 import java.util.UUID;
 
 public class LevelGameplayController implements Screen {
 
-    private static final LevelManager levelManager = new LevelManager();
+    private static LevelManager levelManager;
     private static final ConfigurableSetting<String> selectedLevel = Config.add(
         String.class,
         "selected-level",
@@ -41,20 +45,29 @@ public class LevelGameplayController implements Screen {
 
     @Override
     public void show() {
-        levelManager.initializeLevel(selectedLevel.get());
-        // add to LevelManager.initializeLevel
+        try {
+            SavedLevel chosenLevel = LevelLoader.loadState("LevelOne");
+            levelManager = new LevelManager(chosenLevel);
 
-        this.entityManager = levelManager.getEntityManager();
-        this.characterManager = new CharacterManager(entityManager);
-        levelManager.addGameCharacterRegistrationCallbacks(characterManager);
+//            levelManager.initializeLevel(selectedLevel.get());
+            // add to LevelManager.initializeLevel
 
-        createSpawners();
-        initiatePlayerInventory();
+            this.entityManager = levelManager.getEntityManager();
+            this.characterManager = new CharacterManager(entityManager);
+            levelManager.addGameCharacterRegistrationCallbacks(characterManager);
 
-        this.levelGameplayPresenter = new LevelGameplayPresenter(this);
-        this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
+            createSpawners();
+            initiatePlayerInventory();
 
-        this.inputController = new InputController(entityManager, characterManager, hudPresenter, levelManager);
+            this.levelGameplayPresenter = new LevelGameplayPresenter(this);
+            this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
+
+            this.inputController = new InputController(entityManager, characterManager, hudPresenter, levelManager);
+
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

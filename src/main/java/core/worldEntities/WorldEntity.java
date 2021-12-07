@@ -2,6 +2,8 @@ package core.worldEntities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -9,7 +11,7 @@ import java.util.UUID;
  * <p>
  * A WorldEntity has a unique ID and is represented as a Box2D Body within the World.
  */
-public class WorldEntity {
+public class WorldEntity implements Serializable {
 
     /**
      * The Box2D Body representing this WorldEntity in the World.
