@@ -34,7 +34,7 @@ public class LevelManager {
     private final WorldEntityManager entityManager;
     private final SpriteBatch batch;
 //    protected HashMap<String, Integer> levelDifficultyToEnemies;
-    protected List<Spawner<Character>> enemySpawns;
+//    protected List<Spawner<Character>> enemySpawns;
 
 
     public LevelManager(SavedLevel savedLevel) throws IOException {
@@ -126,7 +126,7 @@ public class LevelManager {
         if (level.getCurrentTime() >= level.getSpawnInterval()) {
             Spawner<Character> enemy = enemies.remove(0);
             enemy.spawn();
-            enemySpawns = enemies;
+            level.setEnemySpawns(enemies);
             level.setScore(level.getScore() + 1);
             level.setSpawnInterval(level.getSpawnInterval() + 15);
         }
@@ -154,23 +154,22 @@ public class LevelManager {
     private List<Spawner<Character>> createEnemyList(int numOfEnemies) {
         List<Spawner<Character>> enemies = new ArrayList<>();
         // if time = 0, then populate enemySpawns with all enemies set for the levelDifficulty
-        if (level.getCurrentTime() == 0) {
+//        if (level.getCurrentTime() == 0) {
             for (int i = 0; i < numOfEnemies; i++) {
                 Spawner<Character> enemySpawner = createEnemySpawner();
                 enemySpawner.addSpawnCallback(character -> character.setTeam("enemy"));
                 enemies.add(enemySpawner);
             }
-        }
+//        }
         // if time != 0, then adjust enemySpawns to remove enemies already defeated from last saved state
-        // TODO: ideally, have serialization not just for time but also for tracking of enemies defeated, enemies still on the map, and enemies that have yet to be spawned
-        else{
-            double numEnemies = Math.floor(level.getCurrentTime() / level.getSpawnInterval());
-            for (int i = 0; i < numEnemies; i++) {
-                enemies = enemySpawns;
-                enemies.remove(0);
-                enemySpawns = enemies;
-            }
-        }
+//        else{
+//            double numEnemies = Math.floor(level.getCurrentTime() / level.getSpawnInterval());
+//            for (int i = 0; i < numEnemies; i++) {
+//                enemies = level.getEnemySpawns();
+//                enemies.remove(0);
+//                level.setEnemySpawns(enemies);
+//            }
+//        }
         return enemies;
     }
 
@@ -195,7 +194,18 @@ public class LevelManager {
         FileOutputStream fileOutputStream = new FileOutputStream(fileName + ".txt");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-//        objectOutputStream.writeObject(level);
+        // when loading ActiveLevel from SavedLevel, ActiveLevel makes a spawn list of length Savedlevel.totalSpawns
+        // when an enemy is spawned in LevelManager, it removes a Spawner from ActiveLevel.enemySpawns
+        // when saving the level, aka making a SavedLevel out of ActiveLevel:
+        //    * assign SavedLevel.totalSpawns to length(ActiveLevel.enemySpawns)
+        //    * update SavedLevel.currentTime to ActiveLevel.currentTime
+        //    * assign SavedLevel.spawnInterval to ActiveLevel.spawnInterval
+        //    * assign SavedLevel.mapPath to same'ol mapPath
+        //    * score doesn't matter....?
+
+        SavedLevel level = new SavedLevel(this.level);
+
+        objectOutputStream.writeObject(level);
 
 
         objectOutputStream.flush();

@@ -14,8 +14,15 @@ public class SavedLevel extends LevelState {
         this.totalSpawns = totalSpawns;
     }
 
+    public SavedLevel(ActiveLevel level){
+        this.currentTime = level.getCurrentTime();
+        this.score = level.getScore();
+        this.spawnInterval = level.getSpawnInterval();
+        this.mapPath = "maps/demo.tmx";
+        this.totalSpawns = level.getEnemySpawns().size();
+    }
+
     public String getMapPath() { return mapPath; }
 
     public Integer getTotalSpawns(){ return totalSpawns; }
-
 }

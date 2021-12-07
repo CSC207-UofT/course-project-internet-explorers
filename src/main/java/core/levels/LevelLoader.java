@@ -69,12 +69,12 @@ public class LevelLoader {
      */
     public static SavedLevel loadState(String fileName) throws IOException, ClassNotFoundException {
         // Take file that has saved level state
-        SavedLevel lvl = new SavedLevel("maps/demo.tmx", 5, 15);
+//        SavedLevel lvl = new SavedLevel("maps/demo.tmx", 5, 15);
 
-//        FileInputStream fileInputStream = new FileInputStream(fileName + ".txt");
-//        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        FileInputStream fileInputStream = new FileInputStream(fileName + ".txt");
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
-//        SavedLevel lvl = (SavedLevel) objectInputStream.readObject();
+        SavedLevel lvl = (SavedLevel) objectInputStream.readObject();
 
         // Initialize LevelState and assign enemy spawns
 //        SavedLevel lvl = new SavedLevel()
