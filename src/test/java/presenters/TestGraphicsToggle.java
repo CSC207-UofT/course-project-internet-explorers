@@ -1,20 +1,21 @@
 package presenters;
 
+import static org.mockito.Mockito.mock;
+
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import core.config.Config;
 import core.presenters.levels.LevelGameplayController;
 import desktop.DesktopLauncher;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class TestGraphicsToggle {
 
     static final String graphicsSettingName = "render-graphics";
 
-    @BeforeAll
-    static void ensureCanSetGraphicsFalse() {
+    private void testRenderGraphicsSetting() {
         Assertions.assertNotNull(DesktopLauncher.DesktopConfig.renderGraphics, "renderGraphics setting does not exist");
 
         Assertions.assertDoesNotThrow(() -> Config.get(graphicsSettingName), "Graphics rendering setting not found");
@@ -27,25 +28,27 @@ public class TestGraphicsToggle {
     }
 
     @Test
-    void testRunDesktopLauncherWithoutGraphics() {
-        Assertions.assertDoesNotThrow(() -> DesktopLauncher.main(new String[] {}), "Error thrown when app launched from DesktopController");
-    }
-
-    @Test
     void testRunGameScreenWithoutGraphics() {
+        Gdx.gl20 = mock(com.badlogic.gdx.graphics.GL20.class);
+        Gdx.gl = Gdx.gl20;
+
+        testRenderGraphicsSetting();
+
         LevelGameplayController levelGameplayController = new LevelGameplayController();
 
-        new HeadlessApplication(
-            new Game() {
-                @Override
-                public void create() {
-                    this.setScreen(levelGameplayController);
+        Gdx.app =
+            new HeadlessApplication(
+                new Game() {
+                    @Override
+                    public void create() {}
                 }
-            }
-        );
+            );
 
         levelGameplayController.show();
+        levelGameplayController.render(0.1f);
         levelGameplayController.hide();
         levelGameplayController.dispose();
+
+        Gdx.app.exit();
     }
 }
