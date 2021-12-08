@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.input.CharacterInput;
 import core.input.CharacterInputDevice;
 import core.inventory.Item;
-import core.inventory.Weapon;
+import core.inventory.ItemManager;
 import core.levels.LevelManager;
 import core.worldEntities.WorldEntityManager;
 import java.util.*;
@@ -19,11 +19,13 @@ public class CharacterManager {
 
     private final WorldEntityManager entityManager;
     private final LevelManager levelManager;
+    private ItemManager itemManager;
 
-    public CharacterManager(LevelManager levelManager) {
+    public CharacterManager(LevelManager levelManager, ItemManager itemManager) {
         this.levelManager = levelManager;
         // TODO clean this up; always getEntityManager instead of storing
         this.entityManager = levelManager.getEntityManager();
+        this.itemManager = itemManager;
     }
 
     /**
@@ -84,9 +86,8 @@ public class CharacterManager {
     }
 
     private void useSelectedItem(UUID id) {
-        // TODO make & use id-based item manager system
         Item item = getSelectedItem(id);
-        item.getUsageDelegate().use(levelManager, id, item);
+        itemManager.use(id, item.getId());
     }
 
     /*

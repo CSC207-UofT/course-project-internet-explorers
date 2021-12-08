@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
+import core.inventory.ItemManager;
 import core.inventory.items.Sword;
 import core.levels.LevelManager;
 import core.worldEntities.WorldEntityManager;
@@ -36,7 +37,7 @@ public class TestCharacterManager {
         character.setHealth(100);
         sword = new Sword(2);
 
-        cm = new CharacterManager(levelManager);
+        cm = new CharacterManager(levelManager, new ItemManager(levelManager));
     }
 
     @AfterEach

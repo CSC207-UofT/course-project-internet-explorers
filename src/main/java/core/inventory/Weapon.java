@@ -34,5 +34,5 @@ public abstract class Weapon implements Item {
 
     public abstract int getRange();
 
-    public abstract UUID getID();
+    public abstract UUID getId();
 }

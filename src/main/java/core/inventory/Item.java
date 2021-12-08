@@ -6,5 +6,5 @@ import java.util.UUID;
 public interface Item {
     Texture getSelectedTexture();
     Texture getUnselectedTexture();
-    UUID getID();
+    UUID getId();
 }

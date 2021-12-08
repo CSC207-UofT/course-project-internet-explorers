@@ -63,7 +63,7 @@ public class Sword extends Weapon {
     }
 
     @Override
-    public UUID getID() {
+    public UUID getId() {
         return id;
     }
 

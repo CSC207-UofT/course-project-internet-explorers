@@ -1,5 +1,9 @@
 package core.inventory;
 
+import core.inventory.usagedelegates.WeaponUsageDelegate;
+import core.levels.LevelManager;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -29,11 +33,23 @@ public class ItemManager {
     private final HashMap<Class<? extends Item>, ItemUsageDelegate<?>> itemUsageDelegates = new HashMap<>();
     private final HashMap<UUID, Item> items = new HashMap<>();
 
-    public ItemManager() {
-        itemUsageDelegates.put(Weapon.class, new WeaponUsageDelegate());
+    public ItemManager(LevelManager levelManager) {
+        itemUsageDelegates.put(Weapon.class, new WeaponUsageDelegate(levelManager));
     }
 
-    private static void useWeapon(UUID userId, Weapon weapon) {}
+    /**
+    * Workaround for instantiating items without coupling between entity and use case classes
+     */
+    public <T extends Item> T createItem(Class<T> type, Object... args) {
+       try{
+            Class<?> [] argTypes = new Class [args.length];
+            T item = type.getConstructor(argTypes).newInstance(args);
+            this.items.put(item.getId(), item);
+            return item; }
+       catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+               throw new RuntimeException(e);
+           }
+       }
 
     public Item get(UUID itemId) {
         return items.get(itemId);

@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import core.inventory.Item;
+import core.inventory.ItemManager;
 import core.inventory.Weapon;
 import core.inventory.items.*;
 import core.levels.LevelManager;
@@ -41,7 +42,7 @@ public class TestInventory {
         world = new World(new Vector2(0, 0), true);
         LevelManager levelManager = new LevelManager();
         levelManager.initializeEmptyLevel();
-        characterManager = new CharacterManager(levelManager);
+        characterManager = new CharacterManager(levelManager, new ItemManager(levelManager));
 
         test_player = levelManager.getEntityManager().createEntity(Character.class, new BodyDef());
         inv.add(sword);
