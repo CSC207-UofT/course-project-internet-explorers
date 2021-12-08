@@ -49,13 +49,13 @@ public class SavedLevel extends LevelState {
      * @param enemyPositions list that includes positions of all enemies on the map
      * @param defenderPositions list that includes positions of all defenders on the map
      */
-    public SavedLevel(float time, int score, float spawnInterval, String mapPath, int totalSpawns,
+    public SavedLevel(float time, int score, float spawnInterval, float nextSpawnTime, String mapPath, int totalSpawns,
                       ArrayList<Float> playerPosition, ArrayList<ArrayList<Float>> enemyPositions,
                       ArrayList<ArrayList<Float>> defenderPositions){
         this.currentTime = time;
         this.score = score;
         this.spawnInterval = spawnInterval;
-        this.nextSpawnTime = spawnInterval;
+        this.nextSpawnTime = nextSpawnTime;
         this.mapPath = mapPath;
         this.totalSpawns = totalSpawns;
         this.playerPosition = playerPosition;

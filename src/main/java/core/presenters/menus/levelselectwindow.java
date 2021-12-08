@@ -23,6 +23,7 @@ public class levelselectwindow extends Window {
         table.pad(10);
         table.add(levelButton(1)).pad(10);
         table.add(levelButton(2)).pad(10);
+        table.add(levelButton(3)).pad(10);
         this.add(table);
     }
 

@@ -1,6 +1,7 @@
 package core.levels;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.physics.box2d.World;
 import core.input.AIInputDevice;
 import core.input.KeyboardInputDevice;
@@ -27,7 +28,8 @@ public class LevelManager {
     private WorldEntityManager entityManager;
 
     public void initializeLevel(SavedLevel savedLevel) throws IOException {
-        this.level = new ActiveLevel(savedLevel); // create active level from savedLevel
+        this.level = new ActiveLevel(savedLevel.getCurrentTime(), savedLevel.getScore(), savedLevel.getSpawnInterval(),
+                                     savedLevel.getNextSpawnTime(), savedLevel.getMapPath());
         this.level.setEnemySpawns(createEnemyList(savedLevel.getTotalSpawns()));
         this.entityManager = new WorldEntityManager(level.world);
         List<Spawner<Character>> enemiesUpdated = level.getEnemySpawns();
@@ -149,6 +151,7 @@ public class LevelManager {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
         SavedLevel savedLevel = new SavedLevel(level.getCurrentTime(), level.getScore(), level.getSpawnInterval(),
+                                               level.getNextSpawnTime(),
                                           "maps/demo.tmx",level.getEnemySpawns().size(),
                                                entityManager.getPlayerPosition(), entityManager.getEnemyPositions(),
                                                entityManager.getDefenderPositions());
