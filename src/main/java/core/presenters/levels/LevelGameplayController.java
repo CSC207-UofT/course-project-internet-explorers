@@ -8,6 +8,7 @@ import core.config.ConfigurableSetting;
 import core.input.AIInputDevice;
 import core.input.InputController;
 import core.input.KeyboardInputDevice;
+import core.inventory.WeaponFactory;
 import core.inventory.items.Dagger;
 import core.inventory.items.Defender;
 import core.inventory.items.Sword;
@@ -77,9 +78,9 @@ public class LevelGameplayController implements Screen {
         playerSpawner.setEntityManager(entityManager);
         playerSpawner.addSpawnCallback(player -> {
             characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class);
-            characterManager.addInventoryItem(player.getId(), new Dagger());
-            characterManager.addInventoryItem(player.getId(), new Sword());
-            characterManager.addInventoryItem(player.getId(), new Defender());
+            characterManager.addInventoryItem(player.getId(), WeaponFactory.getWeapon("Dagger"));
+            characterManager.addInventoryItem(player.getId(), WeaponFactory.getWeapon("Sword"));
+            characterManager.addInventoryItem(player.getId(), WeaponFactory.getWeapon("Defender"));
             this.playerId = player.getId();
         });
         playerSpawner.spawn();
