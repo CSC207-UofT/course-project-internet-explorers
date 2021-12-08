@@ -21,10 +21,8 @@ public class LevelEvent implements Comparable<LevelEvent> {
 
     @Override
     public int compareTo(LevelEvent o) {
-        int timeDiff = (int) (this.time * 100000 - o.time * 100000);
-        if (timeDiff == 0) {
-            return this.id.compareTo(o.id);
-        }
-        return timeDiff;
+        int timeDiff = Float.compare(this.time, o.time);
+
+        return timeDiff == 0 ? this.id.compareTo(o.id) : timeDiff;
     }
 }
