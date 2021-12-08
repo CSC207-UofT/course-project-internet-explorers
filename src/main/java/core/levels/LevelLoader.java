@@ -34,4 +34,9 @@ public class LevelLoader {
             };
         }
     }
+
+    public static void DeleteLevel(String fileName){
+        File file = new File(fileName+".txt");
+        file.delete();
+    }
 }

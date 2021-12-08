@@ -1,7 +1,6 @@
 package core.levels;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.physics.box2d.World;
 import core.input.AIInputDevice;
 import core.input.KeyboardInputDevice;

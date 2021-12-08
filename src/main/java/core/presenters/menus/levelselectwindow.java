@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import core.config.Config;
+import core.levels.LevelLoader;
 
 public class levelselectwindow extends Window {
 
@@ -24,6 +25,14 @@ public class levelselectwindow extends Window {
         table.add(levelButton(1)).pad(10);
         table.add(levelButton(2)).pad(10);
         table.add(levelButton(3)).pad(10);
+
+        table.row();
+
+//        Table deleteLevelTable = new Table();
+        table.add(deleteButton(1)).pad(10);
+        table.add(deleteButton(2)).pad(10);
+        table.add(deleteButton(3)).pad(10);
+//        this.add(deleteLevelTable);
         this.add(table);
     }
 
@@ -42,6 +51,24 @@ public class levelselectwindow extends Window {
 
                 }
             }
+        );
+        return button;
+    }
+
+    private TextButton deleteButton(int level) {
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = new BitmapFont();
+        style.overFontColor = Color.WHITE;
+        TextButton button = new TextButton("Clear Save", style);
+
+        button.addListener(
+                new ChangeListener() {
+                    @Override
+                    public void changed (ChangeEvent event, Actor actor) {
+                        LevelLoader.DeleteLevel("Level " + level);
+                        System.out.println("Level " + level + " save has been cleared.");
+                    }
+                }
         );
         return button;
     }
