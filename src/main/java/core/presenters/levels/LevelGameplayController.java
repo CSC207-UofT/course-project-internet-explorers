@@ -51,8 +51,10 @@ public class LevelGameplayController implements Screen {
 
         createSpawners();
 
-        this.levelGameplayPresenter = new LevelGameplayPresenter(this);
-        this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
+        if ((boolean) Config.get("render-graphics")) {
+            this.levelGameplayPresenter = new LevelGameplayPresenter(this);
+            this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
+        }
 
         this.inputController = new InputController(entityManager, characterManager, hudPresenter, levelManager);
     }
@@ -63,7 +65,9 @@ public class LevelGameplayController implements Screen {
         levelManager.step(dt);
         cameraManager.update(dt);
 
-        levelGameplayPresenter.render(dt);
+        if ((boolean) Config.get("render-graphics")) {
+            levelGameplayPresenter.render(dt);
+        }
     }
 
     public LevelManager getLevelManager() {
@@ -111,7 +115,9 @@ public class LevelGameplayController implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        levelGameplayPresenter.resize();
+        if ((boolean) Config.get("render-graphics")) {
+            levelGameplayPresenter.resize();
+        }
     }
 
     @Override
@@ -130,7 +136,9 @@ public class LevelGameplayController implements Screen {
     @Override
     public void dispose() {
         levelManager.dispose();
-        hudPresenter.dispose();
+        if (hudPresenter != null) {
+            hudPresenter.dispose();
+        }
     }
 
     public HudPresenter getHudPresenter() {
