@@ -1,10 +1,7 @@
-package InventorySystem;
+package inventorySystem;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -16,28 +13,22 @@ import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import java.util.ArrayList;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestInventory {
 
-    World world;
     CharacterManager characterManager;
+    World world;
 
     Character test_player;
     ArrayList<Item> inv = new ArrayList<>();
     Weapon sword = new Sword(1);
     Item dagger = new Dagger(2);
 
-    @BeforeAll
-    static void makeApp() {
-        new LwjglApplication(new ApplicationAdapter() {}, new LwjglApplicationConfiguration());
-    }
-
     @BeforeEach
     public void setup() {
-        world = new World(new Vector2(0, 0), true);
+        world = new World(new Vector2(), true);
         WorldEntityManager entityManager = new WorldEntityManager(world);
         characterManager = new CharacterManager(entityManager);
 
@@ -48,7 +39,7 @@ public class TestInventory {
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
         world.dispose();
     }
 

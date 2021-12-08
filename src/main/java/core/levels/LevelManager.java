@@ -155,6 +155,7 @@ public class LevelManager {
 
     public void dispose() {
         map.dispose();
+        activeLevel.world.dispose();
     }
 
     public void pause() {

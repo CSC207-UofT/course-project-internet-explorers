@@ -33,6 +33,7 @@ public class LevelGameplayController implements Screen {
     private LevelGameplayPresenter levelGameplayPresenter;
     private HudPresenter hudPresenter;
     private InputManager inputManager;
+    private CameraManager cameraManager;
     private CharacterManager characterManager;
     private WorldEntityManager entityManager;
     private UUID playerId;
@@ -45,20 +46,26 @@ public class LevelGameplayController implements Screen {
         this.entityManager = levelManager.getEntityManager();
         this.characterManager = new CharacterManager(entityManager);
         levelManager.addGameCharacterRegistrationCallbacks(characterManager, inputManager);
+        this.cameraManager = new CameraManager(levelManager.getUnitScale(), entityManager);
 
         createSpawners();
 
-        this.levelGameplayPresenter = new LevelGameplayPresenter(this);
-        this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
-        inputManager.addInputMapping(new InputMapping<>(InputController.keyboardInputDevice().hudInputInputProvider(), hudPresenter));
+        if ((boolean) Config.get("render-graphics")) {
+            this.levelGameplayPresenter = new LevelGameplayPresenter(this);
+            this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
+            inputManager.addInputMapping(new InputMapping<>(InputController.keyboardInputDevice().hudInputInputProvider(), hudPresenter));
+        }
     }
 
     @Override
     public void render(float dt) {
         inputManager.handleInputs();
         levelManager.step(dt);
+        cameraManager.update(dt);
 
-        levelGameplayPresenter.render(dt);
+        if ((boolean) Config.get("render-graphics")) {
+            levelGameplayPresenter.render(dt);
+        }
     }
 
     public LevelManager getLevelManager() {
@@ -67,6 +74,10 @@ public class LevelGameplayController implements Screen {
 
     public WorldEntityManager getEntityManager() {
         return entityManager;
+    }
+
+    public CameraManager getCameraManager() {
+        return cameraManager;
     }
 
     public void createSpawners() {
@@ -80,6 +91,8 @@ public class LevelGameplayController implements Screen {
             );
             characterManager.addInventoryItem(player.getId(), new Dagger());
             characterManager.addInventoryItem(player.getId(), new Sword());
+
+            cameraManager.setSubjectID(player.getId());
             this.playerId = player.getId();
         });
         playerSpawner.spawn();
@@ -104,13 +117,11 @@ public class LevelGameplayController implements Screen {
         mapBorderSpawner.spawn();
     }
 
-    public UUID getPlayerId() {
-        return this.playerId;
-    }
-
     @Override
     public void resize(int width, int height) {
-        levelGameplayPresenter.resize();
+        if ((boolean) Config.get("render-graphics")) {
+            levelGameplayPresenter.resize();
+        }
     }
 
     @Override
@@ -129,10 +140,16 @@ public class LevelGameplayController implements Screen {
     @Override
     public void dispose() {
         levelManager.dispose();
-        hudPresenter.dispose();
+        if (hudPresenter != null) {
+            hudPresenter.dispose();
+        }
     }
 
     public HudPresenter getHudPresenter() {
         return hudPresenter;
+    }
+
+    public CharacterManager getCharacterManager() {
+        return characterManager;
     }
 }
