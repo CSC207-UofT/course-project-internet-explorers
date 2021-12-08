@@ -12,7 +12,7 @@ import core.worldEntities.types.characters.CharacterManager;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.List;
+import java.util.*;
 
 /**
  * Use-Case class for LevelState.
@@ -23,6 +23,7 @@ public class LevelManager {
     private LevelState activeLevel;
     private TiledMap map;
     private WorldEntityManager entityManager;
+    private final TreeSet<LevelEvent> levelEvents = new TreeSet<>();
     static final int SPAWN_FREQUENCY = 15;
 
     // TODO use level loader to load appropriate level once implemented
@@ -75,6 +76,8 @@ public class LevelManager {
             return;
         }
 
+        runLevelEvents(this.levelEvents);
+
         // Step physics simulation with box2d default velocity and position iterations
         activeLevel.world.step(Math.min(dt, 0.5f), 6, 2);
 
@@ -83,6 +86,23 @@ public class LevelManager {
 
         // Spawning enemies in world
         updateEnemies();
+    }
+
+    /**
+     * Runs LevelEvents in the `events` set whose time is less than the current time,
+     * and removes those events from the passed set.
+     */
+    private void runLevelEvents(TreeSet<LevelEvent> events) {
+        // Get all level events whose `time` property is less than the current level time
+        NavigableSet<LevelEvent> eventsToRun = events.headSet(new LevelEvent(activeLevel.getCurrentTime(), o -> {}), true);
+        // invoke event callback on each event
+        eventsToRun.forEach((levelEvent -> levelEvent.getEventCallback().accept(this)));
+        // clear the events we just ran from both sets
+        eventsToRun.clear();
+    }
+
+    public void addLevelEvent(LevelEvent event) {
+        levelEvents.add(event);
     }
 
     /**
@@ -124,7 +144,7 @@ public class LevelManager {
      * Save current time elapsed from level
      * This method will be used in phase 2
      *
-     * @throws IOException            relating to savedState.txt
+     * @throws IOException relating to savedState.txt
      */
     public void saveState() throws IOException {
         // Save needed level information to file
