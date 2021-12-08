@@ -4,7 +4,6 @@ import static core.worldEntities.DemoSpawners.*;
 
 import com.badlogic.gdx.Screen;
 import core.config.Config;
-import core.config.ConfigurableSetting;
 import core.input.AIInputDevice;
 import core.input.InputController;
 import core.input.KeyboardInputDevice;
@@ -16,7 +15,6 @@ import core.levels.LevelManager;
 import core.levels.SavedLevel;
 import core.presenters.HUD.HudPresenter;
 import core.worldEntities.Spawner;
-import core.worldEntities.WorldEntity;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
@@ -28,14 +26,8 @@ import java.util.UUID;
 
 public class LevelGameplayController implements Screen {
 
-    private static final LevelManager levelManager = new LevelManager();;
-    private static final ConfigurableSetting<String> selectedLevel = Config.add(
-        String.class,
-        "selected-level",
-        "Name of the level to load & play when the Play button is clicked.",
-        "demo",
-        s -> s
-    );
+    private static final LevelManager levelManager = new LevelManager();
+
     private LevelGameplayPresenter levelGameplayPresenter;
     private HudPresenter hudPresenter;
     private InputController inputController;
@@ -47,14 +39,16 @@ public class LevelGameplayController implements Screen {
 
     @Override
     public void show() {
+        Config.add(
+                String.class,
+                "selected-level",
+                "Name of the level to load & play when the Play button is clicked.",
+                "Level 1",
+                s -> s
+        );
         try {
             SavedLevel chosenLevel = LevelLoader.loadState((String) Config.get("selected-level"));
             levelManager.initializeLevel(chosenLevel);
-
-
-//            levelManager.initializeLevel(selectedLevel.get());
-            // add to LevelManager.initializeLevel
-
             this.entityManager = levelManager.getEntityManager();
             this.characterManager = new CharacterManager(entityManager);
             levelManager.addGameCharacterRegistrationCallbacks(characterManager);
@@ -66,7 +60,6 @@ public class LevelGameplayController implements Screen {
             this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
 
             this.inputController = new InputController(entityManager, characterManager, hudPresenter, levelManager);
-
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -97,9 +90,9 @@ public class LevelGameplayController implements Screen {
         player.setTeam("player");
         this.playerId = player.getId();
 
-//        Spawner<Spike> spikeSpawner = createSpikeSpawner();
-//        spikeSpawner.setEntityManager(entityManager);
-//        spikeSpawner.spawn();
+        Spawner<Spike> spikeSpawner = createSpikeSpawner();
+        spikeSpawner.setEntityManager(entityManager);
+        spikeSpawner.spawn();
 
 
         for (ArrayList<Float> position : level.getEnemyPositions()) {
@@ -122,7 +115,7 @@ public class LevelGameplayController implements Screen {
 
         Spawner<?> mapBorderSpawner = createMapBorderSpawner();
         mapBorderSpawner.setEntityManager(entityManager);
-        WorldEntity mapBorder = mapBorderSpawner.spawn();
+        mapBorderSpawner.spawn();
 
     }
 

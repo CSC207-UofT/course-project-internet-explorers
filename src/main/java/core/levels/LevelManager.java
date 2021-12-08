@@ -1,11 +1,6 @@
 package core.levels;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import core.input.AIInputDevice;
 import core.input.KeyboardInputDevice;
@@ -17,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static core.worldEntities.DemoSpawners.createEnemySpawner;
@@ -29,12 +23,7 @@ import static core.worldEntities.DemoSpawners.createEnemySpawner;
 public class LevelManager {
 
     private ActiveLevel level;
-    // private final TiledMap map;
-//    private final OrthogonalTiledMapRenderer mapRenderer;
     private WorldEntityManager entityManager;
-//    private final SpriteBatch batch;
-//    protected HashMap<String, Integer> levelDifficultyToEnemies;
-//    protected List<Spawner<Character>> enemySpawns;
 
 
     public void initializeLevel(SavedLevel savedLevel) throws IOException {
@@ -121,20 +110,6 @@ public class LevelManager {
     }
 
     /**
-     * Create HashMap holding levelDifficulty as key, and number of enemies that correspond to
-     * that levelDifficulty, as value
-     *
-     * @return HashMap containing levelDifficulty mapped to number of enemies
-     */
-    private static HashMap<String, Integer> createLevelDifficultyToEnemies() {
-        HashMap<String, Integer> my_dict = new HashMap<>();
-        for (int i=0; i<10; i++){
-            my_dict.put("L" + (i+5), i+5);
-        }
-        return my_dict;
-    }
-
-    /**
      * Creates list of enemies to be spawned in level
      * @param numOfEnemies wanted to be spawned in this level
      * @return enemies list
@@ -204,25 +179,6 @@ public class LevelManager {
 
     }
 
-//    public void renderMap(OrthographicCamera camera) {
-//        mapRenderer.setView(camera);
-//        mapRenderer.render();
-//    }
-//
-//    public void renderWorld(OrthographicCamera camera) {
-//        batch.setProjectionMatrix(camera.combined);
-//        batch.begin();
-//        entityManager.draw(batch);
-//        batch.end();
-//    }
-
-    /**
-     * Invoke `render` on a Box2DDebugRenderer to draw the physics going on in this world.
-     * Used for debugging.
-     */
-    public void renderPhysics(Box2DDebugRenderer renderer, OrthographicCamera camera) {
-        renderer.render(level.world, camera.combined);
-    }
 
     public float getUnitScale() {
         return level.getUnitScale();
