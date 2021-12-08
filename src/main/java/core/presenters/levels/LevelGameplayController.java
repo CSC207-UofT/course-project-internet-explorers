@@ -40,24 +40,20 @@ public class LevelGameplayController implements Screen {
     @Override
     public void show() {
 
-        try {
-            SavedLevel chosenLevel = LevelLoader.loadState((String) Config.get("selected-level"));
-            levelManager.initializeLevel(chosenLevel);
-            this.entityManager = levelManager.getEntityManager();
-            this.characterManager = new CharacterManager(entityManager);
-            levelManager.addGameCharacterRegistrationCallbacks(characterManager);
+        SavedLevel chosenLevel = LevelLoader.loadState((String) Config.get("selected-level"));
+        levelManager.initializeLevel(chosenLevel);
+        this.entityManager = levelManager.getEntityManager();
+        this.characterManager = new CharacterManager(entityManager);
+        levelManager.addGameCharacterRegistrationCallbacks(characterManager);
 
-            createSpawners(chosenLevel);
-            initiatePlayerInventory();
+        createSpawners(chosenLevel);
+        initiatePlayerInventory();
 
-            this.levelGameplayPresenter = new LevelGameplayPresenter(this);
-            this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
+        this.levelGameplayPresenter = new LevelGameplayPresenter(this);
+        this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
 
-            this.inputController = new InputController(entityManager, characterManager, hudPresenter, levelManager);
+        this.inputController = new InputController(entityManager, characterManager, hudPresenter, levelManager);
 
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

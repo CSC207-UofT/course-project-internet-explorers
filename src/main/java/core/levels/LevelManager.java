@@ -26,7 +26,11 @@ public class LevelManager {
     private ActiveLevel level;
     private WorldEntityManager entityManager;
 
-    public void initializeLevel(SavedLevel savedLevel) throws IOException {
+    /**
+     * Converts the given saveLevel into an activeLevel
+     * @param savedLevel has all the information for the activeLevel
+     */
+    public void initializeLevel(SavedLevel savedLevel) {
         this.level = new ActiveLevel(savedLevel.getCurrentTime(), savedLevel.getScore(), savedLevel.getSpawnInterval(),
                                      savedLevel.getNextSpawnTime(), savedLevel.getMapPath());
         this.level.setEnemySpawns(createEnemyList(savedLevel.getTotalSpawns()));

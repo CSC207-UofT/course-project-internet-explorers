@@ -8,8 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import core.levels.LevelLoader;
-import core.levels.SavedLevel;
 import core.presenters.ScreenController;
 import core.presenters.levels.LevelGameplayController;
 
@@ -33,7 +31,7 @@ public class MainMenuScreen extends Menu {
     private static final int LEVEL_BUTTON_Y = 320;
     private static final int HOW_TO_PLAY_BUTTON_X = Gdx.graphics.getWidth() / 2 - HOW_TO_PLAY_BUTTON_WIDTH / 2;
     private static final int HOW_TO_PLAY_BUTTON_Y = 200;
-    private levelselectwindow levelselectwindow;
+    private LevelSelectWindow levelselectwindow;
 
     public MainMenuScreen(ScreenController screenController) {
         super(screenController);
@@ -51,7 +49,7 @@ public class MainMenuScreen extends Menu {
         }
         stage.addActor(createHowToPlayButton());
         stage.addActor(createExitButton());
-        levelselectwindow = new levelselectwindow();
+        levelselectwindow = new LevelSelectWindow();
     }
 
     @Override

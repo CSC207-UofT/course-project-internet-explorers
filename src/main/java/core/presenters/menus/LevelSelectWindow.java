@@ -12,9 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import core.config.Config;
 import core.levels.LevelLoader;
 
-public class levelselectwindow extends Window {
+public class LevelSelectWindow extends Window {
 
-    public levelselectwindow() {
+    public LevelSelectWindow() {
         super("Level_Select", new Skin(Gdx.files.internal("skins/uiskin.json")));
         this.setSize(400, 300);
         this.setResizable(false);
@@ -28,14 +28,18 @@ public class levelselectwindow extends Window {
 
         table.row();
 
-//        Table deleteLevelTable = new Table();
         table.add(deleteButton(1)).pad(10);
         table.add(deleteButton(2)).pad(10);
         table.add(deleteButton(3)).pad(10);
-//        this.add(deleteLevelTable);
+
         this.add(table);
     }
 
+    /**
+     * Creates a button that sets the level you want to play.
+     * @param level the level that the button corresponds to.
+     * @return the button that was created
+     */
     private TextButton levelButton(int level) {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = new BitmapFont();
@@ -55,6 +59,11 @@ public class levelselectwindow extends Window {
         return button;
     }
 
+    /**
+     * Calls the delete level method when pressed
+     * @param level this level's save file is deleted
+     * @return the button
+     */
     private TextButton deleteButton(int level) {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = new BitmapFont();

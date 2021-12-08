@@ -15,16 +15,14 @@ public class LevelLoader {
      * level difficulty
      *
      * @return SavedLevel to load into game
-     * @throws IOException relating to savedState .txt file
-     * @throws ClassNotFoundException relating to reading objects in
      */
-    public static SavedLevel loadState(String fileName) throws IOException, ClassNotFoundException {
+    public static SavedLevel loadState(String fileName)  {
         try {
             FileInputStream fileInputStream = new FileInputStream(fileName + ".txt");
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             return (SavedLevel) objectInputStream.readObject();
 
-        } catch (IOException exception) {
+        } catch (IOException | ClassNotFoundException exception) {
             String selectedLevel = (String) Config.get("selected-level");
 
             return switch (selectedLevel) {
@@ -35,6 +33,10 @@ public class LevelLoader {
         }
     }
 
+    /**
+     * Delete the save file for the given level
+     * @param fileName given level to be deleted
+     */
     public static void DeleteLevel(String fileName){
         File file = new File(fileName+".txt");
         file.delete();
