@@ -2,6 +2,7 @@ package inventorySystem;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.UUID;
+import java.util.function.BooleanSupplier;
 
 public class TestInventory {
 
@@ -76,4 +79,23 @@ public class TestInventory {
         characterManager.removeInventoryItem(test_player.getId(), sword);
         assertFalse(characterManager.swapSelectedItem(test_player.getId(), sword));
     }
+
+    @Test
+    void testSword() {
+        Sword sword2 = new Sword(3);
+        assertNotNull(sword2.getID());
+        assertEquals(3, sword2.getLevel());
+        assertEquals(9, sword2.getDamage());
+        assertEquals(6, sword2.getRange());
+    }
+
+    @Test
+    void testDagger() {
+        Dagger dagger1 = new Dagger(3);
+        assertNotNull(dagger.getID());
+        assertEquals(3, dagger1.getLevel());
+        assertEquals(6, dagger1.getDamage());
+        assertEquals(3, dagger1.getRange());
+    }
+    //TODO: Add a test for using the item
 }
