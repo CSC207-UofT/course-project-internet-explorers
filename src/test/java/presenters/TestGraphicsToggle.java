@@ -7,7 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import core.config.Config;
 import core.presenters.levels.LevelGameplayController;
-import desktop.DesktopLauncher;
+import desktop.DesktopConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ public class TestGraphicsToggle {
     static final String graphicsSettingName = "render-graphics";
 
     private void testRenderGraphicsSetting() {
-        Assertions.assertNotNull(DesktopLauncher.DesktopConfig.renderGraphics, "renderGraphics setting does not exist");
+        Assertions.assertNotNull(DesktopConfig.renderGraphics, "renderGraphics setting does not exist");
 
         Assertions.assertDoesNotThrow(() -> Config.get(graphicsSettingName), "Graphics rendering setting not found");
 

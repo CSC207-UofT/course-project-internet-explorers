@@ -73,7 +73,7 @@ build {
 }
 
 application {
-    mainClassName = "DesktopLauncher"
+    mainClassName = "desktop.DesktopLauncher"
 }
 
 run {
