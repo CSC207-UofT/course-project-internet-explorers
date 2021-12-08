@@ -3,7 +3,6 @@ package core.inventory.items;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import core.inventory.ItemUsageDelegate;
 import core.inventory.Weapon;
 import core.worldEntities.health.Damage;
 import java.util.UUID;

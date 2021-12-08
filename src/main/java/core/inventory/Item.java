@@ -7,5 +7,4 @@ public interface Item {
     Texture getSelectedTexture();
     Texture getUnselectedTexture();
     UUID getID();
-    <T extends Item> ItemUsageDelegate<T> getUsageDelegate();
 }

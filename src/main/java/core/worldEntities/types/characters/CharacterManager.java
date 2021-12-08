@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.input.CharacterInput;
 import core.input.CharacterInputDevice;
 import core.inventory.Item;
-import core.inventory.ItemUsageDelegate;
 import core.inventory.Weapon;
 import core.levels.LevelManager;
 import core.worldEntities.WorldEntityManager;
