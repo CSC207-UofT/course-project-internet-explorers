@@ -18,23 +18,22 @@ import static core.worldEntities.DemoSpawners.createEnemySpawner;
 
 /**
  * Use-Case class for LevelState.
- * Implements methods for rendering level and advancing the level's World.
+ * Implements methods for advancing the level's World.
+ *
  */
 public class LevelManager {
 
     private ActiveLevel level;
     private WorldEntityManager entityManager;
 
-
     public void initializeLevel(SavedLevel savedLevel) throws IOException {
-        this.level = new ActiveLevel(savedLevel); // create active level
+        this.level = new ActiveLevel(savedLevel); // create active level from savedLevel
         this.level.setEnemySpawns(createEnemyList(savedLevel.getTotalSpawns()));
-        this.entityManager = new WorldEntityManager(level.world); // activelevel
+        this.entityManager = new WorldEntityManager(level.world);
         List<Spawner<Character>> enemiesUpdated = level.getEnemySpawns();
 
-        for (Spawner<Character> spawner : enemiesUpdated) {
-            spawner.setEntityManager(this.entityManager);
-        }
+        // assign all enemies to an entityManager
+        for (Spawner<Character> spawner : enemiesUpdated) { spawner.setEntityManager(this.entityManager); }
         level.setEnemySpawns(enemiesUpdated);
     }
 
@@ -99,7 +98,7 @@ public class LevelManager {
             return;
         }
 
-        // Spawn enemy every spawnTime amount of seconds
+        // Spawn enemy every spawnTime amount of seconds, removing Spawner from enemySpawner
         if (level.getCurrentTime() >= level.getSpawnInterval()) {
             Spawner<Character> enemy = enemies.remove(0);
             enemy.spawn();
@@ -111,28 +110,17 @@ public class LevelManager {
 
     /**
      * Creates list of enemies to be spawned in level
+     *
      * @param numOfEnemies wanted to be spawned in this level
      * @return enemies list
      */
     private List<Spawner<Character>> createEnemyList(int numOfEnemies) {
         List<Spawner<Character>> enemies = new ArrayList<>();
-        // if time = 0, then populate enemySpawns with all enemies set for the levelDifficulty
-//        if (level.getCurrentTime() == 0) {
             for (int i = 0; i < numOfEnemies; i++) {
                 Spawner<Character> enemySpawner = createEnemySpawner();
                 enemySpawner.addSpawnCallback(character -> character.setTeam("enemy"));
                 enemies.add(enemySpawner);
             }
-//        }
-        // if time != 0, then adjust enemySpawns to remove enemies already defeated from last saved state
-//        else{
-//            double numEnemies = Math.floor(level.getCurrentTime() / level.getSpawnInterval());
-//            for (int i = 0; i < numEnemies; i++) {
-//                enemies = level.getEnemySpawns();
-//                enemies.remove(0);
-//                level.setEnemySpawns(enemies);
-//            }
-//        }
         return enemies;
     }
 
@@ -147,24 +135,18 @@ public class LevelManager {
     }
 
     /**
-     * Save current time elapsed from level
-     * This method will be used in phase 2
+     * Save current ActiveLevel into a SavedLevel
+     *    * assign SavedLevel.totalSpawns to length of ActiveLevel.enemySpawns
+     *    * assign SavedLevel.currentTime to ActiveLevel.currentTime
+     *    * pass through current user player position
+     *    * pass through list of positions of current enemies on the map
+     *    * pass through list of positions of current defenders on the map
      *
      * @throws IOException            relating to savedState.txt
      */
     public void saveState(String fileName) throws IOException {
-        // Save needed level information to file
         FileOutputStream fileOutputStream = new FileOutputStream(fileName + ".txt");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-
-        // when loading ActiveLevel from SavedLevel, ActiveLevel makes a spawn list of length Savedlevel.totalSpawns
-        // when an enemy is spawned in LevelManager, it removes a Spawner from ActiveLevel.enemySpawns
-        // when saving the level, aka making a SavedLevel out of ActiveLevel:
-        //    * assign SavedLevel.totalSpawns to length(ActiveLevel.enemySpawns)
-        //    * update SavedLevel.currentTime to ActiveLevel.currentTime
-        //    * assign SavedLevel.spawnInterval to ActiveLevel.spawnInterval
-        //    * assign SavedLevel.mapPath to same'ol mapPath
-        //    * score doesn't matter....?
 
         SavedLevel savedLevel = new SavedLevel(level.getCurrentTime(), level.getScore(), level.getSpawnInterval(),
                                           "maps/demo.tmx",level.getEnemySpawns().size(),
@@ -173,10 +155,8 @@ public class LevelManager {
 
         objectOutputStream.writeObject(savedLevel);
 
-
         objectOutputStream.flush();
         objectOutputStream.close();
-
     }
 
 

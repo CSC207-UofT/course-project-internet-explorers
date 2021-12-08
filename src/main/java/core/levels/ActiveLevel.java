@@ -10,6 +10,12 @@ import core.worldEntities.types.characters.Character;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entity class that stores information of the level once the game has been started
+ *
+ * Child Class of LevelState
+ */
+
 public class ActiveLevel extends LevelState {
 
     protected World world;
@@ -27,7 +33,7 @@ public class ActiveLevel extends LevelState {
         this.world = new World(new Vector2(0, 0), true);
         this.levelPaused = false;
         this.levelFinished = false;
-        this.enemySpawns = new ArrayList<Spawner<Character>>();
+        this.enemySpawns = new ArrayList<>();
     }
 
     public boolean isLevelFinished() { return levelFinished; }
@@ -40,7 +46,7 @@ public class ActiveLevel extends LevelState {
 
     public List<Spawner<Character>> getEnemySpawns() { return enemySpawns; }
 
-    public void setEnemySpawns(List enemySpawns){ this.enemySpawns = enemySpawns; }
+    public void setEnemySpawns(List<Spawner<Character>> enemySpawns){ this.enemySpawns = enemySpawns; }
 
     public TiledMap getMap() { return this.map; }
 

@@ -3,14 +3,19 @@ package core.levels;
 import core.config.Config;
 import java.io.*;
 
-
+/**
+ * Use-case class to manage serialization of levels
+ *
+ */
 public class LevelLoader {
 
     /**
-     * If savedState file exists, load LevelState given saved information
+     * If savedState file exists, load SavedLevel given saved information
+     * If no savedState file exists, load SavedLevel given default information for user chosen
+     * level difficulty
      *
-     * @return LevelState
-     * @throws IOException relating to savedState.txt
+     * @return SavedLevel to load into game
+     * @throws IOException relating to savedState .txt file
      * @throws ClassNotFoundException relating to reading objects in
      */
     public static SavedLevel loadState(String fileName) throws IOException, ClassNotFoundException {
@@ -29,5 +34,4 @@ public class LevelLoader {
             };
         }
     }
-
 }
