@@ -28,6 +28,7 @@ public class SavedLevel extends LevelState {
         this.currentTime = 0;
         this.score = 0;
         this.spawnInterval = spawnInterval;
+        this.nextSpawnTime = spawnInterval;
         this.mapPath = mapPath;
         this.totalSpawns = totalSpawns;
         this.playerPosition = new ArrayList<>(Arrays.asList(2F, 2F));
@@ -54,6 +55,7 @@ public class SavedLevel extends LevelState {
         this.currentTime = time;
         this.score = score;
         this.spawnInterval = spawnInterval;
+        this.nextSpawnTime = spawnInterval;
         this.mapPath = mapPath;
         this.totalSpawns = totalSpawns;
         this.playerPosition = playerPosition;

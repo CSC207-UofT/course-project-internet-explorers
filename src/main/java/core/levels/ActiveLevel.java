@@ -29,6 +29,7 @@ public class ActiveLevel extends LevelState {
         this.currentTime = level.getCurrentTime();
         this.score = level.getScore();
         this.spawnInterval = level.getSpawnInterval();
+        this.nextSpawnTime = level.getSpawnInterval();
         this.map = new TmxMapLoader().load(level.getMapPath());
         this.world = new World(new Vector2(0, 0), true);
         this.levelPaused = false;

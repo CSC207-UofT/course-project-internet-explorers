@@ -13,6 +13,7 @@ public class LevelState implements Serializable {
     protected float currentTime;
     protected int score;
     protected float spawnInterval;
+    protected float nextSpawnTime;
     // unitScale measured in m/px
     // represents in-game size of map tiles
     // current conventions
@@ -27,7 +28,7 @@ public class LevelState implements Serializable {
     // TODO: figure out the right warning to suppress
     // warning suppressed since unitScale can be readable from map
     // our game only uses 1/64f, but can be extendable for future uses
-    @SuppressWarnings()
+
     protected void setUnitScale(float unitScale) {
         this.unitScale = unitScale;
     }
@@ -54,5 +55,13 @@ public class LevelState implements Serializable {
 
     public void setSpawnInterval(float spawnInterval) {
         this.spawnInterval = spawnInterval;
+    }
+
+    public float getNextSpawnTime() {
+        return nextSpawnTime;
+    }
+
+    public void setNextSpawnTime(float time) {
+        this.nextSpawnTime = time;
     }
 }

@@ -34,7 +34,7 @@ public class LevelManager {
 
         // assign all enemies to an entityManager
         for (Spawner<Character> spawner : enemiesUpdated) { spawner.setEntityManager(this.entityManager); }
-        level.setEnemySpawns(enemiesUpdated);
+        this.level.setEnemySpawns(enemiesUpdated);
     }
 
     /**
@@ -99,12 +99,12 @@ public class LevelManager {
         }
 
         // Spawn enemy every spawnTime amount of seconds, removing Spawner from enemySpawner
-        if (level.getCurrentTime() >= level.getSpawnInterval()) {
+        if (level.getCurrentTime() >= level.getNextSpawnTime()) {
             Spawner<Character> enemy = enemies.remove(0);
             enemy.spawn();
             level.setEnemySpawns(enemies);
             level.setScore(level.getScore() + 1);
-            level.setSpawnInterval(level.getSpawnInterval() + 15);
+            level.setNextSpawnTime(level.getNextSpawnTime() + level.getSpawnInterval());
         }
     }
 
