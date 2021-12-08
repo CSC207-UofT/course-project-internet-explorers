@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import core.input.InputHandler;
 import core.levels.LevelManager;
 import core.worldEntities.types.characters.CharacterManager;
 import java.util.UUID;
@@ -20,7 +21,7 @@ import java.util.UUID;
 /***
  * Presenter class for displaying all heads-up-display
  */
-public class HudPresenter implements Disposable {
+public class HudPresenter implements InputHandler<HudInput>, Disposable {
 
     private final Stage stage;
 
@@ -132,5 +133,22 @@ public class HudPresenter implements Disposable {
             stage.addActor(pauseWindow);
         }
         isPauseOpen = !isPauseOpen;
+    }
+
+    @Override
+    public void handleInput(HudInput input) {
+        if (input.toggleInventory()) {
+            this.toggleInventory();
+        }
+
+        if (input.togglePause()) {
+            this.togglePauseWindow();
+
+            if (!levelManager.isLevelPaused()) {
+                levelManager.pause();
+            } else {
+                levelManager.resume();
+            }
+        }
     }
 }

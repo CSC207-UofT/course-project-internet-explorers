@@ -5,9 +5,9 @@ import static core.worldEntities.DemoSpawners.*;
 import com.badlogic.gdx.Screen;
 import core.config.Config;
 import core.config.ConfigurableSetting;
-import core.input.AIInputDevice;
 import core.input.InputController;
-import core.input.KeyboardInputDevice;
+import core.input.InputManager;
+import core.input.InputMapping;
 import core.inventory.items.Dagger;
 import core.inventory.items.Sword;
 import core.levels.LevelManager;
@@ -32,31 +32,30 @@ public class LevelGameplayController implements Screen {
     private static final LevelManager levelManager = new LevelManager();
     private LevelGameplayPresenter levelGameplayPresenter;
     private HudPresenter hudPresenter;
-    private InputController inputController;
+    private InputManager inputManager;
     private CharacterManager characterManager;
     private WorldEntityManager entityManager;
     private UUID playerId;
 
     @Override
     public void show() {
+        this.inputManager = new InputManager();
         levelManager.initializeLevel(selectedLevel.get());
-        // add to LevelManager.initializeLevel
 
         this.entityManager = levelManager.getEntityManager();
         this.characterManager = new CharacterManager(entityManager);
-        levelManager.addGameCharacterRegistrationCallbacks(characterManager);
+        levelManager.addGameCharacterRegistrationCallbacks(characterManager, inputManager);
 
         createSpawners();
 
         this.levelGameplayPresenter = new LevelGameplayPresenter(this);
         this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
-
-        this.inputController = new InputController(entityManager, characterManager, hudPresenter, levelManager);
+        inputManager.addInputMapping(new InputMapping<>(InputController.keyboardInputDevice().hudInputInputProvider(), hudPresenter));
     }
 
     @Override
     public void render(float dt) {
-        inputController.handleInputs(dt);
+        inputManager.handleInputs();
         levelManager.step(dt);
 
         levelGameplayPresenter.render(dt);
@@ -74,7 +73,11 @@ public class LevelGameplayController implements Screen {
         Spawner<Character> playerSpawner = createPlayerSpawner();
         playerSpawner.setEntityManager(entityManager);
         playerSpawner.addSpawnCallback(player -> {
-            characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class);
+            characterManager.registerInputMapping(
+                inputManager,
+                player.getId(),
+                InputController.keyboardInputDevice().characterInputProvider()
+            );
             characterManager.addInventoryItem(player.getId(), new Dagger());
             characterManager.addInventoryItem(player.getId(), new Sword());
             this.playerId = player.getId();
@@ -87,7 +90,9 @@ public class LevelGameplayController implements Screen {
 
         Spawner<?> enemySpawner = createEnemySpawner();
         enemySpawner.setEntityManager(entityManager);
-        enemySpawner.addSpawnCallback(enemy -> characterManager.setInputDeviceType(enemy.getId(), AIInputDevice.class));
+        enemySpawner.addSpawnCallback(enemy ->
+            characterManager.registerInputMapping(inputManager, enemy.getId(), InputController.aiInputDevice().characterInputProvider())
+        );
         enemySpawner.spawn();
 
         Spawner<?> defenderSpawner = createDefenderSpawner();

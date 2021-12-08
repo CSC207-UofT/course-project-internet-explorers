@@ -2,15 +2,14 @@ package core.worldEntities.types.characters;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import core.input.CharacterInput;
-import core.input.CharacterInputDevice;
+import core.input.*;
 import core.inventory.Item;
 import core.inventory.Weapon;
 import core.inventory.WeaponUsageDelegate;
 import core.worldEntities.WorldEntityManager;
 import java.util.*;
 
-public class CharacterManager {
+public class CharacterManager implements InputHandler<Character.Input> {
 
     /*
      * Use case class that handles updating instances of GameCharacter based on inputs from the InputHandler
@@ -24,23 +23,52 @@ public class CharacterManager {
     }
 
     /**
-     * Updates the GameCharacter's velocity to move character in direction specified by the given input (provided by InputController).
+     * Updates the GameCharacter's velocity to move character in direction specified by the given input
      * Also invokes item usage on the held item (per the input).
      */
-    public void processInputs(float dt, Map<UUID, CharacterInput> inputs) {
-        inputs.forEach((id, input) -> {
-            // normalize input direction then scale by desired speed
-            entityManager.getEntity(id).setLinearVelocity(input.direction().nor().scl(Character.SPEED));
+    private void handleCharacterInput(UUID id, Character.Input input) {
+        // normalize input direction then scale by desired speed
+        entityManager.getEntity(id).setLinearVelocity(input.direction().nor().scl(Character.SPEED));
 
-            if (input.using()) {
-                WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
-                usageDelegate.use((Weapon) verifyId(id).getInventory().get(0));
-            }
-        });
+        if (input.using()) {
+            WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
+            usageDelegate.use((Weapon) verifyId(id).getInventory().get(0));
+        }
     }
 
-    public void setInputDeviceType(UUID id, Class<? extends CharacterInputDevice> inputDeviceType) {
-        verifyId(id).setInputDeviceType(inputDeviceType);
+    public void handleInput(Character.Input input) {
+        if (input instanceof IdentifiableCharacterInput identifiableInput) {
+            handleCharacterInput(identifiableInput.characterId, identifiableInput);
+        } else {
+            throw new RuntimeException("Unidentifiable character input passed to CharacterManager");
+        }
+    }
+
+    public static class IdentifiableCharacterInput extends Character.Input {
+
+        public final UUID characterId;
+
+        public IdentifiableCharacterInput(UUID characterId, Character.Input input) {
+            super(input);
+            this.characterId = characterId;
+        }
+    }
+
+    public static class IdentifiableCharacterInputMapping extends InputMapping<Character.Input> {
+
+        public IdentifiableCharacterInputMapping(
+            UUID characterId,
+            InputProvider<Character.Input> provider,
+            InputHandler<Character.Input> consumer
+        ) {
+            super(() -> new IdentifiableCharacterInput(characterId, provider.provideInput()), consumer);
+        }
+    }
+
+    public void registerInputMapping(InputManager inputManager, UUID id, InputProvider<Character.Input> inputProvider) {
+        verifyId(id);
+
+        inputManager.addInputMapping(new IdentifiableCharacterInputMapping(id, inputProvider, this));
     }
 
     /*

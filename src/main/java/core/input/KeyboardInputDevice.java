@@ -3,17 +3,21 @@ package core.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
+import core.worldEntities.types.characters.Character;
 
-public class KeyboardInputDevice implements CharacterInputDevice, HudInputDevice {
+public class KeyboardInputDevice {
 
-    @Override
-    public CharacterInput getCharacterInput() {
-        return new CharacterInput(getDirection(), getUsing());
+    private final InputProvider<Character.Input> characterInputProvider = () -> new Character.Input(getDirection(), getUsing());
+
+    public InputProvider<Character.Input> characterInputProvider() {
+        return characterInputProvider;
     }
 
-    @Override
-    public HudInput getHudInput() {
-        return new HudInput(getInventory(), getPauseMenu());
+    private final InputProvider<core.presenters.HUD.HudInput> hudInputInputProvider = () ->
+        new core.presenters.HUD.HudInput(getInventory(), getPauseMenu());
+
+    public InputProvider<core.presenters.HUD.HudInput> hudInputInputProvider() {
+        return hudInputInputProvider;
     }
 
     private Vector2 getDirection() {
