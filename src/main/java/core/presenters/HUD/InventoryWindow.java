@@ -48,13 +48,13 @@ public class InventoryWindow extends Window {
             for (int i = 0; i < playerInventory.size(); i++) {
                 Item item = playerInventory.get(i);
 
-                ImageButton button = characterManager.createInventorySlot(item, i);
+                ImageButton button = characterManager.createInventorySlot(item.getId(), i);
 
                 button.addListener(
                     new ChangeListener() {
                         @Override
                         public void changed(ChangeEvent event, Actor actor) {
-                            characterManager.swapSelectedItem(playerId, item);
+                            characterManager.swapSelectedItem(playerId, item.getId());
                             updateInventoryWindow();
                         }
                     }

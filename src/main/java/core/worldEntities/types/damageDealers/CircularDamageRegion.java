@@ -13,10 +13,6 @@ import core.worldEntities.health.DealsDamage;
 
 /**
  * Entity that is a circle where damage is dealt.
- *
- * TODO add system for scheduling entity deletions
- *
- *
  */
 public class CircularDamageRegion extends WorldEntity implements DealsDamage {
 

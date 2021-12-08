@@ -30,12 +30,13 @@ public class TestCharacterManager {
     public void setup() {
         world = new World(new Vector2(0, 0), true);
         LevelManager levelManager = new LevelManager();
+        ItemManager itemManager = new ItemManager(levelManager);
         levelManager.initializeEmptyLevel();
         entityManager = levelManager.getEntityManager();
         character = entityManager.createEntity(Character.class, new BodyDef());
 
         character.setHealth(100);
-        sword = new Sword(2);
+        sword = itemManager.createItem(Sword.class);
 
         cm = new CharacterManager(levelManager, new ItemManager(levelManager));
     }
@@ -53,17 +54,19 @@ public class TestCharacterManager {
 
     @org.junit.Test
     public void testAddInventory() {
-        cm.addInventoryItem(character.getId(), sword);
+        cm.addInventoryItem(character.getId(), sword.getId());
         assertEquals(character.getInventory().size(), 1);
     }
 
     @org.junit.Test
     public void testCanUseItem() {
-        assertTrue(cm.hasItem(character.getId(), sword));
+        cm.addInventoryItem(character.getId(), sword.getId());
+        assertTrue(cm.hasItem(character.getId(), sword.getId()));
     }
 
     @org.junit.Test
     public void testRemoveInventory() {
-        assertTrue(cm.removeInventoryItem(character.getId(), sword));
+        cm.addInventoryItem(character.getId(), sword.getId());
+        assertTrue(cm.removeInventoryItem(character.getId(), sword.getId()));
     }
 }

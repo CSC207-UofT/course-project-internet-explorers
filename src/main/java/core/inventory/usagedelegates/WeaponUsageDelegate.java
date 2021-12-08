@@ -13,22 +13,21 @@ import core.worldEntities.health.Damage;
 import core.worldEntities.types.damageDealers.CircularDamageRegion;
 import java.util.UUID;
 
-//        if (weapon instanceof Defender) {
-//                Spawner<?> DefenseSpawner = createDefenseSpawner();
-//        DefenseSpawner.setEntityManager(entityManager);
-//        DefenseSpawner.spawn();
-//        return;
-//        }
 public class WeaponUsageDelegate extends ItemManager.ItemUsageDelegate<Weapon> {
+
+    /*
+     * Provides the useWeapon function as a usageDelegate to ItemManager
+     * @param levelManager: The relevant levelManager
+     * */
 
     private static LevelManager levelManager;
 
     public WeaponUsageDelegate(LevelManager levelManager) {
         super(Weapon.class, WeaponUsageDelegate::useWeapon);
-        WeaponUsageDelegate.levelManager = levelManager;
+        this.levelManager = levelManager;
     }
 
-    private static void useWeapon(UUID user_id, Weapon weapon) {
+    public static void useWeapon(UUID user_id, Weapon weapon) {
         WorldEntityManager entityManager = levelManager.getEntityManager();
 
         CircularDamageRegion damageRegion = entityManager.createEntity(

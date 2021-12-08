@@ -7,6 +7,10 @@ import core.worldEntities.health.DealsDamage;
 
 public class DefenderDamage extends WorldEntityWithSprite implements DealsDamage {
 
+    /**
+     * Entity that is a defender where damage is dealt.
+     */
+
     public DefenderDamage(Body body) {
         super(body);
     }

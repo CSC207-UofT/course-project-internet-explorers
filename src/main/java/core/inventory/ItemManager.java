@@ -1,5 +1,9 @@
 package core.inventory;
 
+import core.inventory.items.Dagger;
+import core.inventory.items.Defender;
+import core.inventory.items.Sword;
+import core.inventory.usagedelegates.DefenderUsageDelegate;
 import core.inventory.usagedelegates.WeaponUsageDelegate;
 import core.levels.LevelManager;
 
@@ -9,6 +13,12 @@ import java.util.UUID;
 import java.util.function.BiConsumer;
 
 public class ItemManager {
+
+    /*
+     * Provides an interface to create and use items
+     * @param itemUsageDelegates: A hashmap containing usageDelegates for different types of items
+     * @param items: A hashmap containing the instantiated items
+     * */
 
     public static class ItemUsageDelegate<T extends Item> {
 
@@ -34,7 +44,9 @@ public class ItemManager {
     private final HashMap<UUID, Item> items = new HashMap<>();
 
     public ItemManager(LevelManager levelManager) {
-        itemUsageDelegates.put(Weapon.class, new WeaponUsageDelegate(levelManager));
+        this.itemUsageDelegates.put(Dagger.class, new WeaponUsageDelegate(levelManager));
+        this.itemUsageDelegates.put(Sword.class, new WeaponUsageDelegate(levelManager));
+        this.itemUsageDelegates.put(Defender.class, new DefenderUsageDelegate(levelManager));
     }
 
     /**
@@ -52,7 +64,7 @@ public class ItemManager {
        }
 
     public Item get(UUID itemId) {
-        return items.get(itemId);
+        return this.items.get(itemId);
     }
 
     public <T extends Item> void setItemUsageDelegate(Class<T> type, ItemUsageDelegate<T> usageDelegate) {
