@@ -88,12 +88,16 @@ public class LevelManager {
         updateEnemies();
     }
 
+    /**
+     * Runs LevelEvents in the `events` set whose time is less than the current time,
+     * and removes those events from the passed set.
+     */
     private void runLevelEvents(TreeSet<LevelEvent> events) {
-        // Get level events to run
+        // Get all level events whose `time` property is less than the current level time
         NavigableSet<LevelEvent> eventsToRun = events.headSet(new LevelEvent(activeLevel.getCurrentTime(), o -> {}), true);
         // invoke event callback on each event
         eventsToRun.forEach((levelEvent -> levelEvent.getEventCallback().accept(this)));
-        // clear original set of events that have been run
+        // clear the events we just ran from both sets
         eventsToRun.clear();
     }
 
