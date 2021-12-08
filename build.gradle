@@ -21,9 +21,12 @@ dependencies {
 
     // JUnit
     implementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.platform:junit-platform-console-standalone:1.8.2'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+
+    testImplementation 'org.mockito:mockito-core:4.1.0'
 
 //    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.1'
 //    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-params:5.8.1'
@@ -54,16 +57,31 @@ dependencies {
 //    implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 //    implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
 //    implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+    testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
 }
 
 test {
     useJUnitPlatform()
+//    forkEvery 1
+}
+
+build {
+    test {
+        useJUnitPlatform()
+        failFast true
+    }
 }
 
 application {
-    mainClassName = "DesktopLauncher"
+    mainClassName = "desktop.DesktopLauncher"
 }
 
 run {
     standardInput = System.in
+}
+
+task testInConsole(type: JavaExec) {
+    main "RunTestsInConsole"
+    classpath = sourceSets.test.runtimeClasspath
+    args "--class-path='build/classes/java/test'", "--scan-classpath"
 }

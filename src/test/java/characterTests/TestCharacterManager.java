@@ -1,7 +1,6 @@
 package characterTests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -10,56 +9,55 @@ import core.inventory.items.Sword;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TestCharacterManager {
 
-    /*
-     * Tests the CharacterManager use case class
-     * */World world;
-    WorldEntityManager entityManager;
-    CharacterManager cm;
+    CharacterManager characterManager;
+    World world;
 
     Character character;
     Sword sword;
 
-    @Before
-    public void setup() {
-        world = new World(new Vector2(0, 0), true);
-        entityManager = new WorldEntityManager(world);
-        character = entityManager.createEntity(Character.class, new BodyDef());
+    @BeforeEach
+    void setup() {
+        world = new World(new Vector2(), true);
+        WorldEntityManager entityManager = new WorldEntityManager(world);
+        characterManager = new CharacterManager(entityManager);
 
+        character = entityManager.createEntity(Character.class, new BodyDef());
         character.setHealth(100);
         sword = new Sword(2);
-
-        cm = new CharacterManager(entityManager);
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
         world.dispose();
     }
 
-    @org.junit.Test
+    @Test
     public void testUpdateLevel() {
-        cm.incrementLevel(character.getId());
+        characterManager.incrementLevel(character.getId());
         assertEquals(character.getLevel(), 1);
     }
 
-    @org.junit.Test
+    @Test
     public void testAddInventory() {
-        cm.addInventoryItem(character.getId(), sword);
+        characterManager.addInventoryItem(character.getId(), sword);
         assertEquals(character.getInventory().size(), 1);
     }
 
-    @org.junit.Test
+    @Test
     public void testCanUseItem() {
-        assertTrue(cm.hasItem(character.getId(), sword));
+        characterManager.addInventoryItem(character.getId(), sword);
+        assertTrue(characterManager.hasItem(character.getId(), sword));
     }
 
-    @org.junit.Test
+    @Test
     public void testRemoveInventory() {
-        assertTrue(cm.removeInventoryItem(character.getId(), sword));
+        characterManager.addInventoryItem(character.getId(), sword);
+        assertTrue(characterManager.removeInventoryItem(character.getId(), sword));
     }
 }
