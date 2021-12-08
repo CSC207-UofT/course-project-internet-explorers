@@ -15,23 +15,15 @@ public class LevelEvent implements Comparable<LevelEvent> {
         this.id = UUID.randomUUID();
     }
 
-    public UUID getId() {
-        return this.id;
-    }
-
-    public float getTime() {
-        return time;
-    }
-
     protected Consumer<LevelManager> getEventCallback() {
         return eventCallback;
     }
 
     @Override
     public int compareTo(LevelEvent o) {
-        int timeDiff = (int) (this.time * 100000 - o.getTime() * 100000);
+        int timeDiff = (int) (this.time * 100000 - o.time * 100000);
         if (timeDiff == 0) {
-            return this.id.compareTo(o.getId());
+            return this.id.compareTo(o.id);
         }
         return timeDiff;
     }
