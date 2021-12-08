@@ -53,7 +53,9 @@ public class LevelGameplayController implements Screen {
         if ((boolean) Config.get("render-graphics")) {
             this.levelGameplayPresenter = new LevelGameplayPresenter(this);
             this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
-            inputManager.addInputMapping(new InputMapping<>(InputController.keyboardInputDevice().hudInputInputProvider(), hudPresenter));
+            inputManager.addInputMapping(
+                new InputMapping<>(InputController.keyboardInputDevice().hudInputInputProvider(), hudPresenter::handleInput)
+            );
         }
     }
 
@@ -84,7 +86,7 @@ public class LevelGameplayController implements Screen {
         Spawner<Character> playerSpawner = createPlayerSpawner();
         playerSpawner.setEntityManager(entityManager);
         playerSpawner.addSpawnCallback(player -> {
-            characterManager.registerInputMapping(
+            characterManager.registerCharacterInputSupplier(
                 inputManager,
                 player.getId(),
                 InputController.keyboardInputDevice().characterInputProvider()
@@ -104,7 +106,11 @@ public class LevelGameplayController implements Screen {
         Spawner<?> enemySpawner = createEnemySpawner();
         enemySpawner.setEntityManager(entityManager);
         enemySpawner.addSpawnCallback(enemy ->
-            characterManager.registerInputMapping(inputManager, enemy.getId(), InputController.aiInputDevice().characterInputProvider())
+            characterManager.registerCharacterInputSupplier(
+                inputManager,
+                enemy.getId(),
+                InputController.aiInputDevice().characterInputProvider()
+            )
         );
         enemySpawner.spawn();
 

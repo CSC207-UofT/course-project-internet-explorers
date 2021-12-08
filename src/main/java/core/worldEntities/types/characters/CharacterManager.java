@@ -8,8 +8,9 @@ import core.inventory.Weapon;
 import core.inventory.WeaponUsageDelegate;
 import core.worldEntities.WorldEntityManager;
 import java.util.*;
+import java.util.function.Supplier;
 
-public class CharacterManager implements InputHandler<Character.Input> {
+public class CharacterManager {
 
     /*
      * Use case class that handles updating instances of GameCharacter based on inputs from the InputHandler
@@ -36,39 +37,8 @@ public class CharacterManager implements InputHandler<Character.Input> {
         }
     }
 
-    public void handleInput(Character.Input input) {
-        if (input instanceof IdentifiableCharacterInput identifiableInput) {
-            handleCharacterInput(identifiableInput.characterId, identifiableInput);
-        } else {
-            throw new RuntimeException("Unidentifiable character input passed to CharacterManager");
-        }
-    }
-
-    public static class IdentifiableCharacterInput extends Character.Input {
-
-        public final UUID characterId;
-
-        public IdentifiableCharacterInput(UUID characterId, Character.Input input) {
-            super(input);
-            this.characterId = characterId;
-        }
-    }
-
-    public static class IdentifiableCharacterInputMapping extends InputMapping<Character.Input> {
-
-        public IdentifiableCharacterInputMapping(
-            UUID characterId,
-            InputProvider<Character.Input> provider,
-            InputHandler<Character.Input> consumer
-        ) {
-            super(() -> new IdentifiableCharacterInput(characterId, provider.provideInput()), consumer);
-        }
-    }
-
-    public void registerInputMapping(InputManager inputManager, UUID id, InputProvider<Character.Input> inputProvider) {
-        verifyId(id);
-
-        inputManager.addInputMapping(new IdentifiableCharacterInputMapping(id, inputProvider, this));
+    public void registerCharacterInputSupplier(InputManager inputManager, UUID id, Supplier<Character.Input> inputSupplier) {
+        inputManager.addInputMapping(new InputMapping<>(inputSupplier, input -> handleCharacterInput(id, input)));
     }
 
     /*

@@ -1,5 +1,8 @@
 package core.input;
 
+import core.input.devices.AIInputDevice;
+import core.input.devices.KeyboardInputDevice;
+
 /**
  * Controller class for InputDevices.
  * Currently, it does not control all that much since AI Input is very simple.

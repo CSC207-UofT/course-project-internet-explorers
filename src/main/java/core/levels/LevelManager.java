@@ -51,13 +51,13 @@ public class LevelManager {
                 spawner.addSpawnCallback(e -> {
                     if (e instanceof Character character) {
                         if (character.getTeam().equals("player")) {
-                            characterManager.registerInputMapping(
+                            characterManager.registerCharacterInputSupplier(
                                 inputManager,
                                 character.getId(),
                                 InputController.keyboardInputDevice().characterInputProvider()
                             );
                         } else if (character.getTeam().equals("enemy")) {
-                            characterManager.registerInputMapping(
+                            characterManager.registerCharacterInputSupplier(
                                 inputManager,
                                 character.getId(),
                                 InputController.aiInputDevice().characterInputProvider()
