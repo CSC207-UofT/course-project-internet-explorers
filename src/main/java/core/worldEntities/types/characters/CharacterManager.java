@@ -37,7 +37,7 @@ public class CharacterManager {
         }
     }
 
-    public void registerCharacterInputSupplier(InputManager inputManager, UUID id, Supplier<Character.Input> inputSupplier) {
+    public void addCharacterInputMapping(InputManager inputManager, UUID id, Supplier<Character.Input> inputSupplier) {
         inputManager.addInputMapping(new InputMapping<>(inputSupplier, input -> handleCharacterInput(id, input)));
     }
 

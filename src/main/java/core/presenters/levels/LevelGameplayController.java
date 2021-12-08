@@ -86,7 +86,7 @@ public class LevelGameplayController implements Screen {
         Spawner<Character> playerSpawner = createPlayerSpawner();
         playerSpawner.setEntityManager(entityManager);
         playerSpawner.addSpawnCallback(player -> {
-            characterManager.registerCharacterInputSupplier(
+            characterManager.addCharacterInputMapping(
                 inputManager,
                 player.getId(),
                 InputController.keyboardInputDevice().characterInputProvider()
@@ -106,11 +106,7 @@ public class LevelGameplayController implements Screen {
         Spawner<?> enemySpawner = createEnemySpawner();
         enemySpawner.setEntityManager(entityManager);
         enemySpawner.addSpawnCallback(enemy ->
-            characterManager.registerCharacterInputSupplier(
-                inputManager,
-                enemy.getId(),
-                InputController.aiInputDevice().characterInputProvider()
-            )
+            characterManager.addCharacterInputMapping(inputManager, enemy.getId(), InputController.aiInputDevice().characterInputProvider())
         );
         enemySpawner.spawn();
 
