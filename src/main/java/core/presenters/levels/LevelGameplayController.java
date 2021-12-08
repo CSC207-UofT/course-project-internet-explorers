@@ -16,12 +16,14 @@ import core.levels.LevelManager;
 import core.levels.SavedLevel;
 import core.presenters.HUD.HudPresenter;
 import core.worldEntities.Spawner;
+import core.worldEntities.WorldEntity;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import core.worldEntities.types.damageDealers.Spike;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class LevelGameplayController implements Screen {
@@ -57,7 +59,7 @@ public class LevelGameplayController implements Screen {
             this.characterManager = new CharacterManager(entityManager);
             levelManager.addGameCharacterRegistrationCallbacks(characterManager);
 
-            createSpawners();
+            createSpawners(chosenLevel);
             initiatePlayerInventory();
 
             this.levelGameplayPresenter = new LevelGameplayPresenter(this);
@@ -87,28 +89,41 @@ public class LevelGameplayController implements Screen {
         return entityManager;
     }
 
-    public void createSpawners() {
-        Spawner<Character> playerSpawner = createPlayerSpawner();
+    public void createSpawners(SavedLevel level) {
+        Spawner<Character> playerSpawner = createPlayerSpawner(level.getPlayerPosition());
         playerSpawner.setEntityManager(entityManager);
         playerSpawner.addSpawnCallback(player -> characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class));
-        this.playerId = playerSpawner.spawn().getId();
+        Character player = (Character) playerSpawner.spawn();
+        player.setTeam("player");
+        this.playerId = player.getId();
 
-        Spawner<Spike> spikeSpawner = createSpikeSpawner();
-        spikeSpawner.setEntityManager(entityManager);
-        spikeSpawner.spawn();
+//        Spawner<Spike> spikeSpawner = createSpikeSpawner();
+//        spikeSpawner.setEntityManager(entityManager);
+//        spikeSpawner.spawn();
 
-        Spawner<?> enemySpawner = createEnemySpawner();
-        enemySpawner.setEntityManager(entityManager);
-        enemySpawner.addSpawnCallback(enemy -> characterManager.setInputDeviceType(enemy.getId(), AIInputDevice.class));
-        enemySpawner.spawn();
 
-        Spawner<?> defenderSpawner = createDefenderSpawner();
-        defenderSpawner.setEntityManager(entityManager);
-        defenderSpawner.spawn();
+        for (ArrayList<Float> position : level.getEnemyPositions()) {
+            Spawner<?> enemySpawner = loadEnemySpawner(position);
+            enemySpawner.setEntityManager(entityManager);
+            enemySpawner.addSpawnCallback(enemy -> characterManager.setInputDeviceType(enemy.getId(),
+                                                                                       AIInputDevice.class
+            ));
+            Character enemy = (Character) enemySpawner.spawn();
+            enemy.setTeam("enemy");
+        }
+
+
+        for (ArrayList<Float> position : level.getDefenderPositions()) {
+            Spawner<?> defenderSpawner = createDefenderSpawner(position);
+            defenderSpawner.setEntityManager(entityManager);
+            Character defender = (Character) defenderSpawner.spawn();
+            defender.setTeam("defense");
+        }
 
         Spawner<?> mapBorderSpawner = createMapBorderSpawner();
         mapBorderSpawner.setEntityManager(entityManager);
-        mapBorderSpawner.spawn();
+        WorldEntity mapBorder = mapBorderSpawner.spawn();
+
     }
 
     public void initiatePlayerInventory() {

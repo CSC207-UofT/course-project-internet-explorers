@@ -10,10 +10,12 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.damageDealers.Spike;
 
+import java.util.ArrayList;
+
 public class DemoSpawners {
 
-    public static Spawner<Character> createPlayerSpawner() {
-        Vector2 position = new Vector2(2, 2);
+    public static Spawner<Character> createPlayerSpawner(ArrayList<Float> playerPosition) {
+        Vector2 position = new Vector2(playerPosition.get(0), playerPosition.get(1));
         Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_player");
         sprite.setSize(1, 1);
         sprite.setOriginCenter();
@@ -39,14 +41,23 @@ public class DemoSpawners {
         return Spawner.createSpriteBasedEntitySpawner(Character.class, position, sprite);
     }
 
-    public static Spawner<Character> createDefenderSpawner() {
+    public static Spawner<Character> loadEnemySpawner(ArrayList<Float> savedPosition) {
+        Vector2 position = new Vector2(savedPosition.get(0), savedPosition.get(1));
+        Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_enemy");
+        sprite.setSize(1, 1);
+        sprite.setOriginCenter();
+
+        return Spawner.createSpriteBasedEntitySpawner(Character.class, position, sprite);
+    }
+
+    public static Spawner<Character> createDefenderSpawner(ArrayList<Float> position) {
         Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_defense");
         sprite.setSize(1, 1);
         sprite.setOriginCenter();
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set(new Vector2(16, 3));
+        bodyDef.position.set(new Vector2(position.get(0), position.get(1)));
         return Spawner.createSpriteBasedEntitySpawner(Character.class, bodyDef, sprite);
     }
 

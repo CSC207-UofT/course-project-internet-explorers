@@ -7,10 +7,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import core.worldEntities.collisions.CollisionManager;
+import core.worldEntities.types.characters.Character;
+
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Use-case class for WorldEntities.
@@ -88,5 +88,67 @@ public class WorldEntityManager {
 
     public Map<UUID, WorldEntity> getEntities() {
         return this.entities;
+    }
+
+    public ArrayList<Float> getPlayerPosition(){
+        ArrayList<Float> playerPosition = new ArrayList<Float>();
+
+//        for (UUID id : entities.keySet()) {
+//            if (this.entities.get(id) instanceof Character entity){
+//                System.out.println(entity.getTeam());
+//            }
+//
+//        }
+
+        for (UUID id : entities.keySet()) {
+            if (this.entities.get(id) instanceof Character entity){
+                if (entity.getTeam().equals("player")){
+                    playerPosition.add(entity.getPosition().x);
+                    playerPosition.add(entity.getPosition().y);
+                    return playerPosition;
+                }
+            }
+
+        }
+        playerPosition.add(2F);
+        playerPosition.add(2F);
+
+        return playerPosition;
+    }
+
+    public ArrayList<ArrayList<Float>> getEnemyPositions(){
+        ArrayList<ArrayList<Float>> positions = new ArrayList<ArrayList<Float>>();
+
+
+
+        for (UUID id : entities.keySet()) {
+            if (this.entities.get(id) instanceof Character entity) {
+                if (entity.getTeam().equals("enemy")) {
+                    ArrayList<Float> temp = new ArrayList<Float>();
+
+                    temp.add(entity.getPosition().x);
+                    temp.add(entity.getPosition().y);
+                    positions.add(temp);
+                }
+            }
+        }
+        return positions;
+    }
+
+    public ArrayList<ArrayList<Float>> getDefenderPositions(){
+        ArrayList<ArrayList<Float>> positions = new ArrayList<ArrayList<Float>>();
+
+        for (UUID id : entities.keySet()) {
+            if (this.entities.get(id) instanceof Character entity) {
+                if (entity.getTeam().equals("defense")) {
+                    ArrayList<Float> temp = new ArrayList<Float>();
+
+                    temp.add(entity.getPosition().x);
+                    temp.add(entity.getPosition().y);
+                    positions.add(temp);
+                }
+            }
+        }
+        return positions;
     }
 }

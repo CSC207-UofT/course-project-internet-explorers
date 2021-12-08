@@ -12,8 +12,8 @@ import java.util.List;
 
 public class ActiveLevel extends LevelState {
 
-    protected transient World world;
-    private transient final TiledMap map;
+    protected World world;
+    private final TiledMap map;
     protected List<Spawner<Character>> enemySpawns;
     protected boolean levelPaused;
     private boolean levelFinished;

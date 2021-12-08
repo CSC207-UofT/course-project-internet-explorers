@@ -191,13 +191,17 @@ public class LevelManager {
         //    * assign SavedLevel.mapPath to same'ol mapPath
         //    * score doesn't matter....?
 
-        SavedLevel level = new SavedLevel(this.level);
+        SavedLevel savedLevel = new SavedLevel(level.getCurrentTime(), level.getScore(), level.getSpawnInterval(),
+                                          "maps/demo.tmx",level.getEnemySpawns().size(),
+                                               entityManager.getPlayerPosition(), entityManager.getEnemyPositions(),
+                                               entityManager.getDefenderPositions());
 
-        objectOutputStream.writeObject(level);
+        objectOutputStream.writeObject(savedLevel);
 
 
         objectOutputStream.flush();
         objectOutputStream.close();
+
     }
 
 //    public void renderMap(OrthographicCamera camera) {
