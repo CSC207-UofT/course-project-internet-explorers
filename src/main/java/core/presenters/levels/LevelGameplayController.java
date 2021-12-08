@@ -39,13 +39,7 @@ public class LevelGameplayController implements Screen {
 
     @Override
     public void show() {
-        Config.add(
-                String.class,
-                "selected-level",
-                "Name of the level to load & play when the Play button is clicked.",
-                "Level 1",
-                s -> s
-        );
+
         try {
             SavedLevel chosenLevel = LevelLoader.loadState((String) Config.get("selected-level"));
             levelManager.initializeLevel(chosenLevel);

@@ -52,6 +52,14 @@ class DesktopLauncher {
             value -> lwjglConfig.height = value,
             Integer::parseUnsignedInt
         );
+
+        public static final ConfigurableSetting<String> selectedLevel = Config.add(
+            String.class,
+            "selected-level",
+            "Name of the level to load & play when the Play button is clicked.",
+            "Level 1",
+            s -> s
+        );
     }
 
     public static void main(String[] arg) {
