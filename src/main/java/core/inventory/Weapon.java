@@ -1,5 +1,6 @@
 package core.inventory;
 
+import core.worldEntities.health.Damage;
 import java.util.UUID;
 
 public abstract class Weapon implements Item {
@@ -8,11 +9,11 @@ public abstract class Weapon implements Item {
 
     private String texturePath;
     private int level;
-    private int damage;
+    private Damage damage;
     private int range;
     public UUID id;
 
-    public abstract int getDamage();
+    public abstract Damage getDamage();
 
     public abstract int getLevel();
 
@@ -20,5 +21,5 @@ public abstract class Weapon implements Item {
 
     public abstract int getRange();
 
-    public abstract UUID getID();
+    public abstract UUID getId();
 }

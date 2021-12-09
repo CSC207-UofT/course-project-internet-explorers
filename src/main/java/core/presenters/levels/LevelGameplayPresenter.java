@@ -22,11 +22,12 @@ public class LevelGameplayPresenter {
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final SpriteBatch batch;
 
-    private final ConfigurableSetting<Boolean> render_physics = Config.add(Boolean.class,
-                                                                           "render_physics",
-                                                                           "Whether physics bodies should be rendered.",
-                                                                           false,
-                                                                           Boolean::parseBoolean
+    private final ConfigurableSetting<Boolean> render_physics = Config.add(
+        Boolean.class,
+        "render_physics",
+        "Whether physics bodies should be rendered.",
+        true,
+        Boolean::parseBoolean
     );
 
     public LevelGameplayPresenter(LevelGameplayController levelGameplayController) {

@@ -5,9 +5,13 @@ import core.worldEntities.WorldEntityWithSprite;
 import core.worldEntities.health.Damage;
 import core.worldEntities.health.DealsDamage;
 
-public class Spike extends WorldEntityWithSprite implements DealsDamage {
+public class DefenderDamage extends WorldEntityWithSprite implements DealsDamage {
 
-    public Spike(Body body) {
+    /**
+     * Entity that is a defender where damage is dealt.
+     */
+
+    public DefenderDamage(Body body) {
         super(body);
     }
 

@@ -7,7 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import core.inventory.items.Defender;
 import core.worldEntities.types.characters.Character;
+import core.worldEntities.types.damageDealers.DefenderDamage;
 import core.worldEntities.types.damageDealers.Spike;
 
 public class DemoSpawners {
@@ -48,6 +50,18 @@ public class DemoSpawners {
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(new Vector2(16, 3));
         return Spawner.createSpriteBasedEntitySpawner(Character.class, bodyDef, sprite);
+    }
+
+    public static Spawner<DefenderDamage> createDefenseSpawner() {
+        Sprite sprite = new Sprite(new Texture("weapons/defender.png"));
+        sprite.setSize(1, 1);
+        sprite.setOriginCenter();
+        Vector2 position = new Vector2(14, 4);
+
+/*        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        *//*bodyDef.position.set(new Vector2(14, 4));*/
+        return Spawner.createSpriteBasedEntitySpawner(DefenderDamage.class, position, sprite);
     }
 
     public static Spawner<WorldEntity> createMapBorderSpawner() {

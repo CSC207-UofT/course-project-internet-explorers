@@ -4,8 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.input.*;
 import core.inventory.Item;
-import core.inventory.Weapon;
-import core.inventory.WeaponUsageDelegate;
+import core.inventory.ItemManager;
+import core.levels.LevelManager;
 import core.worldEntities.WorldEntityManager;
 import java.util.*;
 import java.util.function.Supplier;
@@ -18,9 +18,14 @@ public class CharacterManager {
      * */
 
     private final WorldEntityManager entityManager;
+    private final LevelManager levelManager;
+    private ItemManager itemManager;
 
-    public CharacterManager(WorldEntityManager entityManager) {
-        this.entityManager = entityManager;
+    public CharacterManager(LevelManager levelManager, ItemManager itemManager) {
+        this.levelManager = levelManager;
+        // TODO clean this up; always getEntityManager instead of storing
+        this.entityManager = levelManager.getEntityManager();
+        this.itemManager = itemManager;
     }
 
     /**
@@ -32,8 +37,7 @@ public class CharacterManager {
         entityManager.getEntity(id).setLinearVelocity(input.direction().nor().scl(Character.SPEED));
 
         if (input.using()) {
-            WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
-            usageDelegate.use((Weapon) verifyId(id).getInventory().get(0));
+            useSelectedItem(id);
         }
     }
 
@@ -56,36 +60,49 @@ public class CharacterManager {
      * Checks if the item is in the character's inventory and then returns true if it is.
      * Ensures that there are no issues when controller class calls a UsageDelegate
      * */
-    public boolean hasItem(UUID id, Item item) {
-        return verifyId(id).getInventory().contains(item);
+    public boolean hasItem(UUID id, UUID itemId) {
+        return verifyId(id).getInventory().contains(this.itemManager.get(itemId));
     }
 
     /*
      * Checks if item is in inventory, then moves it to the first index at which item would be used
      * Returns True if item successfully selected, false if not
      * */
-    public boolean swapSelectedItem(UUID id, Item item) {
-        if (verifyId(id).getInventory().contains(item)) {
-            Collections.swap(verifyId(id).getInventory(), 0, verifyId(id).getInventory().indexOf(item));
+    public boolean swapSelectedItem(UUID id, UUID itemId) {
+        if (verifyId(id).getInventory().contains(this.itemManager.get(itemId))) {
+            Collections.swap(verifyId(id).getInventory(), 0,
+                             verifyId(id).getInventory().indexOf(this.itemManager.get(itemId)));
             return true;
         }
         return false;
     }
 
+    /**
+     * gets the item currently selected by the specified character
+     */
+    private Item getSelectedItem(UUID id) {
+        return verifyId(id).getInventory().get(0);
+    }
+
+    private void useSelectedItem(UUID id) {
+        Item item = getSelectedItem(id);
+        itemManager.use(id, item.getId());
+    }
+
     /*
      * Adds item to the inventory
      * */
-    public void addInventoryItem(UUID id, Item item) {
-        verifyId(id).getInventory().add(item);
+    public void addInventoryItem(UUID id, UUID itemId) {
+        verifyId(id).getInventory().add(this.itemManager.get(itemId));
     }
 
     /*
      * Checks if item is in inventory, then removes if it is
      * Returns True if item successfully removed, false if not
      * */
-    public boolean removeInventoryItem(UUID id, Item item) {
-        if (verifyId(id).getInventory().contains(item)) {
-            verifyId(id).getInventory().remove(item);
+    public boolean removeInventoryItem(UUID id, UUID itemId) {
+        if (verifyId(id).getInventory().contains(this.itemManager.get(itemId))) {
+            verifyId(id).getInventory().remove(this.itemManager.get(itemId));
             return true;
         }
         return false;
@@ -95,12 +112,12 @@ public class CharacterManager {
         return verifyId(id).getInventory();
     }
 
-    public ImageButton createInventorySlot(Item item, int index) {
+    public ImageButton createInventorySlot(UUID itemId, int index) {
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
         if (index == 0) {
-            style.up = new TextureRegionDrawable(item.getSelectedTexture());
+            style.up = new TextureRegionDrawable(this.itemManager.get(itemId).getSelectedTexture());
         } else {
-            style.up = new TextureRegionDrawable(item.getUnselectedTexture());
+            style.up = new TextureRegionDrawable(this.itemManager.get(itemId).getUnselectedTexture());
         }
 
         return new ImageButton(style);

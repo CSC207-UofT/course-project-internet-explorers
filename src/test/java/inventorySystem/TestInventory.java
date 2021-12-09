@@ -7,9 +7,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import core.inventory.Item;
+import core.inventory.ItemManager;
 import core.inventory.Weapon;
 import core.inventory.items.*;
-import core.worldEntities.WorldEntityManager;
+import core.levels.LevelManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import java.util.ArrayList;
@@ -26,16 +27,25 @@ public class TestInventory {
 
     Character test_player;
     ArrayList<Item> inv = new ArrayList<>();
-    Weapon sword = new Sword(1);
-    Item dagger = new Dagger(2);
+    Sword sword;
+    Dagger dagger;
+    Defender defender;
+    ItemManager itemManager;
 
     @BeforeEach
     public void setup() {
-        world = new World(new Vector2(), true);
-        WorldEntityManager entityManager = new WorldEntityManager(world);
-        characterManager = new CharacterManager(entityManager);
+        world = new World(new Vector2(0, 0), true);
+        LevelManager levelManager = new LevelManager();
+        this.itemManager = new ItemManager(levelManager);
+        levelManager.initializeEmptyLevel();
+        characterManager = new CharacterManager(levelManager, new ItemManager(levelManager));
 
-        test_player = entityManager.createEntity(Character.class, new BodyDef());
+        test_player = levelManager.getEntityManager().createEntity(Character.class, new BodyDef());
+
+        sword = itemManager.createItem(Sword.class);
+        dagger = itemManager.createItem(Dagger.class);
+        defender = itemManager.createItem(Defender.class);
+
         inv.add(sword);
         inv.add(dagger);
         test_player.setInventory(inv);
@@ -54,48 +64,36 @@ public class TestInventory {
 
     @Test
     void testSelect() {
+        characterManager.addInventoryItem(test_player.getId(), sword.getId());
         assertTrue(
             characterManager.swapSelectedItem(
                 test_player.getId(),
-                test_player.getInventory().get(test_player.getInventory().indexOf(sword))
+                sword.getId()
             )
         );
     }
 
     @Test
     void testAdd() {
-        Item sword1 = new Sword(3);
-        characterManager.addInventoryItem(test_player.getId(), sword1);
+        characterManager.addInventoryItem(test_player.getId(), defender.getId());
         assertTrue(
             characterManager.swapSelectedItem(
                 test_player.getId(),
-                test_player.getInventory().get(test_player.getInventory().indexOf(sword1))
+                defender.getId()
             )
         );
     }
 
     @Test
     void testRemove() {
-        characterManager.removeInventoryItem(test_player.getId(), sword);
-        assertFalse(characterManager.swapSelectedItem(test_player.getId(), sword));
+        characterManager.removeInventoryItem(test_player.getId(), sword.getId());
+        assertFalse(characterManager.swapSelectedItem(test_player.getId(), sword.getId()));
     }
 
     @Test
-    void testSword() {
-        Sword sword2 = new Sword(3);
-        assertNotNull(sword2.getID());
-        assertEquals(3, sword2.getLevel());
-        assertEquals(9, sword2.getDamage());
-        assertEquals(6, sword2.getRange());
+    void testCreate() {
+        sword = itemManager.createItem(Sword.class);
+        assertEquals(sword, itemManager.get(sword.getId()));
     }
 
-    @Test
-    void testDagger() {
-        Dagger dagger1 = new Dagger(3);
-        assertNotNull(dagger.getID());
-        assertEquals(3, dagger1.getLevel());
-        assertEquals(6, dagger1.getDamage());
-        assertEquals(3, dagger1.getRange());
-    }
-    //TODO: Add a test for using the item
 }

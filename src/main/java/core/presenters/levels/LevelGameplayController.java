@@ -8,7 +8,10 @@ import core.config.ConfigurableSetting;
 import core.input.InputController;
 import core.input.InputManager;
 import core.input.InputMapping;
+import core.input.KeyboardInputDevice;
+import core.inventory.ItemManager;
 import core.inventory.items.Dagger;
+import core.inventory.items.Defender;
 import core.inventory.items.Sword;
 import core.levels.LevelManager;
 import core.presenters.HUD.HudPresenter;
@@ -37,16 +40,20 @@ public class LevelGameplayController implements Screen {
     private CharacterManager characterManager;
     private WorldEntityManager entityManager;
     private UUID playerId;
+    private ItemManager itemManager;
 
     @Override
     public void show() {
         this.inputManager = new InputManager();
         levelManager.initializeLevel(selectedLevel.get());
 
+        this.itemManager = new ItemManager(levelManager);
         this.entityManager = levelManager.getEntityManager();
-        this.characterManager = new CharacterManager(entityManager);
         levelManager.addGameCharacterRegistrationCallbacks(characterManager, inputManager);
         this.cameraManager = new CameraManager(levelManager.getUnitScale(), entityManager);
+        this.characterManager = new CharacterManager(levelManager, itemManager);
+
+        levelManager.addGameCharacterRegistrationCallbacks(characterManager);
 
         createSpawners();
 
@@ -57,6 +64,8 @@ public class LevelGameplayController implements Screen {
                 new InputMapping<>(InputController.keyboardInputDevice().hudInputInputProvider(), hudPresenter::handleInput)
             );
         }
+
+        this.inputController = new InputController(entityManager, characterManager, hudPresenter, levelManager);
     }
 
     @Override
@@ -91,8 +100,9 @@ public class LevelGameplayController implements Screen {
                 player.getId(),
                 InputController.keyboardInputDevice().characterInputProvider()
             );
-            characterManager.addInventoryItem(player.getId(), new Dagger());
-            characterManager.addInventoryItem(player.getId(), new Sword());
+            characterManager.addInventoryItem(player.getId(), itemManager.createItem(Dagger.class).getId());
+            characterManager.addInventoryItem(player.getId(), itemManager.createItem(Sword.class).getId());
+            characterManager.addInventoryItem(player.getId(), itemManager.createItem(Defender.class).getId());
 
             cameraManager.setSubjectID(player.getId());
             this.playerId = player.getId();

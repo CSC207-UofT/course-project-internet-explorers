@@ -2,6 +2,7 @@ package core.inventory.items;
 
 import com.badlogic.gdx.graphics.Texture;
 import core.inventory.Weapon;
+import core.worldEntities.health.Damage;
 import java.util.UUID;
 
 public class Sword extends Weapon {
@@ -16,7 +17,7 @@ public class Sword extends Weapon {
 
     private int level;
     private int range;
-    private int damage;
+    private Damage damage;
     public UUID id;
     static final int DAMAGE_PER_LEVEL = 3;
     static final int RANGE_PER_LEVEL = 2;
@@ -46,7 +47,7 @@ public class Sword extends Weapon {
     public void setLevel(int level) {
         this.level = level;
         this.range = level * RANGE_PER_LEVEL;
-        this.damage = level * DAMAGE_PER_LEVEL;
+        this.damage = new Damage(level * DAMAGE_PER_LEVEL, null);
     }
 
     @Override
@@ -60,13 +61,12 @@ public class Sword extends Weapon {
     }
 
     @Override
-    public UUID getID() {
+    public UUID getId() {
         return id;
     }
 
     @Override
-    public int getDamage() {
+    public Damage getDamage() {
         return damage;
     }
-
 }

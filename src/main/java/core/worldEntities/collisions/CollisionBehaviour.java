@@ -4,7 +4,7 @@ import core.worldEntities.WorldEntity;
 import java.util.function.BiConsumer;
 
 /**
- * Defines what happens when an object of type A collides with a subclass of type B.
+ * Defines what happens when an object of type A collides with an object of type B.
  * @param <A>
  * @param <B>
  */
