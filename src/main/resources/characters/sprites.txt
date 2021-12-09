@@ -24,3 +24,10 @@ demo_player
   orig: 360, 360
   offset: 0, 0
   index: -1
+spike
+  rotate: false
+  xy: 0, 360
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1

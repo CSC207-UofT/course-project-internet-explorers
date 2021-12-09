@@ -9,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.damageDealers.Spike;
-
 import java.util.ArrayList;
 
 public class DemoSpawners {
@@ -25,7 +24,7 @@ public class DemoSpawners {
 
     public static Spawner<Spike> createSpikeSpawner() {
         Vector2 position = new Vector2(8, 5);
-        Sprite sprite = new Sprite(new Texture("weapons/spike.png"));
+        Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("spike");
         sprite.setSize(1.5f, 1.5f);
         sprite.setOriginCenter();
 
