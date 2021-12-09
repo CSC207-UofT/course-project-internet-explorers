@@ -20,7 +20,6 @@ public class LevelLoader {
     public static final int LEVEL_2_SPAWN_INTERVAL = 10;
     public static final int LEVEL_3_SPAWN_INTERVAL = 5;
 
-    // TODO map path
 
     /**
      * If savedState file exists for the specified level, load SavedLevel given saved information
