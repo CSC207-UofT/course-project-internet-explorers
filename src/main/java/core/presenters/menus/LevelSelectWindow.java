@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import core.config.Config;
 import core.levels.LevelLoader;
+import core.levels.LevelManager;
 
 public class LevelSelectWindow extends Window {
 
@@ -47,12 +47,11 @@ public class LevelSelectWindow extends Window {
         TextButton button = new TextButton("Level " + level, style);
 
         button.addListener(
-                new ChangeListener() {
-                    @Override
-                    public void changed (ChangeEvent event, Actor actor) {
-                    Config.set("selected-level", "Level " + level );
+            new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    LevelManager.selectedLevel.set("Level " + level);
                     close();
-
                 }
             }
         );
@@ -71,18 +70,18 @@ public class LevelSelectWindow extends Window {
         TextButton button = new TextButton("Clear Save", style);
 
         button.addListener(
-                new ChangeListener() {
-                    @Override
-                    public void changed (ChangeEvent event, Actor actor) {
-                        LevelLoader.DeleteLevel("Level " + level);
-                        System.out.println("Level " + level + " save has been cleared.");
-                    }
+            new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    LevelLoader.DeleteLevel("Level " + level);
+                    System.out.println("Level " + level + " save has been cleared.");
                 }
+            }
         );
         return button;
     }
 
-    private void close(){
+    private void close() {
         super.remove();
     }
 }

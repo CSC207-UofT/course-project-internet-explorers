@@ -1,63 +1,51 @@
 package level;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.World;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
-import core.config.Config;
+import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Gdx;
 import core.levels.LevelLoader;
-import core.levels.SavedLevel;
 import core.levels.LevelManager;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
+import core.levels.SavedLevel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class TestLevel {
 
-    LevelManager levelManager;
-
     @BeforeEach
-    public void setup() throws IOException, ClassNotFoundException {
+    public void setup() {
+        Gdx.files = mock(Files.class);
         LevelManager levelManager = new LevelManager();
-        SavedLevel savedLevel = new SavedLevel("maps/demo.tmx", 5, 15);
+        SavedLevel savedLevel = new SavedLevel(LevelLoader.DEMO_MAP_PATH, 5, 15);
         levelManager.initializeLevel(savedLevel);
     }
 
     @Test
-    void testLevelLoader() throws IOException, ClassNotFoundException {
-        SavedLevel levelOne = LevelLoader.loadState("Level 1");
-        SavedLevel levelTwo = LevelLoader.loadState("Level 2");
-        SavedLevel levelThree = LevelLoader.loadState("Level 3");
+    void testLevelLoader() {
+        SavedLevel defaultLevel = LevelLoader.loadState("");
+        SavedLevel levelTwo = LevelLoader.loadState(LevelLoader.LEVEL_2_NAME);
+        SavedLevel levelThree = LevelLoader.loadState(LevelLoader.LEVEL_3_NAME);
 
-        assertEquals(5, levelOne.getTotalSpawns());
-        assertEquals(15, levelOne.getSpawnInterval());
-        assertEquals(7, levelTwo.getTotalSpawns());
-        assertEquals(10, levelTwo.getSpawnInterval());
-        assertEquals(10, levelThree.getTotalSpawns());
-        assertEquals(5, levelThree.getSpawnInterval());
+        assertEquals(LevelLoader.DEFAULT_TOTAL_SPAWNS, defaultLevel.getTotalSpawns());
+        assertEquals(LevelLoader.DEFAULT_SPAWN_INTERVAL, defaultLevel.getSpawnInterval());
+        assertEquals(LevelLoader.LEVEL_2_TOTAL_SPAWNS, levelTwo.getTotalSpawns());
+        assertEquals(LevelLoader.LEVEL_2_SPAWN_INTERVAL, levelTwo.getSpawnInterval());
+        assertEquals(LevelLoader.LEVEL_3_TOTAL_SPAWNS, levelThree.getTotalSpawns());
+        assertEquals(LevelLoader.LEVEL_3_SPAWN_INTERVAL, levelThree.getSpawnInterval());
     }
+    //    @Test
+    //    void testSavedToActive(){
+    //        levelManager.createSaveLevel();
+    //        get the saved level from a file
+    //        levelManager.updateLevel();
+    //        there is a method that updates the current level to the save
+    //        assertEquals(levelLoader.saveLevel.getEnemySpawns(), levelLoader.activeLevel.getTotalEnemy());
+    //    }
 
-//    @Test
-//    void testSavedToActive(){
-//        levelManager.createSaveLevel();
-//        get the saved level from a file
-//        levelManager.updateLevel();
-//        there is a method that updates the current level to the save
-//        assertEquals(levelLoader.saveLevel.getEnemySpawns(), levelLoader.activeLevel.getTotalEnemy());
-//    }
-
-//    @Test
-//    void testSerialization(){
-//        //<some code about serialization>
-////        assertEquals(levelLoader.saveLevel.getTime(), levelLoader.activeLevel.getTime());
-//    }
+    //    @Test
+    //    void testSerialization(){
+    //        //<some code about serialization>
+    ////        assertEquals(levelLoader.saveLevel.getTime(), levelLoader.activeLevel.getTime());
+    //    }
 }

@@ -10,6 +10,18 @@ import java.io.*;
  */
 public class LevelLoader {
 
+    public static final String DEMO_MAP_PATH = "maps/demo.tmx";
+
+    public static final String LEVEL_2_NAME = "Level 2";
+    public static final int DEFAULT_TOTAL_SPAWNS = 5;
+    public static final int LEVEL_2_TOTAL_SPAWNS = 7;
+    public static final int LEVEL_3_TOTAL_SPAWNS = 10;
+
+    public static final String LEVEL_3_NAME = "Level 3";
+    public static final int DEFAULT_SPAWN_INTERVAL = 15;
+    public static final int LEVEL_2_SPAWN_INTERVAL = 10;
+    public static final int LEVEL_3_SPAWN_INTERVAL = 5;
+
     // TODO map path
 
     /**
@@ -28,9 +40,9 @@ public class LevelLoader {
             String selectedLevel = LevelManager.selectedLevel.get();
 
             return switch (selectedLevel) {
-                case "Level 2" -> new SavedLevel("maps/demo.tmx", 7, 10);
-                case "Level 3" -> new SavedLevel("maps/demo.tmx", 10, 5);
-                default -> new SavedLevel("maps/demo.tmx", 5, 15);
+                case LEVEL_2_NAME -> new SavedLevel(DEMO_MAP_PATH, LEVEL_2_TOTAL_SPAWNS, LEVEL_2_SPAWN_INTERVAL);
+                case LEVEL_3_NAME -> new SavedLevel(DEMO_MAP_PATH, LEVEL_3_TOTAL_SPAWNS, LEVEL_3_SPAWN_INTERVAL);
+                default -> new SavedLevel(DEMO_MAP_PATH, DEFAULT_TOTAL_SPAWNS, DEFAULT_SPAWN_INTERVAL);
             };
         }
     }
@@ -57,7 +69,7 @@ public class LevelLoader {
             level.getScore(),
             level.getSpawnInterval(),
             level.getNextSpawnTime(),
-            "maps/demo.tmx",
+            DEMO_MAP_PATH,
             level.getEnemySpawns().size(),
             entityManager.getPlayerPosition(),
             entityManager.getEnemyPositions(),
