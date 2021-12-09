@@ -74,6 +74,8 @@ public class LevelLoader {
      */
     public static void DeleteLevel(String fileName) {
         File file = new File(fileName + ".txt");
-        file.delete();
+        if (!file.delete()) {
+            System.err.println("Failed to delete save file " + fileName);
+        }
     }
 }
