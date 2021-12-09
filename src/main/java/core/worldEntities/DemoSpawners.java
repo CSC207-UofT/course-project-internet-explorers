@@ -1,6 +1,5 @@
 package core.worldEntities;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
@@ -13,44 +12,59 @@ import java.util.ArrayList;
 
 public class DemoSpawners {
 
-    public static Spawner<Character> createPlayerSpawner(ArrayList<Float> playerPosition) {
+    private final TextureAtlas textureAtlas;
+    public final String DEMO_TEXTURE_ATLAS_PATH = "characters/sprites.txt";
+    public static final String DEMO_PLAYER_SPRITE_NAME = "demo_player";
+    public static final String DEMO_SPIKE_SPRITE_NAME = "spike";
+    public static final String DEMO_ENEMY_SPRITE_NAME = "demo_enemy";
+    public static final String DEMO_DEFENSE_SPRITE_NAME = "demo_defense";
+
+    public DemoSpawners() {
+        this.textureAtlas = new TextureAtlas(DEMO_TEXTURE_ATLAS_PATH);
+    }
+
+    public DemoSpawners(TextureAtlas textureAtlas) {
+        this.textureAtlas = textureAtlas;
+    }
+
+    public Spawner<Character> createPlayerSpawner(ArrayList<Float> playerPosition) {
         Vector2 position = new Vector2(playerPosition.get(0), playerPosition.get(1));
-        Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_player");
+        Sprite sprite = textureAtlas.createSprite(DEMO_PLAYER_SPRITE_NAME);
         sprite.setSize(1, 1);
         sprite.setOriginCenter();
 
         return Spawner.createSpriteBasedEntitySpawner(Character.class, position, sprite);
     }
 
-    public static Spawner<Spike> createSpikeSpawner() {
+    public Spawner<Spike> createSpikeSpawner() {
         Vector2 position = new Vector2(8, 5);
-        Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("spike");
+        Sprite sprite = textureAtlas.createSprite(DEMO_SPIKE_SPRITE_NAME);
         sprite.setSize(1.5f, 1.5f);
         sprite.setOriginCenter();
 
         return Spawner.createSpriteBasedEntitySpawner(Spike.class, position, sprite);
     }
 
-    public static Spawner<Character> createEnemySpawner() {
+    public Spawner<Character> createEnemySpawner() {
         Vector2 position = new Vector2(20, 8);
-        Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_enemy");
+        Sprite sprite = textureAtlas.createSprite(DEMO_ENEMY_SPRITE_NAME);
         sprite.setSize(1, 1);
         sprite.setOriginCenter();
 
         return Spawner.createSpriteBasedEntitySpawner(Character.class, position, sprite);
     }
 
-    public static Spawner<Character> loadEnemySpawner(ArrayList<Float> savedPosition) {
+    public Spawner<Character> loadEnemySpawner(ArrayList<Float> savedPosition) {
         Vector2 position = new Vector2(savedPosition.get(0), savedPosition.get(1));
-        Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_enemy");
+        Sprite sprite = textureAtlas.createSprite(DEMO_ENEMY_SPRITE_NAME);
         sprite.setSize(1, 1);
         sprite.setOriginCenter();
 
         return Spawner.createSpriteBasedEntitySpawner(Character.class, position, sprite);
     }
 
-    public static Spawner<Character> createDefenderSpawner(ArrayList<Float> position) {
-        Sprite sprite = new TextureAtlas("characters/sprites.txt").createSprite("demo_defense");
+    public Spawner<Character> createDefenderSpawner(ArrayList<Float> position) {
+        Sprite sprite = textureAtlas.createSprite(DEMO_DEFENSE_SPRITE_NAME);
         sprite.setSize(1, 1);
         sprite.setOriginCenter();
 
@@ -60,7 +74,7 @@ public class DemoSpawners {
         return Spawner.createSpriteBasedEntitySpawner(Character.class, bodyDef, sprite);
     }
 
-    public static Spawner<WorldEntity> createMapBorderSpawner() {
+    public Spawner<WorldEntity> createMapBorderSpawner() {
         Spawner<WorldEntity> spawner = new Spawner<>(WorldEntity.class);
 
         spawner.setBodyDefSupplier(() -> {

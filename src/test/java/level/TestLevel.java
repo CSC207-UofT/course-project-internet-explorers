@@ -5,9 +5,13 @@ import static org.mockito.Mockito.*;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import core.levels.LevelLoader;
 import core.levels.LevelManager;
 import core.levels.SavedLevel;
+import core.worldEntities.DemoSpawners;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +20,13 @@ public class TestLevel {
     @BeforeEach
     public void setup() {
         Gdx.files = mock(Files.class);
-        LevelManager levelManager = new LevelManager();
+        TextureAtlas textureAtlas = mock(TextureAtlas.class);
+        when(textureAtlas.createSprite(DemoSpawners.DEMO_PLAYER_SPRITE_NAME)).thenReturn(mock(Sprite.class));
+        when(textureAtlas.createSprite(DemoSpawners.DEMO_SPIKE_SPRITE_NAME)).thenReturn(mock(Sprite.class));
+        when(textureAtlas.createSprite(DemoSpawners.DEMO_ENEMY_SPRITE_NAME)).thenReturn(mock(Sprite.class));
+        when(textureAtlas.createSprite(DemoSpawners.DEMO_DEFENSE_SPRITE_NAME)).thenReturn(mock(Sprite.class));
+
+        LevelManager levelManager = new LevelManager(mock(TmxMapLoader.class), new DemoSpawners(textureAtlas));
         SavedLevel savedLevel = new SavedLevel(LevelLoader.DEMO_MAP_PATH, 5, 15);
         levelManager.initializeLevel(savedLevel);
     }

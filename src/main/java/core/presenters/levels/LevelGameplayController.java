@@ -1,7 +1,5 @@
 package core.presenters.levels;
 
-import static core.worldEntities.DemoSpawners.*;
-
 import com.badlogic.gdx.Screen;
 import core.config.Config;
 import core.input.InputController;
@@ -13,6 +11,7 @@ import core.levels.LevelLoader;
 import core.levels.LevelManager;
 import core.levels.SavedLevel;
 import core.presenters.HUD.HudPresenter;
+import core.worldEntities.DemoSpawners;
 import core.worldEntities.Spawner;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
@@ -32,6 +31,15 @@ public class LevelGameplayController implements Screen {
     private CharacterManager characterManager;
     private WorldEntityManager entityManager;
     private UUID playerId;
+    private final DemoSpawners demoSpawnerFactory;
+
+    public LevelGameplayController() {
+        this.demoSpawnerFactory = new DemoSpawners();
+    }
+
+    public LevelGameplayController(DemoSpawners demoSpawnerFactory) {
+        this.demoSpawnerFactory = demoSpawnerFactory;
+    }
 
     @Override
     public void show() {
@@ -79,7 +87,7 @@ public class LevelGameplayController implements Screen {
     }
 
     public void createSpawners(SavedLevel level) {
-        Spawner<Character> playerSpawner = createPlayerSpawner(level.getPlayerPosition());
+        Spawner<Character> playerSpawner = demoSpawnerFactory.createPlayerSpawner(level.getPlayerPosition());
         playerSpawner.setEntityManager(entityManager);
         playerSpawner.addSpawnCallback(player -> {
             characterManager.addCharacterInputMapping(
@@ -95,12 +103,12 @@ public class LevelGameplayController implements Screen {
         });
         this.playerId = playerSpawner.spawn().getId();
 
-        Spawner<Spike> spikeSpawner = createSpikeSpawner();
+        Spawner<Spike> spikeSpawner = demoSpawnerFactory.createSpikeSpawner();
         spikeSpawner.setEntityManager(entityManager);
         spikeSpawner.spawn();
 
         for (ArrayList<Float> position : level.getEnemyPositions()) {
-            Spawner<Character> enemySpawner = loadEnemySpawner(position);
+            Spawner<Character> enemySpawner = demoSpawnerFactory.loadEnemySpawner(position);
             enemySpawner.setEntityManager(entityManager);
             enemySpawner.addSpawnCallback(enemy -> {
                 characterManager.addCharacterInputMapping(
@@ -114,13 +122,13 @@ public class LevelGameplayController implements Screen {
         }
 
         for (ArrayList<Float> position : level.getDefenderPositions()) {
-            Spawner<Character> defenderSpawner = createDefenderSpawner(position);
+            Spawner<Character> defenderSpawner = demoSpawnerFactory.createDefenderSpawner(position);
             defenderSpawner.setEntityManager(entityManager);
             defenderSpawner.addSpawnCallback(defender -> defender.setTeam("defense"));
             defenderSpawner.spawn();
         }
 
-        Spawner<?> mapBorderSpawner = createMapBorderSpawner();
+        Spawner<?> mapBorderSpawner = demoSpawnerFactory.createMapBorderSpawner();
         mapBorderSpawner.setEntityManager(entityManager);
         mapBorderSpawner.spawn();
     }

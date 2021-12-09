@@ -1,13 +1,13 @@
 package core.levels;
 
-import static core.worldEntities.DemoSpawners.createEnemySpawner;
-
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.physics.box2d.World;
 import core.config.Config;
 import core.config.ConfigurableSetting;
 import core.input.InputController;
 import core.input.InputManager;
+import core.worldEntities.DemoSpawners;
 import core.worldEntities.Spawner;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
@@ -33,9 +33,21 @@ public class LevelManager {
     private ActiveLevel level;
     private WorldEntityManager entityManager;
     private final TreeSet<LevelEvent> levelEvents = new TreeSet<>();
+    private final TmxMapLoader mapLoader;
+    private final DemoSpawners demoSpawnerFactory;
+
+    public LevelManager(TmxMapLoader mapLoader, DemoSpawners demoSpawnerFactory) {
+        this.mapLoader = mapLoader;
+        this.demoSpawnerFactory = demoSpawnerFactory;
+    }
+
+    public LevelManager() {
+        this(new TmxMapLoader(), new DemoSpawners());
+    }
 
     /**
      * Converts the given saveLevel into an activeLevel
+     *
      * @param savedLevel has all the information for the activeLevel
      */
     public void initializeLevel(SavedLevel savedLevel) {
@@ -45,7 +57,7 @@ public class LevelManager {
                 savedLevel.getScore(),
                 savedLevel.getSpawnInterval(),
                 savedLevel.getNextSpawnTime(),
-                savedLevel.getMapPath()
+                mapLoader.load(savedLevel.getMapPath())
             );
         this.level.setEnemySpawns(createEnemyList(savedLevel.getTotalSpawns()));
         this.entityManager = new WorldEntityManager(level.world);
@@ -164,7 +176,7 @@ public class LevelManager {
     private List<Spawner<Character>> createEnemyList(int numOfEnemies) {
         List<Spawner<Character>> enemies = new ArrayList<>();
         for (int i = 0; i < numOfEnemies; i++) {
-            Spawner<Character> enemySpawner = createEnemySpawner();
+            Spawner<Character> enemySpawner = demoSpawnerFactory.createEnemySpawner();
             enemySpawner.addSpawnCallback(character -> character.setTeam("enemy"));
             enemies.add(enemySpawner);
         }
