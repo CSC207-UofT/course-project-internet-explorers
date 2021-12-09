@@ -13,12 +13,13 @@ import core.levels.LevelLoader;
 import core.levels.LevelManager;
 import core.levels.SavedLevel;
 import core.presenters.HUD.HudPresenter;
-import core.worldEntities.DemoSpawners;
+import core.worldEntities.SpawnerFactory;
 import core.worldEntities.Spawner;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
-import core.worldEntities.types.damageDealers.Spike;
+import core.worldEntities.types.damageDealers.DefenderDamage;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -35,13 +36,13 @@ public class LevelGameplayController implements Screen {
     private UUID playerId;
     private ItemManager itemManager;
     private InputController inputController;
-    private final DemoSpawners demoSpawnerFactory;
+    private final SpawnerFactory demoSpawnerFactory;
 
     public LevelGameplayController() {
-        this.demoSpawnerFactory = new DemoSpawners();
+        this.demoSpawnerFactory = new SpawnerFactory();
     }
 
-    public LevelGameplayController(DemoSpawners demoSpawnerFactory) {
+    public LevelGameplayController(SpawnerFactory demoSpawnerFactory) {
         this.demoSpawnerFactory = demoSpawnerFactory;
     }
 
@@ -111,9 +112,6 @@ public class LevelGameplayController implements Screen {
         });
         this.playerId = playerSpawner.spawn().getId();
 
-        Spawner<Spike> spikeSpawner = demoSpawnerFactory.createSpikeSpawner();
-        spikeSpawner.setEntityManager(entityManager);
-        spikeSpawner.spawn();
 
         for (ArrayList<Float> position : level.getEnemyPositions()) {
             Spawner<Character> enemySpawner = demoSpawnerFactory.loadEnemySpawner(position);
@@ -130,13 +128,13 @@ public class LevelGameplayController implements Screen {
         }
 
         for (ArrayList<Float> position : level.getDefenderPositions()) {
-            Spawner<Character> defenderSpawner = demoSpawnerFactory.createDefenderSpawner(position);
+            Spawner<DefenderDamage> defenderSpawner = SpawnerFactory.createDefenseSpawner(position);
             defenderSpawner.setEntityManager(entityManager);
             defenderSpawner.addSpawnCallback(defender -> defender.setTeam("defense"));
             defenderSpawner.spawn();
         }
 
-        Spawner<?> mapBorderSpawner = demoSpawnerFactory.createMapBorderSpawner();
+        Spawner<?> mapBorderSpawner = SpawnerFactory.createMapBorderSpawner();
         mapBorderSpawner.setEntityManager(entityManager);
         mapBorderSpawner.spawn();
     }

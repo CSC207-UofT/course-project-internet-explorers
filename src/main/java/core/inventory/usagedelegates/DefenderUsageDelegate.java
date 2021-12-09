@@ -6,7 +6,8 @@ import core.levels.LevelManager;
 import core.worldEntities.Spawner;
 import core.worldEntities.WorldEntityManager;
 import java.util.UUID;
-import core.worldEntities.DemoSpawners;
+import core.worldEntities.SpawnerFactory;
+import core.worldEntities.types.characters.Character;
 
 public class DefenderUsageDelegate extends ItemManager.ItemUsageDelegate<Defender> {
 
@@ -19,14 +20,16 @@ public class DefenderUsageDelegate extends ItemManager.ItemUsageDelegate<Defende
 
     public DefenderUsageDelegate(LevelManager levelManager) {
         super(Defender.class, DefenderUsageDelegate::useDefender);
-        this.levelManager = levelManager;
+        DefenderUsageDelegate.levelManager = levelManager;
     }
 
     private static void useDefender(UUID user_id, Defender defender) {
         WorldEntityManager entityManager = levelManager.getEntityManager();
-        Spawner<?> DefenseSpawner = DemoSpawners.createDefenseSpawner();
+        Spawner<?> DefenseSpawner = SpawnerFactory.createDefenseSpawner(levelManager.getEntityManager().getPlayerPosition());
         DefenseSpawner.setEntityManager(entityManager);
-        DefenseSpawner.spawn();
+        Character entity = (Character) DefenseSpawner.spawn();
+        entity.setTeam("defense");
+
     }
 
 }

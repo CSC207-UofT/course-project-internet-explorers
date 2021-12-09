@@ -11,7 +11,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import core.levels.LevelLoader;
 import core.levels.LevelManager;
 import core.levels.SavedLevel;
-import core.worldEntities.DemoSpawners;
+import core.worldEntities.SpawnerFactory;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,12 +24,12 @@ public class TestLevel {
     public void setup() {
         Gdx.files = mock(Files.class);
         TextureAtlas textureAtlas = mock(TextureAtlas.class);
-        when(textureAtlas.createSprite(DemoSpawners.DEMO_PLAYER_SPRITE_NAME)).thenReturn(mock(Sprite.class));
-        when(textureAtlas.createSprite(DemoSpawners.DEMO_SPIKE_SPRITE_NAME)).thenReturn(mock(Sprite.class));
-        when(textureAtlas.createSprite(DemoSpawners.DEMO_ENEMY_SPRITE_NAME)).thenReturn(mock(Sprite.class));
-        when(textureAtlas.createSprite(DemoSpawners.DEMO_DEFENSE_SPRITE_NAME)).thenReturn(mock(Sprite.class));
+        when(textureAtlas.createSprite(SpawnerFactory.DEMO_PLAYER_SPRITE_NAME)).thenReturn(mock(Sprite.class));
+        when(textureAtlas.createSprite(SpawnerFactory.DEMO_SPIKE_SPRITE_NAME)).thenReturn(mock(Sprite.class));
+        when(textureAtlas.createSprite(SpawnerFactory.DEMO_ENEMY_SPRITE_NAME)).thenReturn(mock(Sprite.class));
+        when(textureAtlas.createSprite(SpawnerFactory.DEMO_DEFENSE_SPRITE_NAME)).thenReturn(mock(Sprite.class));
 
-        levelManager = new LevelManager(mock(TmxMapLoader.class), new DemoSpawners(textureAtlas));
+        levelManager = new LevelManager(mock(TmxMapLoader.class), new SpawnerFactory(textureAtlas));
         SavedLevel savedLevel = new SavedLevel(LevelLoader.DEMO_MAP_PATH, LevelLoader.DEFAULT_TOTAL_SPAWNS,
                                                LevelLoader.DEFAULT_SPAWN_INTERVAL);
         levelManager.initializeLevel(savedLevel);

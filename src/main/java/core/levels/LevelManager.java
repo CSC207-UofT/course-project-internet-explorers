@@ -2,13 +2,12 @@ package core.levels;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import core.config.Config;
 import core.config.ConfigurableSetting;
 import core.input.InputController;
 import core.input.InputManager;
-import core.worldEntities.DemoSpawners;
+import core.worldEntities.SpawnerFactory;
 import core.worldEntities.Spawner;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
@@ -27,7 +26,7 @@ public class LevelManager {
         String.class,
         "selected-level",
         "Name of the level to load & play when the Play button is clicked.",
-        "demo",
+        "Level 1",
         s -> s
     );
 
@@ -37,15 +36,15 @@ public class LevelManager {
     private WorldEntityManager entityManager;
     private final TreeSet<LevelEvent> levelEvents = new TreeSet<>();
     private final TmxMapLoader mapLoader;
-    private final DemoSpawners demoSpawnerFactory;
+    private final SpawnerFactory demoSpawnerFactory;
 
-    public LevelManager(TmxMapLoader mapLoader, DemoSpawners demoSpawnerFactory) {
+    public LevelManager(TmxMapLoader mapLoader, SpawnerFactory demoSpawnerFactory) {
         this.mapLoader = mapLoader;
         this.demoSpawnerFactory = demoSpawnerFactory;
     }
 
     public LevelManager() {
-        this(new TmxMapLoader(), new DemoSpawners());
+        this(new TmxMapLoader(), new SpawnerFactory());
     }
 
     /**

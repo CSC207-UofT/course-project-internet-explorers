@@ -4,8 +4,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import core.worldEntities.WorldEntityWithSprite;
 import core.worldEntities.health.Damage;
 import core.worldEntities.health.DealsDamage;
+import core.worldEntities.types.characters.Character;
 
-public class DefenderDamage extends WorldEntityWithSprite implements DealsDamage {
+public class DefenderDamage extends Character implements DealsDamage {
 
     /**
      * Entity that is a defender where damage is dealt.
