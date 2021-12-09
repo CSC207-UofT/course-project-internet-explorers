@@ -14,9 +14,9 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import core.config.Config;
+import core.levels.LevelLoader;
 import core.levels.LevelManager;
 import core.worldEntities.types.characters.CharacterManager;
-
 import java.io.IOException;
 import java.util.UUID;
 
@@ -138,6 +138,6 @@ public class HudPresenter implements Disposable {
     }
 
     public void saveState() throws IOException {
-        levelManager.saveState((String) Config.get("selected-level"));
+        LevelLoader.saveState((String) Config.get("selected-level"), levelManager);
     }
 }

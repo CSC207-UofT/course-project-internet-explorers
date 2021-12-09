@@ -1,6 +1,7 @@
 package core.levels;
 
 import core.config.Config;
+import core.worldEntities.WorldEntityManager;
 import java.io.*;
 
 /**
@@ -16,12 +17,11 @@ public class LevelLoader {
      *
      * @return SavedLevel to load into game
      */
-    public static SavedLevel loadState(String fileName)  {
+    public static SavedLevel loadState(String fileName) {
         try {
             FileInputStream fileInputStream = new FileInputStream(fileName + ".txt");
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             return (SavedLevel) objectInputStream.readObject();
-
         } catch (IOException | ClassNotFoundException exception) {
             String selectedLevel = (String) Config.get("selected-level");
 
@@ -34,11 +34,46 @@ public class LevelLoader {
     }
 
     /**
+     * Save current ActiveLevel into a SavedLevel
+     *    * assign SavedLevel.totalSpawns to length of ActiveLevel.enemySpawns
+     *    * assign SavedLevel.currentTime to ActiveLevel.currentTime
+     *    * pass through current user player position
+     *    * pass through list of positions of current enemies on the map
+     *    * pass through list of positions of current defenders on the map
+     *
+     * @throws IOException            relating to savedState.txt
+     */
+    public static void saveState(String fileName, LevelManager levelManager) throws IOException {
+        ActiveLevel level = levelManager.getActiveLevel();
+        WorldEntityManager entityManager = levelManager.getEntityManager();
+
+        FileOutputStream fileOutputStream = new FileOutputStream(fileName + ".txt");
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+        SavedLevel savedLevel = new SavedLevel(
+            level.getCurrentTime(),
+            level.getScore(),
+            level.getSpawnInterval(),
+            level.getNextSpawnTime(),
+            "maps/demo.tmx",
+            level.getEnemySpawns().size(),
+            entityManager.getPlayerPosition(),
+            entityManager.getEnemyPositions(),
+            entityManager.getDefenderPositions()
+        );
+
+        objectOutputStream.writeObject(savedLevel);
+
+        objectOutputStream.flush();
+        objectOutputStream.close();
+    }
+
+    /**
      * Delete the save file for the given level
      * @param fileName given level to be deleted
      */
-    public static void DeleteLevel(String fileName){
-        File file = new File(fileName+".txt");
+    public static void DeleteLevel(String fileName) {
+        File file = new File(fileName + ".txt");
         file.delete();
     }
 }

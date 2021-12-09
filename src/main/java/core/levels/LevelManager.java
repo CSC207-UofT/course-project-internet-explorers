@@ -1,5 +1,7 @@
 package core.levels;
 
+import static core.worldEntities.DemoSpawners.createEnemySpawner;
+
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.World;
 import core.input.AIInputDevice;
@@ -13,8 +15,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import static core.worldEntities.DemoSpawners.createEnemySpawner;
 
 /**
  * Use-Case class for LevelState.
@@ -31,14 +31,22 @@ public class LevelManager {
      * @param savedLevel has all the information for the activeLevel
      */
     public void initializeLevel(SavedLevel savedLevel) {
-        this.level = new ActiveLevel(savedLevel.getCurrentTime(), savedLevel.getScore(), savedLevel.getSpawnInterval(),
-                                     savedLevel.getNextSpawnTime(), savedLevel.getMapPath());
+        this.level =
+            new ActiveLevel(
+                savedLevel.getCurrentTime(),
+                savedLevel.getScore(),
+                savedLevel.getSpawnInterval(),
+                savedLevel.getNextSpawnTime(),
+                savedLevel.getMapPath()
+            );
         this.level.setEnemySpawns(createEnemyList(savedLevel.getTotalSpawns()));
         this.entityManager = new WorldEntityManager(level.world);
         List<Spawner<Character>> enemiesUpdated = level.getEnemySpawns();
 
         // assign all enemies to an entityManager
-        for (Spawner<Character> spawner : enemiesUpdated) { spawner.setEntityManager(this.entityManager); }
+        for (Spawner<Character> spawner : enemiesUpdated) {
+            spawner.setEntityManager(this.entityManager);
+        }
         this.level.setEnemySpawns(enemiesUpdated);
     }
 
@@ -121,11 +129,11 @@ public class LevelManager {
      */
     private List<Spawner<Character>> createEnemyList(int numOfEnemies) {
         List<Spawner<Character>> enemies = new ArrayList<>();
-            for (int i = 0; i < numOfEnemies; i++) {
-                Spawner<Character> enemySpawner = createEnemySpawner();
-                enemySpawner.addSpawnCallback(character -> character.setTeam("enemy"));
-                enemies.add(enemySpawner);
-            }
+        for (int i = 0; i < numOfEnemies; i++) {
+            Spawner<Character> enemySpawner = createEnemySpawner();
+            enemySpawner.addSpawnCallback(character -> character.setTeam("enemy"));
+            enemies.add(enemySpawner);
+        }
         return enemies;
     }
 
@@ -139,39 +147,16 @@ public class LevelManager {
         return level.isLevelFinished();
     }
 
-    /**
-     * Save current ActiveLevel into a SavedLevel
-     *    * assign SavedLevel.totalSpawns to length of ActiveLevel.enemySpawns
-     *    * assign SavedLevel.currentTime to ActiveLevel.currentTime
-     *    * pass through current user player position
-     *    * pass through list of positions of current enemies on the map
-     *    * pass through list of positions of current defenders on the map
-     *
-     * @throws IOException            relating to savedState.txt
-     */
-    public void saveState(String fileName) throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream(fileName + ".txt");
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-
-        SavedLevel savedLevel = new SavedLevel(level.getCurrentTime(), level.getScore(), level.getSpawnInterval(),
-                                               level.getNextSpawnTime(),
-                                          "maps/demo.tmx",level.getEnemySpawns().size(),
-                                               entityManager.getPlayerPosition(), entityManager.getEnemyPositions(),
-                                               entityManager.getDefenderPositions());
-
-        objectOutputStream.writeObject(savedLevel);
-
-        objectOutputStream.flush();
-        objectOutputStream.close();
-    }
-
-
     public float getUnitScale() {
         return level.getUnitScale();
     }
 
     public WorldEntityManager getEntityManager() {
         return entityManager;
+    }
+
+    protected ActiveLevel getActiveLevel() {
+        return this.level;
     }
 
     public void dispose() {
@@ -194,15 +179,15 @@ public class LevelManager {
         return (int) Math.floor(level.getCurrentTime());
     }
 
-    public World getWorld(){
+    public World getWorld() {
         return this.level.getWorld();
     }
 
-    public TiledMap getMap(){
+    public TiledMap getMap() {
         return this.level.getMap();
     }
 
-    public float getLevelUnitScale(){
+    public float getLevelUnitScale() {
         return this.level.getUnitScale();
     }
 }
