@@ -28,9 +28,8 @@ public class LevelLoader {
      * @return SavedLevel to load into game
      */
     public static SavedLevel loadState(String levelName) {
-        String fileName = levelName + ".txt";
         try {
-            FileInputStream fileInputStream = new FileInputStream(fileName + ".txt");
+            FileInputStream fileInputStream = new FileInputStream(levelName + ".txt");
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             return (SavedLevel) objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException exception) {
