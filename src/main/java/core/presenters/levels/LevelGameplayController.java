@@ -65,8 +65,8 @@ public class LevelGameplayController implements Screen {
         levelManager.step(dt);
         cameraManager.update(dt);
 
-        if ((boolean) Config.get("render-graphics")) {
-            levelGameplayPresenter.render(dt);
+        if (levelGameplayPresenter != null) {
+            levelGameplayPresenter.render();
         }
     }
 
@@ -121,7 +121,7 @@ public class LevelGameplayController implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        if ((boolean) Config.get("render-graphics")) {
+        if (levelGameplayPresenter != null) {
             levelGameplayPresenter.resize();
         }
     }

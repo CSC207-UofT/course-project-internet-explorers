@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.config.Config;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import core.levels.LevelLoader;
 import core.presenters.ScreenController;
 import core.presenters.levels.LevelGameplayController;
@@ -30,6 +31,10 @@ public class MainMenuScreen extends Menu {
 
     public MainMenuScreen(ScreenController screenController) {
         super(screenController);
+    }
+
+    public MainMenuScreen(ScreenController screenController, Stage stage) {
+        super(screenController, stage);
     }
 
     @Override
