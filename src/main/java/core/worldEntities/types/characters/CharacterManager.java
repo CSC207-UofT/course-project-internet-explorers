@@ -6,6 +6,7 @@ import core.input.*;
 import core.inventory.Item;
 import core.inventory.ItemManager;
 import core.levels.LevelManager;
+import core.worldEntities.WorldEntity;
 import core.worldEntities.WorldEntityManager;
 import java.util.*;
 import java.util.function.Supplier;
@@ -33,8 +34,12 @@ public class CharacterManager {
      * Also invokes item usage on the held item (per the input).
      */
     private void handleCharacterInput(UUID id, Character.Input input) {
-        // normalize input direction then scale by desired speed
-        entityManager.getEntity(id).setLinearVelocity(input.direction().nor().scl(Character.SPEED));
+        try {
+            // normalize input direction then scale by desired speed
+            verifyId(id).setLinearVelocity(input.direction().nor().scl(Character.SPEED));
+        } catch (RuntimeException ignored) {
+            // todo better solution for clearing input mappings for deleted characters
+        }
 
         if (input.using()) {
             useSelectedItem(id);
@@ -70,8 +75,7 @@ public class CharacterManager {
      * */
     public boolean swapSelectedItem(UUID id, UUID itemId) {
         if (verifyId(id).getInventory().contains(this.itemManager.get(itemId))) {
-            Collections.swap(verifyId(id).getInventory(), 0,
-                             verifyId(id).getInventory().indexOf(this.itemManager.get(itemId)));
+            Collections.swap(verifyId(id).getInventory(), 0, verifyId(id).getInventory().indexOf(this.itemManager.get(itemId)));
             return true;
         }
         return false;

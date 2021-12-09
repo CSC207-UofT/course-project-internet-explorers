@@ -7,6 +7,7 @@ import core.inventory.Item;
 import core.worldEntities.WorldEntityWithSprite;
 import core.worldEntities.collisions.CollisionBehaviour;
 import core.worldEntities.collisions.HasCollisionBehaviours;
+import core.worldEntities.health.DealsDamage;
 import core.worldEntities.health.TakesDamage;
 import java.util.ArrayList;
 
@@ -54,7 +55,7 @@ public class Character extends WorldEntityWithSprite implements TakesDamage, Has
 
     public Character(Body body) {
         super(body);
-        this.collisionBehaviours.add(TakesDamage.takeDamageOnCollision);
+        this.addCollisionBehaviour(TakesDamage.takeDamageOnCollision);
     }
 
     public String getTeam() {
@@ -93,5 +94,9 @@ public class Character extends WorldEntityWithSprite implements TakesDamage, Has
     @Override
     public ArrayList<CollisionBehaviour<?, ?>> getCollisionBehaviours() {
         return this.collisionBehaviours;
+    }
+
+    public void addCollisionBehaviour(CollisionBehaviour<?, ?> collisionBehaviour) {
+        this.collisionBehaviours.add(collisionBehaviour);
     }
 }

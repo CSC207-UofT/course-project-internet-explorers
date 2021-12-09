@@ -7,9 +7,11 @@ import core.config.Config;
 import core.config.ConfigurableSetting;
 import core.input.InputController;
 import core.input.InputManager;
-import core.worldEntities.SpawnerFactory;
 import core.worldEntities.Spawner;
+import core.worldEntities.SpawnerFactory;
 import core.worldEntities.WorldEntityManager;
+import core.worldEntities.collisions.CollisionBehaviour;
+import core.worldEntities.health.DealsDamage;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import java.util.*;
@@ -94,6 +96,16 @@ public class LevelManager {
                                 inputManager,
                                 character.getId(),
                                 InputController.aiInputDevice().characterInputProvider()
+                            );
+                            character.addCollisionBehaviour(
+                                new CollisionBehaviour<>(
+                                    Character.class,
+                                    DealsDamage.class,
+                                    (enemy, dealsDamage) ->
+                                        this.addLevelEvent(
+                                                new LevelEvent(getTime() + 0.01f, levelManager -> entityManager.deleteEntity(enemy.getId()))
+                                            )
+                                )
                             );
                         }
                     }
