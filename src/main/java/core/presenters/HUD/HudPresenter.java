@@ -133,4 +133,20 @@ public class HudPresenter implements Disposable {
         }
         isPauseOpen = !isPauseOpen;
     }
+
+    public void handleInput(HudInput input) {
+        if (input.toggleInventory()) {
+            this.toggleInventory();
+        }
+
+        if (input.togglePause()) {
+            this.togglePauseWindow();
+
+            if (!levelManager.isLevelPaused()) {
+                levelManager.pause();
+            } else {
+                levelManager.resume();
+            }
+        }
+    }
 }
