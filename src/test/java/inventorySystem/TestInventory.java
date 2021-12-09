@@ -14,11 +14,11 @@ import core.levels.LevelManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import java.util.ArrayList;
+import java.util.UUID;
+import java.util.function.BooleanSupplier;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.UUID;
-import java.util.function.BooleanSupplier;
 
 public class TestInventory {
 

@@ -14,8 +14,11 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import core.config.Config;
+import core.config.Config;
+import core.levels.LevelLoader;
 import core.levels.LevelManager;
 import core.worldEntities.types.characters.CharacterManager;
+import java.io.IOException;
 import java.util.UUID;
 
 /***
@@ -44,11 +47,9 @@ public class HudPresenter implements Disposable {
         this.levelManager = levelManager;
 
         playerInventory = new InventoryWindow(characterManager, id);
-        pauseWindow = new PauseWindow();
+        pauseWindow = new PauseWindow(this);
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
-
-
 
         BitmapFont winFont = new BitmapFont();
         winFont.getData().setScale(2);
@@ -104,6 +105,22 @@ public class HudPresenter implements Disposable {
         stage.draw();
     }
 
+    public void handleInput(HudInput input) {
+        if (input.toggleInventory()) {
+            this.toggleInventory();
+        }
+
+        if (input.togglePause()) {
+            this.togglePauseWindow();
+
+            if (!levelManager.isLevelPaused()) {
+                levelManager.pause();
+            } else {
+                levelManager.resume();
+            }
+        }
+    }
+
     /***
      * @return the camera used for the HUD
      */
@@ -143,19 +160,7 @@ public class HudPresenter implements Disposable {
         isPauseOpen = !isPauseOpen;
     }
 
-    public void handleInput(HudInput input) {
-        if (input.toggleInventory()) {
-            this.toggleInventory();
-        }
-
-        if (input.togglePause()) {
-            this.togglePauseWindow();
-
-            if (!levelManager.isLevelPaused()) {
-                levelManager.pause();
-            } else {
-                levelManager.resume();
-            }
-        }
+    public void saveState() throws IOException {
+        LevelLoader.saveState(LevelManager.selectedLevel.get(), levelManager);
     }
 }

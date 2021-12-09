@@ -31,20 +31,31 @@ public class LevelGameplayPresenter {
     );
 
     public LevelGameplayPresenter(LevelGameplayController levelGameplayController) {
-        this(levelGameplayController, new Box2DDebugRenderer(), new ShapeRenderer(), new OrthogonalTiledMapRenderer(
+        this(
+            levelGameplayController,
+            new Box2DDebugRenderer(),
+            new ShapeRenderer(),
+            new OrthogonalTiledMapRenderer(
                 levelGameplayController.getLevelManager().getMap(),
                 levelGameplayController.getLevelManager().getLevelUnitScale()
-        ), new SpriteBatch());
+            ),
+            new SpriteBatch()
+        );
     }
 
-    public LevelGameplayPresenter(LevelGameplayController levelGameplayController, Box2DDebugRenderer box2DDebugRenderer, ShapeRenderer shapeRenderer, OrthogonalTiledMapRenderer mapRenderer, SpriteBatch spriteBatch) {
+    public LevelGameplayPresenter(
+        LevelGameplayController levelGameplayController,
+        Box2DDebugRenderer box2DDebugRenderer,
+        ShapeRenderer shapeRenderer,
+        OrthogonalTiledMapRenderer mapRenderer,
+        SpriteBatch spriteBatch
+    ) {
         this.levelGameplayController = levelGameplayController;
         this.box2DDebugRenderer = box2DDebugRenderer;
         this.shapeRenderer = shapeRenderer;
         this.mapRenderer = mapRenderer;
         this.batch = spriteBatch;
     }
-
 
     public void renderMap() {
         mapRenderer.setView(levelGameplayController.getCameraManager().getCamera());
@@ -64,8 +75,9 @@ public class LevelGameplayPresenter {
      */
     public void renderPhysics() {
         if (render_physics.get()) {
-            box2DDebugRenderer.render(levelGameplayController.getLevelManager().getWorld(),
-                                      levelGameplayController.getCameraManager().getCamera().combined
+            box2DDebugRenderer.render(
+                levelGameplayController.getLevelManager().getWorld(),
+                levelGameplayController.getCameraManager().getCamera().combined
             );
         }
     }
@@ -83,10 +95,11 @@ public class LevelGameplayPresenter {
         shapeRenderer.setProjectionMatrix(levelGameplayController.getCameraManager().getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.circle(levelGameplayController.getCameraManager().getSubjectPosition().x,
-                             levelGameplayController.getCameraManager().getSubjectPosition().y,
-                             0.1f,
-                             16
+        shapeRenderer.circle(
+            levelGameplayController.getCameraManager().getSubjectPosition().x,
+            levelGameplayController.getCameraManager().getSubjectPosition().y,
+            0.1f,
+            16
         );
         shapeRenderer.end();
 

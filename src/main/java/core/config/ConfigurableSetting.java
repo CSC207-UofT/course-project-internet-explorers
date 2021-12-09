@@ -66,7 +66,7 @@ public class ConfigurableSetting<T> {
         setter.accept(value);
     }
 
-    public void set(String valueString) {
+    public void parse(String valueString) {
         this.set(stringParser.apply(valueString));
     }
 

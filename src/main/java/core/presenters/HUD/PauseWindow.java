@@ -9,15 +9,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import java.io.IOException;
+
 public class PauseWindow extends Window {
 
-    public PauseWindow() {
+    HudPresenter hudPresenter;
+    public PauseWindow(HudPresenter hudPresenter) {
         super("Pause", new Skin(Gdx.files.internal("skins/uiskin.json")));
         this.setSize(400, 300);
         this.setResizable(false);
         this.setMovable(false);
         this.setPosition(300, 300);
         this.add(exitGameButton());
+        this.hudPresenter = hudPresenter;
     }
 
     private TextButton exitGameButton() {
@@ -30,6 +34,11 @@ public class PauseWindow extends Window {
             new ClickListener() {
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    try {
+                        hudPresenter.saveState();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     Gdx.app.exit();
                 }
             }

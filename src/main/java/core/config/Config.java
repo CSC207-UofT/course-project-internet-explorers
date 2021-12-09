@@ -108,6 +108,6 @@ public class Config {
      * Set the value of a setting using a String.
      */
     public static void set(String settingName, String valueString) {
-        getSetting(settingName).set(valueString);
+        getSetting(settingName).parse(valueString);
     }
 }
