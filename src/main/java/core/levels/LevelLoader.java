@@ -35,7 +35,7 @@ public class LevelLoader {
         // check if any previously saved level file fileName exists in directory
         // if it exists, load game from that file
         try {
-            FileInputStream fileInputStream = new FileInputStream(fileName + ".txt");
+            FileInputStream fileInputStream = new FileInputStream(fileName);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             return (SavedLevel) objectInputStream.readObject();
         }

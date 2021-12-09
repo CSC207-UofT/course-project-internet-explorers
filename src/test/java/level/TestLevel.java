@@ -12,6 +12,7 @@ import core.levels.LevelLoader;
 import core.levels.LevelManager;
 import core.levels.SavedLevel;
 import core.worldEntities.DemoSpawners;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +37,8 @@ public class TestLevel {
 
     @Test
     void testLevelLoader() {
-        SavedLevel defaultLevel = LevelLoader.loadState("");
+        // attempt to load unknown level
+        SavedLevel defaultLevel = LevelLoader.loadState(UUID.randomUUID().toString());
         SavedLevel levelTwo = LevelLoader.loadState(LevelLoader.LEVEL_2_NAME);
         SavedLevel levelThree = LevelLoader.loadState(LevelLoader.LEVEL_3_NAME);
 
