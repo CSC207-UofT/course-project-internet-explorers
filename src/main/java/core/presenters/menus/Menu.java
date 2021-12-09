@@ -14,9 +14,13 @@ public abstract class Menu implements Screen {
     protected final ScreenController screenController;
     protected final Stage stage;
 
-    protected Menu(ScreenController screenController) {
+    protected Menu(ScreenController screenController, Stage stage){
         this.screenController = screenController;
-        this.stage = new Stage(new ScreenViewport());
+        this.stage = stage;
+    }
+
+    protected Menu(ScreenController screenController) {
+        this(screenController, new Stage(new ScreenViewport()));
     }
 
     protected ClickListener createExitButtonListener(Screen nextScreen) {

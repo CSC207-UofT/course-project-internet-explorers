@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import core.config.Config;
 import core.levels.LevelManager;
 import core.worldEntities.types.characters.CharacterManager;
 import java.util.UUID;
@@ -41,13 +42,13 @@ public class HudPresenter implements Disposable {
     public HudPresenter(CharacterManager characterManager, LevelManager levelManager, UUID id) {
         //define tracking variables
         this.levelManager = levelManager;
-        sb = new SpriteBatch();
 
         playerInventory = new InventoryWindow(characterManager, id);
         pauseWindow = new PauseWindow();
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
-        stage = new Stage(viewport, sb);
+
+
 
         BitmapFont winFont = new BitmapFont();
         winFont.getData().setScale(2);
@@ -74,8 +75,16 @@ public class HudPresenter implements Disposable {
         table.row();
         table.add(winLabel).colspan(2).height(400);
 
+        if ((boolean) Config.get("render-graphics")) {
+            sb = new SpriteBatch();
+            stage = new Stage(viewport, sb);
+            stage.addActor(table);
+        } else {
+            sb = null;
+            stage = null;
+        }
+
         //add table to the stage
-        stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -91,7 +100,7 @@ public class HudPresenter implements Disposable {
         }
 
         // updates the time label continuously
-        countTimeLabel.setText(this.levelManager.getTime());
+        countTimeLabel.setText((int) Math.floor(this.levelManager.getTime()));
         stage.draw();
     }
 
