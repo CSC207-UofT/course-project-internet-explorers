@@ -30,6 +30,8 @@ public class LevelManager {
         s -> s
     );
 
+    public static final float WIN_CONDITION = 70;
+
     private ActiveLevel level;
     private WorldEntityManager entityManager;
     private final TreeSet<LevelEvent> levelEvents = new TreeSet<>();
@@ -150,10 +152,9 @@ public class LevelManager {
         // Spawning enemies in world
         List<Spawner<Character>> enemies = level.getEnemySpawns();
 
-        if (enemies.isEmpty()) {
-            // If all enemies have been spawned, check if game is won or not
+        if (enemies.isEmpty() || level.getCurrentTime() > WIN_CONDITION) {
+            // If all enemies have been spawned or you survive long enough you've won the game!
             level.finishedLevel();
-            // if (checkWin()){showWinCondition();} // TODO Roy will implement showWinCondition()
             return;
         }
 
@@ -201,7 +202,7 @@ public class LevelManager {
         return entityManager;
     }
 
-    protected ActiveLevel getActiveLevel() {
+    public ActiveLevel getActiveLevel() {
         return this.level;
     }
 
