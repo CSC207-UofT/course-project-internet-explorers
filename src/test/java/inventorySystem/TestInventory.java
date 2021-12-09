@@ -37,7 +37,7 @@ public class TestInventory {
         world = new World(new Vector2(0, 0), true);
         LevelManager levelManager = new LevelManager();
         this.itemManager = new ItemManager(levelManager);
-        levelManager.initializeEmptyLevel();
+        levelManager.initializeLevel("Level 1");
         characterManager = new CharacterManager(levelManager, new ItemManager(levelManager));
 
         test_player = levelManager.getEntityManager().createEntity(Character.class, new BodyDef());

@@ -11,9 +11,7 @@ import core.levels.LevelManager;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 public class TestCharacterManager {
 
@@ -23,12 +21,12 @@ public class TestCharacterManager {
     Character character;
     Sword sword;
 
-    @Before
+    @BeforeAll
     public void setup() {
         world = new World(new Vector2(0, 0), true);
         LevelManager levelManager = new LevelManager();
         ItemManager itemManager = new ItemManager(levelManager);
-        levelManager.initializeEmptyLevel();
+        levelManager.initializeLevel("Level 1");
         WorldEntityManager entityManager = levelManager.getEntityManager();
         character = entityManager.createEntity(Character.class, new BodyDef());
         character.setHealth(100);

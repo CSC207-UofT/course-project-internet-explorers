@@ -8,7 +8,6 @@ import core.config.ConfigurableSetting;
 import core.input.InputController;
 import core.input.InputManager;
 import core.input.InputMapping;
-import core.input.KeyboardInputDevice;
 import core.inventory.ItemManager;
 import core.inventory.items.Dagger;
 import core.inventory.items.Defender;
@@ -41,6 +40,7 @@ public class LevelGameplayController implements Screen {
     private WorldEntityManager entityManager;
     private UUID playerId;
     private ItemManager itemManager;
+    private InputController inputController;
 
     @Override
     public void show() {
@@ -53,7 +53,7 @@ public class LevelGameplayController implements Screen {
         this.cameraManager = new CameraManager(levelManager.getUnitScale(), entityManager);
         this.characterManager = new CharacterManager(levelManager, itemManager);
 
-        levelManager.addGameCharacterRegistrationCallbacks(characterManager);
+        levelManager.addGameCharacterRegistrationCallbacks(characterManager, inputManager);
 
         createSpawners();
 
@@ -65,7 +65,7 @@ public class LevelGameplayController implements Screen {
             );
         }
 
-        this.inputController = new InputController(entityManager, characterManager, hudPresenter, levelManager);
+        this.inputController = new InputController();
     }
 
     @Override
