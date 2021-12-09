@@ -1,22 +1,24 @@
 package headless;
 
-import static org.mockito.Mockito.mock;
 import static org.junit.jupiter.api.Assertions.*;
-
+import static org.mockito.Mockito.*;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.config.Config;
 import core.presenters.ScreenController;
 import core.presenters.levels.LevelGameplayController;
 import core.presenters.levels.LevelGameplayPresenter;
-import core.presenters.menus.MainMenuScreen;
+import core.presenters.menus.Menu;
 import desktop.DesktopConfig;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -103,22 +105,18 @@ public class HeadlessTests {
         assertDoesNotThrow(levelGameplayController::getLevelManager);
     }
 
-//    @Test
-//    void testMainMenuScreen() {
-//        ScreenController screenController = new ScreenController();
-//        Stage stage = mock(Stage.class);
-//
-//        MainMenuScreen mainMenuScreen = new MainMenuScreen(screenController, stage);
-//
-//    }
-
     @Test
     void testLevelGameplayPresenter() {
         LevelGameplayController levelGameplayController = new LevelGameplayController();
         levelGameplayController.show();
 
-        LevelGameplayPresenter presenter = new LevelGameplayPresenter(levelGameplayController, mock(Box2DDebugRenderer.class), mock(
-                ShapeRenderer.class), mock(OrthogonalTiledMapRenderer.class), mock(SpriteBatch.class));
+        LevelGameplayPresenter presenter = new LevelGameplayPresenter(
+            levelGameplayController,
+            mock(Box2DDebugRenderer.class),
+            mock(ShapeRenderer.class),
+            mock(OrthogonalTiledMapRenderer.class),
+            mock(SpriteBatch.class)
+        );
 
         Config.set("render_physics", "true");
 
@@ -129,4 +127,21 @@ public class HeadlessTests {
         levelGameplayController.dispose();
     }
 
+    @Test
+    void testMenuExitButton() {
+        ScreenController screenController = mock(ScreenController.class);
+        Stage stage = mock(Stage.class);
+        Screen screen = mock(Screen.class);
+
+        Menu menu = new Menu(screenController, stage) {};
+
+        ClickListener clickListener = menu.createExitButtonListener(screen);
+
+        verify(screenController, times(0)).setScreen(screen);
+
+        clickListener.touchUp(new InputEvent(), 0, 0, 0, 0);
+
+        // Ensure we setScreen is called after button clicked
+        verify(screenController, times(1)).setScreen(screen);
+    }
 }
