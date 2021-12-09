@@ -8,12 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
 import java.io.IOException;
 
 public class PauseWindow extends Window {
 
-    HudPresenter hudPresenter;
+    final HudPresenter hudPresenter;
+
     public PauseWindow(HudPresenter hudPresenter) {
         super("Pause", new Skin(Gdx.files.internal("skins/uiskin.json")));
         this.setSize(400, 300);

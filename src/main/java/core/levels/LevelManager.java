@@ -15,8 +15,6 @@ import core.worldEntities.health.DealsDamage;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Use-Case class for LevelState.

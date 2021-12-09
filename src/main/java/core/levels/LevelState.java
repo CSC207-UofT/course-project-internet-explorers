@@ -25,10 +25,9 @@ public class LevelState implements Serializable {
         return this.unitScale;
     }
 
-    // TODO: figure out the right warning to suppress
     // warning suppressed since unitScale can be readable from map
     // our game only uses 1/64f, but can be extendable for future uses
-
+    @SuppressWarnings("SameParameterValue")
     protected void setUnitScale(float unitScale) {
         this.unitScale = unitScale;
     }

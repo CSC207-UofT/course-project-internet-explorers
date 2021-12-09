@@ -1,20 +1,17 @@
 package core.presenters.levels;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import core.worldEntities.WorldEntity;
 import core.worldEntities.WorldEntityManager;
 import java.util.UUID;
 import java.util.function.Function;
 
 public class CameraManager {
 
-    protected OrthographicCamera camera;
-    protected float unitScale;
+    protected final OrthographicCamera camera;
+    protected final float unitScale;
     private final WorldEntityManager entityManager;
     private UUID subjectID;
 
@@ -51,10 +48,6 @@ public class CameraManager {
     }
 
     public void step(float dt) {
-        //        if (debugFreecam) {
-        //            handleFreecamInput(dt);
-        //        }
-
         Vector3 dp = getSubjectPosition().sub(camera.position);
         // movement smoothing function : decide how far to move camera based on how far the subject is
         Function<Float, Float> f = x ->
@@ -67,47 +60,6 @@ public class CameraManager {
         camera.viewportHeight = Gdx.graphics.getHeight();
         camera.update();
     }
-
-    //    /**
-    //     * Enable freely controlling the camera FOR DEBUG PURPOSES ONLY
-    //     * Detaches camera from current subject by setting `subjectPosition` to a new vector.
-    //     * Enables `debugFreecam` mode on this CameraManager, which tells it to handle user input for moving the camera.
-    //     * <p>
-    //     * TODO replace with a separate class so that user input is handled elsewhere.
-    //     */
-    //    public void enterDebugFreecamMode() {
-    //        BodyDef def = new BodyDef();
-    //        def.position.set(camera.position.x, camera.position.y);
-    //        subjectID = entityManager.createEntity(WorldEntity.class, def).getId();
-    //        debugFreecam = true;
-    //    }
-
-    //    /**
-    //     * Handles user input to move the camera when `debugFreecam` is enabled on this CameraManager
-    //     *
-    //     * @param dt time in seconds since last frame
-    //     */
-    //    private void handleFreecamInput(float dt) {
-    //        int dx = 0;
-    //        dx += Gdx.input.isKeyPressed(Input.Keys.RIGHT) ? 1 : 0;
-    //        dx -= Gdx.input.isKeyPressed(Input.Keys.LEFT) ? 1 : 0;
-    //        int dy = 0;
-    //        dy += Gdx.input.isKeyPressed(Input.Keys.UP) ? 1 : 0;
-    //        dy -= Gdx.input.isKeyPressed(Input.Keys.DOWN) ? 1 : 0;
-    //
-    //        // m/s
-    //        float speed = 10;
-    //        float zoomFactor = unitScale / camera.zoom;
-    //        entityManager.getEntity(subjectID).setLinearVelocity(new Vector2(dx, dy).nor().scl(speed * dt / zoomFactor));
-    //
-    //        if (Gdx.input.isKeyPressed(Input.Keys.O) && camera.zoom > 0.5 * unitScale) {
-    //            camera.zoom *= 0.97f;
-    //        }
-    //
-    //        if (Gdx.input.isKeyPressed(Input.Keys.L) && camera.zoom < 2 * unitScale) {
-    //            camera.zoom /= 0.97f;
-    //        }
-    //    }
 
     public OrthographicCamera getCamera() {
         return camera;

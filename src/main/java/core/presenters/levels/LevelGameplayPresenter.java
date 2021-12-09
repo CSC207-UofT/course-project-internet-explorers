@@ -9,7 +9,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import core.config.Config;
 import core.config.ConfigurableSetting;
-import core.levels.LevelManager;
 
 /**
  * Runs the gameplay of a Level.

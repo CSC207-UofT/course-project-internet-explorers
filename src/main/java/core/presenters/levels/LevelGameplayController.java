@@ -13,13 +13,12 @@ import core.levels.LevelLoader;
 import core.levels.LevelManager;
 import core.levels.SavedLevel;
 import core.presenters.HUD.HudPresenter;
-import core.worldEntities.SpawnerFactory;
 import core.worldEntities.Spawner;
+import core.worldEntities.SpawnerFactory;
 import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import core.worldEntities.types.damageDealers.DefenderDamage;
-
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -35,15 +34,10 @@ public class LevelGameplayController implements Screen {
     private WorldEntityManager entityManager;
     private UUID playerId;
     private ItemManager itemManager;
-    private InputController inputController;
     private final SpawnerFactory demoSpawnerFactory;
 
     public LevelGameplayController() {
         this.demoSpawnerFactory = new SpawnerFactory();
-    }
-
-    public LevelGameplayController(SpawnerFactory demoSpawnerFactory) {
-        this.demoSpawnerFactory = demoSpawnerFactory;
     }
 
     @Override
@@ -67,8 +61,6 @@ public class LevelGameplayController implements Screen {
                 new InputMapping<>(InputController.keyboardInputDevice().hudInputInputProvider(), hudPresenter::handleInput)
             );
         }
-
-        this.inputController = new InputController();
     }
 
     @Override
@@ -111,7 +103,6 @@ public class LevelGameplayController implements Screen {
             cameraManager.setSubjectID(player.getId());
         });
         this.playerId = playerSpawner.spawn().getId();
-
 
         for (ArrayList<Float> position : level.getEnemyPositions()) {
             Spawner<Character> enemySpawner = demoSpawnerFactory.loadEnemySpawner(position);

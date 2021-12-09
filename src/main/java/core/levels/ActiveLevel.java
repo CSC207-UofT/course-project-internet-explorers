@@ -1,7 +1,6 @@
 package core.levels;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import core.worldEntities.Spawner;
@@ -17,7 +16,7 @@ import java.util.List;
 
 public class ActiveLevel extends LevelState {
 
-    protected World world;
+    protected final World world;
     private final TiledMap map;
     protected List<Spawner<Character>> enemySpawns;
     protected boolean levelPaused;

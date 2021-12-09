@@ -15,7 +15,10 @@ import java.util.function.Supplier;
  */
 public class ConfigurableSetting<T> {
 
+    // for extension – display, etc
+    @SuppressWarnings("unused")
     public final Class<T> type;
+
     private T value;
     private final String name;
     private final String desc;

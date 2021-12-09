@@ -3,6 +3,8 @@ package desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import core.config.ConfigurableSetting;
 
+// Configs will be accessed by reference in Phase 3 (coming soon)
+@SuppressWarnings("unused")
 public class DesktopConfig {
 
     protected static final LwjglApplicationConfiguration lwjglConfig = new LwjglApplicationConfiguration();

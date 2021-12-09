@@ -23,7 +23,6 @@ import core.worldEntities.SpawnerFactory;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import java.util.ArrayList;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +33,7 @@ public class TestInventory {
     World world;
 
     Character test_player;
-    ArrayList<Item> inv = new ArrayList<>();
+    final ArrayList<Item> inv = new ArrayList<>();
     Sword sword;
     Dagger dagger;
     Defender defender;
@@ -54,8 +53,11 @@ public class TestInventory {
 
         levelManager = new LevelManager(mock(TmxMapLoader.class), new SpawnerFactory(textureAtlas));
         this.itemManager = new ItemManager(levelManager);
-        SavedLevel savedLevel = new SavedLevel(LevelLoader.DEMO_MAP_PATH, LevelLoader.DEFAULT_TOTAL_SPAWNS,
-                                               LevelLoader.DEFAULT_SPAWN_INTERVAL);
+        SavedLevel savedLevel = new SavedLevel(
+            LevelLoader.DEMO_MAP_PATH,
+            LevelLoader.DEFAULT_TOTAL_SPAWNS,
+            LevelLoader.DEFAULT_SPAWN_INTERVAL
+        );
         levelManager.initializeLevel(savedLevel);
         characterManager = new CharacterManager(levelManager, new ItemManager(levelManager));
 
@@ -84,23 +86,13 @@ public class TestInventory {
     @Test
     void testSelect() {
         characterManager.addInventoryItem(test_player.getId(), sword.getId());
-        assertTrue(
-            characterManager.swapSelectedItem(
-                test_player.getId(),
-                sword.getId()
-            )
-        );
+        assertTrue(characterManager.swapSelectedItem(test_player.getId(), sword.getId()));
     }
 
     @Test
     void testAdd() {
         characterManager.addInventoryItem(test_player.getId(), defender.getId());
-        assertTrue(
-            characterManager.swapSelectedItem(
-                test_player.getId(),
-                defender.getId()
-            )
-        );
+        assertTrue(characterManager.swapSelectedItem(test_player.getId(), defender.getId()));
     }
 
     @Test
@@ -114,5 +106,4 @@ public class TestInventory {
         sword = itemManager.createItem(Sword.class);
         assertEquals(sword, itemManager.get(sword.getId()));
     }
-
 }

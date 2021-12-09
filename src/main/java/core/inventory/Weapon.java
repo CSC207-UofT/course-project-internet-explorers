@@ -1,25 +1,21 @@
 package core.inventory;
 
 import core.worldEntities.health.Damage;
-import java.util.UUID;
 
 public abstract class Weapon implements Item {
 
-    public static int DEFAULT_LEVEL = 1;
-
-    private String texturePath;
+    public static final int DEFAULT_LEVEL = 1;
     private int level;
-    private Damage damage;
-    private int range;
-    public UUID id;
 
     public abstract Damage getDamage();
 
-    public abstract int getLevel();
+    public void setLevel(int level) {
+        this.level = level;
+    }
 
-    public abstract void setLevel(int new_level);
+    public int getLevel() {
+        return level;
+    }
 
     public abstract int getRange();
-
-    public abstract UUID getId();
 }

@@ -57,15 +57,11 @@ public class WorldEntityManager {
     }
 
     /**
-     * Adds Box2D fixtures to the specified WorldEntity's Box2D Body.
+     * Adds Box2D fixtures to the specified Box2D Body.
      *
-     * @param entityId The target entity's id
-     * @param defs     details of fixtures to add
+     * @param body the body to add fixtures to
+     * @param defs details of fixtures to add
      */
-    public void createFixtures(UUID entityId, FixtureDef... defs) {
-        createFixtures(getEntity(entityId).getBody(), defs);
-    }
-
     private void createFixtures(Body body, FixtureDef... defs) {
         for (FixtureDef def : defs) {
             body.createFixture(def);
@@ -97,7 +93,7 @@ public class WorldEntityManager {
     }
 
     public ArrayList<Float> getPlayerPosition() {
-        ArrayList<Float> playerPosition = new ArrayList<Float>();
+        ArrayList<Float> playerPosition = new ArrayList<>();
 
         for (UUID id : entities.keySet()) {
             if (this.entities.get(id) instanceof Character entity) {
@@ -115,12 +111,12 @@ public class WorldEntityManager {
     }
 
     public ArrayList<ArrayList<Float>> getEnemyPositions() {
-        ArrayList<ArrayList<Float>> positions = new ArrayList<ArrayList<Float>>();
+        ArrayList<ArrayList<Float>> positions = new ArrayList<>();
 
         for (UUID id : entities.keySet()) {
             if (this.entities.get(id) instanceof Character entity) {
                 if (entity.getTeam().equals("enemy")) {
-                    ArrayList<Float> temp = new ArrayList<Float>();
+                    ArrayList<Float> temp = new ArrayList<>();
 
                     temp.add(entity.getPosition().x);
                     temp.add(entity.getPosition().y);
@@ -132,12 +128,12 @@ public class WorldEntityManager {
     }
 
     public ArrayList<ArrayList<Float>> getDefenderPositions() {
-        ArrayList<ArrayList<Float>> positions = new ArrayList<ArrayList<Float>>();
+        ArrayList<ArrayList<Float>> positions = new ArrayList<>();
 
         for (UUID id : entities.keySet()) {
             if (this.entities.get(id) instanceof Character entity) {
                 if (entity.getTeam().equals("defense")) {
-                    ArrayList<Float> temp = new ArrayList<Float>();
+                    ArrayList<Float> temp = new ArrayList<>();
 
                     temp.add(entity.getPosition().x);
                     temp.add(entity.getPosition().y);

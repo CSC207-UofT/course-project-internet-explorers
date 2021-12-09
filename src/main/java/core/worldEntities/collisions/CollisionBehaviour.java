@@ -8,6 +8,7 @@ import java.util.function.BiConsumer;
  * @param <A>
  * @param <B>
  */
+@SuppressWarnings("ClassCanBeRecord") // Want private fields
 public class CollisionBehaviour<A, B> {
 
     public final Class<A> typeA;

@@ -3,6 +3,7 @@ package core.input;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+@SuppressWarnings("ClassCanBeRecord") // Want private fields
 public class InputMapping<T extends InputSchema> {
 
     private final Supplier<T> inputSupplier;

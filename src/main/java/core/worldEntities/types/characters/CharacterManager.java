@@ -6,7 +6,6 @@ import core.input.*;
 import core.inventory.Item;
 import core.inventory.ItemManager;
 import core.levels.LevelManager;
-import core.worldEntities.WorldEntity;
 import core.worldEntities.WorldEntityManager;
 import java.util.*;
 import java.util.function.Supplier;
@@ -19,11 +18,9 @@ public class CharacterManager {
      * */
 
     private final WorldEntityManager entityManager;
-    private final LevelManager levelManager;
-    private ItemManager itemManager;
+    private final ItemManager itemManager;
 
     public CharacterManager(LevelManager levelManager, ItemManager itemManager) {
-        this.levelManager = levelManager;
         // TODO clean this up; always getEntityManager instead of storing
         this.entityManager = levelManager.getEntityManager();
         this.itemManager = itemManager;

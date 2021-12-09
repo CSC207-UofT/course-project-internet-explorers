@@ -7,7 +7,6 @@ import core.inventory.Item;
 import core.worldEntities.WorldEntityWithSprite;
 import core.worldEntities.collisions.CollisionBehaviour;
 import core.worldEntities.collisions.HasCollisionBehaviours;
-import core.worldEntities.health.DealsDamage;
 import core.worldEntities.health.TakesDamage;
 import java.util.ArrayList;
 
@@ -21,10 +20,6 @@ public class Character extends WorldEntityWithSprite implements TakesDamage, Has
         public Input(Vector2 direction, boolean using) {
             this.direction = direction;
             this.using = using;
-        }
-
-        public Input(Input input) {
-            this(input.direction, input.using);
         }
 
         public Vector2 direction() {
@@ -45,7 +40,7 @@ public class Character extends WorldEntityWithSprite implements TakesDamage, Has
      * */
 
     // measured in m/s
-    public static float SPEED = 10f;
+    public static final float SPEED = 10f;
 
     private String team;
     private float health = 0;

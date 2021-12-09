@@ -1,7 +1,6 @@
 package core.worldEntities.types.damageDealers;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import core.worldEntities.WorldEntityWithSprite;
 import core.worldEntities.health.Damage;
 import core.worldEntities.health.DealsDamage;
 import core.worldEntities.types.characters.Character;

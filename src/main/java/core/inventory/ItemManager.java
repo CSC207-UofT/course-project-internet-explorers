@@ -6,7 +6,6 @@ import core.inventory.items.Sword;
 import core.inventory.usagedelegates.DefenderUsageDelegate;
 import core.inventory.usagedelegates.WeaponUsageDelegate;
 import core.levels.LevelManager;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.UUID;
@@ -50,25 +49,21 @@ public class ItemManager {
     }
 
     /**
-    * Workaround for instantiating items without coupling between entity and use case classes
+     * Workaround for instantiating items without coupling between entity and use case classes
      */
     public <T extends Item> T createItem(Class<T> type, Object... args) {
-       try{
-            Class<?> [] argTypes = new Class [args.length];
+        try {
+            Class<?>[] argTypes = new Class[args.length];
             T item = type.getConstructor(argTypes).newInstance(args);
             this.items.put(item.getId(), item);
-            return item; }
-       catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
-               throw new RuntimeException(e);
-           }
-       }
+            return item;
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public Item get(UUID itemId) {
         return this.items.get(itemId);
-    }
-
-    public <T extends Item> void setItemUsageDelegate(Class<T> type, ItemUsageDelegate<T> usageDelegate) {
-        itemUsageDelegates.put(type, usageDelegate);
     }
 
     public void use(UUID userId, UUID itemId) {

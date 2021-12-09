@@ -14,7 +14,6 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import core.config.Config;
-import core.config.Config;
 import core.levels.LevelLoader;
 import core.levels.LevelManager;
 import core.worldEntities.types.characters.CharacterManager;

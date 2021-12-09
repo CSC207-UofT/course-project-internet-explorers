@@ -11,10 +11,5 @@ public class ScreenController extends Game {
     }
 
     @Override
-    public void render() {
-        super.render();
-    }
-
-    @Override
     public void dispose() {}
 }

@@ -24,7 +24,7 @@ public class WeaponUsageDelegate extends ItemManager.ItemUsageDelegate<Weapon> {
 
     public WeaponUsageDelegate(LevelManager levelManager) {
         super(Weapon.class, WeaponUsageDelegate::useWeapon);
-        this.levelManager = levelManager;
+        WeaponUsageDelegate.levelManager = levelManager;
     }
 
     public static void useWeapon(UUID user_id, Weapon weapon) {
@@ -40,9 +40,7 @@ public class WeaponUsageDelegate extends ItemManager.ItemUsageDelegate<Weapon> {
         levelManager.addLevelEvent(
             new LevelEvent(
                 levelManager.getTime() + 0.1f,
-                levelManager_ -> {
-                    levelManager.getEntityManager().deleteEntity(damageRegion.getId());
-                }
+                levelManager_ -> levelManager.getEntityManager().deleteEntity(damageRegion.getId())
             )
         );
     }

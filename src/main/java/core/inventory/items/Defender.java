@@ -10,7 +10,11 @@ public class Defender implements Item {
      * Defender item object stored in inventory for use
      * */
 
-    public UUID id;
+    private final UUID id;
+
+    public Defender() {
+        this.id = UUID.randomUUID();
+    }
 
     @Override
     public Texture getSelectedTexture() {
@@ -28,5 +32,4 @@ public class Defender implements Item {
     public UUID getId() {
         return this.id;
     }
-
 }

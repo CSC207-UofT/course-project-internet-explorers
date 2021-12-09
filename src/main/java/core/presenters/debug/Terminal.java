@@ -26,7 +26,7 @@ public class Terminal implements Runnable {
             }
         }
 
-        void acceptThrows(T param1, U param2) throws Exception;
+        void acceptThrows(T param1, U param2);
     }
 
     /**
