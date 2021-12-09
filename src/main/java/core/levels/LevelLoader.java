@@ -31,11 +31,17 @@ public class LevelLoader {
      */
     public static SavedLevel loadState(String levelName) {
         String fileName = levelName + ".txt";
+
+        // check if any previously saved level file fileName exists in directory
+        // if it exists, load game from that file
         try {
             FileInputStream fileInputStream = new FileInputStream(fileName + ".txt");
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             return (SavedLevel) objectInputStream.readObject();
-        } catch (IOException | ClassNotFoundException exception) {
+        }
+
+        // if no such file exists, load level from default level information
+        catch (IOException | ClassNotFoundException exception) {
             return switch (levelName) {
                 case LEVEL_2_NAME -> new SavedLevel(DEMO_MAP_PATH, LEVEL_2_TOTAL_SPAWNS, LEVEL_2_SPAWN_INTERVAL);
                 case LEVEL_3_NAME -> new SavedLevel(DEMO_MAP_PATH, LEVEL_3_TOTAL_SPAWNS, LEVEL_3_SPAWN_INTERVAL);

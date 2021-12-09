@@ -15,8 +15,6 @@ import core.worldEntities.DemoSpawners;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 public class TestLevel {
 
     LevelManager levelManager;
@@ -53,15 +51,5 @@ public class TestLevel {
     @Test
     void testSavedToActive(){
         assertEquals(LevelLoader.DEFAULT_TOTAL_SPAWNS, levelManager.getActiveLevel().getEnemySpawns().size());
-    }
-
-    @Test
-    void testSerialization() throws IOException {
-        float testTime = 10;
-        levelManager.getActiveLevel().setCurrentTime(testTime);
-        LevelLoader.saveState("serialization-test", levelManager);
-        SavedLevel serializedLevel = LevelLoader.loadState("serialization-test");
-
-        assertEquals(testTime, serializedLevel.getCurrentTime());
     }
 }

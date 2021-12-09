@@ -99,13 +99,6 @@ public class WorldEntityManager {
     public ArrayList<Float> getPlayerPosition() {
         ArrayList<Float> playerPosition = new ArrayList<Float>();
 
-        //        for (UUID id : entities.keySet()) {
-        //            if (this.entities.get(id) instanceof Character entity){
-        //                System.out.println(entity.getTeam());
-        //            }
-        //
-        //        }
-
         for (UUID id : entities.keySet()) {
             if (this.entities.get(id) instanceof Character entity) {
                 if (entity.getTeam().equals("player")) {
