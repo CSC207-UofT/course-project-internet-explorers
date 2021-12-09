@@ -53,10 +53,6 @@ public class LevelState implements Serializable {
         return spawnInterval;
     }
 
-    public void setSpawnInterval(float spawnInterval) {
-        this.spawnInterval = spawnInterval;
-    }
-
     public float getNextSpawnTime() {
         return nextSpawnTime;
     }
