@@ -1,12 +1,12 @@
 package world;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import core.worldEntities.WorldEntity;
 import core.worldEntities.WorldEntityManager;
+import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -83,5 +83,17 @@ public class TestWorldEntity {
         square.dispose();
 
         assertEquals(2, world.getFixtureCount());
+    }
+
+    @Test
+    void testDeleteEntity() {
+        UUID id = entityManager.createEntity(WorldEntity.class, new BodyDef()).getId();
+
+        entityManager.deleteEntity(id);
+
+        assertNull(entityManager.getEntity(id));
+        assertEquals(0, entityManager.getEntities().size());
+        assertEquals(0, world.getBodyCount());
+        assertEquals(0, world.getFixtureCount());
     }
 }

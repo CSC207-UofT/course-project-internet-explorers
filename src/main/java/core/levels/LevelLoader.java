@@ -10,6 +10,8 @@ import java.io.*;
  */
 public class LevelLoader {
 
+    // TODO map path
+
     /**
      * If savedState file exists, load SavedLevel given saved information
      * If no savedState file exists, load SavedLevel given default information for user chosen
@@ -23,7 +25,7 @@ public class LevelLoader {
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             return (SavedLevel) objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException exception) {
-            String selectedLevel = (String) Config.get("selected-level");
+            String selectedLevel = LevelManager.selectedLevel.get();
 
             return switch (selectedLevel) {
                 case "Level 2" -> new SavedLevel("maps/demo.tmx", 7, 10);

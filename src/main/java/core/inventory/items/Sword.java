@@ -1,8 +1,6 @@
 package core.inventory.items;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import core.inventory.Weapon;
 import java.util.UUID;
 
@@ -11,23 +9,24 @@ public class Sword extends Weapon {
     /*
      * Sword weapon object stored in inventory for use
      * @param texture: texture of Sword
-     * @param size: size of Sword
      * @param level: level of Sword
      * @param range: range of Sword
      * @param damage: damage of Sword
      * */
 
-    private final int size;
     private int level;
-    private final int range;
-    private final int damage;
+    private int range;
+    private int damage;
     public UUID id;
+    static final int DAMAGE_PER_LEVEL = 3;
+    static final int RANGE_PER_LEVEL = 2;
+
+    public Sword() {
+        this(Weapon.DEFAULT_LEVEL);
+    }
 
     public Sword(int level) {
-        this.level = level;
-        this.size = this.level;
-        this.range = this.level * 2;
-        this.damage = this.level * 3;
+        setLevel(level);
         this.id = UUID.randomUUID();
     }
 
@@ -44,18 +43,15 @@ public class Sword extends Weapon {
     }
 
     @Override
-    public int getSize() {
-        return size;
+    public void setLevel(int level) {
+        this.level = level;
+        this.range = level * RANGE_PER_LEVEL;
+        this.damage = level * DAMAGE_PER_LEVEL;
     }
 
     @Override
     public int getLevel() {
         return level;
-    }
-
-    @Override
-    public void setLevel(int new_level) {
-        this.level = new_level;
     }
 
     @Override
@@ -71,15 +67,5 @@ public class Sword extends Weapon {
     @Override
     public int getDamage() {
         return damage;
-    }
-
-    public ImageButton createInventorySlot(int index) {
-        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
-        if (index == 0) {
-            style.up = new TextureRegionDrawable(this.getSelectedTexture());
-        } else {
-            style.up = new TextureRegionDrawable(this.getUnselectedTexture());
-        }
-        return new ImageButton(style);
     }
 }

@@ -4,10 +4,9 @@ import static core.worldEntities.DemoSpawners.*;
 
 import com.badlogic.gdx.Screen;
 import core.config.Config;
-import core.input.AIInputDevice;
 import core.input.InputController;
-import core.input.KeyboardInputDevice;
-import core.inventory.Item;
+import core.input.InputManager;
+import core.input.InputMapping;
 import core.inventory.items.Dagger;
 import core.inventory.items.Sword;
 import core.levels.LevelLoader;
@@ -19,8 +18,6 @@ import core.worldEntities.WorldEntityManager;
 import core.worldEntities.types.characters.Character;
 import core.worldEntities.types.characters.CharacterManager;
 import core.worldEntities.types.damageDealers.Spike;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -30,38 +27,43 @@ public class LevelGameplayController implements Screen {
 
     private LevelGameplayPresenter levelGameplayPresenter;
     private HudPresenter hudPresenter;
-    private InputController inputController;
-    private WorldEntityManager entityManager;
+    private InputManager inputManager;
+    private CameraManager cameraManager;
     private CharacterManager characterManager;
+    private WorldEntityManager entityManager;
     private UUID playerId;
-
-    public LevelGameplayController() {}
 
     @Override
     public void show() {
+        this.inputManager = new InputManager();
 
-        SavedLevel chosenLevel = LevelLoader.loadState((String) Config.get("selected-level"));
+        SavedLevel chosenLevel = LevelLoader.loadState(LevelManager.selectedLevel.get());
         levelManager.initializeLevel(chosenLevel);
         this.entityManager = levelManager.getEntityManager();
+        this.cameraManager = new CameraManager(levelManager.getUnitScale(), entityManager);
         this.characterManager = new CharacterManager(entityManager);
-        levelManager.addGameCharacterRegistrationCallbacks(characterManager);
+        levelManager.addGameCharacterRegistrationCallbacks(characterManager, inputManager);
 
         createSpawners(chosenLevel);
-        initiatePlayerInventory();
 
-        this.levelGameplayPresenter = new LevelGameplayPresenter(this);
-        this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
-
-        this.inputController = new InputController(entityManager, characterManager, hudPresenter, levelManager);
-
+        if ((boolean) Config.get("render-graphics")) {
+            this.levelGameplayPresenter = new LevelGameplayPresenter(this);
+            this.hudPresenter = new HudPresenter(characterManager, levelManager, playerId);
+            inputManager.addInputMapping(
+                new InputMapping<>(InputController.keyboardInputDevice().hudInputInputProvider(), hudPresenter::handleInput)
+            );
+        }
     }
 
     @Override
     public void render(float dt) {
-        inputController.handleInputs(dt);
+        inputManager.handleInputs();
         levelManager.step(dt);
+        cameraManager.update(dt);
 
-        levelGameplayPresenter.render(dt);
+        if (levelGameplayPresenter != null) {
+            levelGameplayPresenter.render();
+        }
     }
 
     public LevelManager getLevelManager() {
@@ -72,58 +74,62 @@ public class LevelGameplayController implements Screen {
         return entityManager;
     }
 
+    public CameraManager getCameraManager() {
+        return cameraManager;
+    }
+
     public void createSpawners(SavedLevel level) {
         Spawner<Character> playerSpawner = createPlayerSpawner(level.getPlayerPosition());
         playerSpawner.setEntityManager(entityManager);
-        playerSpawner.addSpawnCallback(player -> characterManager.setInputDeviceType(player.getId(), KeyboardInputDevice.class));
-        Character player = (Character) playerSpawner.spawn();
-        player.setTeam("player");
-        this.playerId = player.getId();
+        playerSpawner.addSpawnCallback(player -> {
+            characterManager.addCharacterInputMapping(
+                inputManager,
+                player.getId(),
+                InputController.keyboardInputDevice().characterInputProvider()
+            );
+            player.setTeam("player");
+            characterManager.addInventoryItem(player.getId(), new Dagger());
+            characterManager.addInventoryItem(player.getId(), new Sword());
+
+            cameraManager.setSubjectID(player.getId());
+        });
+        this.playerId = playerSpawner.spawn().getId();
 
         Spawner<Spike> spikeSpawner = createSpikeSpawner();
         spikeSpawner.setEntityManager(entityManager);
         spikeSpawner.spawn();
 
-
         for (ArrayList<Float> position : level.getEnemyPositions()) {
-            Spawner<?> enemySpawner = loadEnemySpawner(position);
+            Spawner<Character> enemySpawner = loadEnemySpawner(position);
             enemySpawner.setEntityManager(entityManager);
-            enemySpawner.addSpawnCallback(enemy -> characterManager.setInputDeviceType(enemy.getId(),
-                                                                                       AIInputDevice.class
-            ));
-            Character enemy = (Character) enemySpawner.spawn();
-            enemy.setTeam("enemy");
+            enemySpawner.addSpawnCallback(enemy -> {
+                characterManager.addCharacterInputMapping(
+                    inputManager,
+                    enemy.getId(),
+                    InputController.aiInputDevice().characterInputProvider()
+                );
+                enemy.setTeam("enemy");
+            });
+            enemySpawner.spawn();
         }
 
-
         for (ArrayList<Float> position : level.getDefenderPositions()) {
-            Spawner<?> defenderSpawner = createDefenderSpawner(position);
+            Spawner<Character> defenderSpawner = createDefenderSpawner(position);
             defenderSpawner.setEntityManager(entityManager);
-            Character defender = (Character) defenderSpawner.spawn();
-            defender.setTeam("defense");
+            defenderSpawner.addSpawnCallback(defender -> defender.setTeam("defense"));
+            defenderSpawner.spawn();
         }
 
         Spawner<?> mapBorderSpawner = createMapBorderSpawner();
         mapBorderSpawner.setEntityManager(entityManager);
         mapBorderSpawner.spawn();
-
-    }
-
-    public void initiatePlayerInventory() {
-        Item sword = new Sword(1);
-        Item dagger = new Dagger(1);
-
-        characterManager.addInventoryItem(playerId, dagger);
-        characterManager.addInventoryItem(playerId, sword);
-    }
-
-    public UUID getPlayerId() {
-        return this.playerId;
     }
 
     @Override
     public void resize(int width, int height) {
-        levelGameplayPresenter.resize();
+        if (levelGameplayPresenter != null) {
+            levelGameplayPresenter.resize();
+        }
     }
 
     @Override
@@ -142,10 +148,16 @@ public class LevelGameplayController implements Screen {
     @Override
     public void dispose() {
         levelManager.dispose();
-        hudPresenter.dispose();
+        if (hudPresenter != null) {
+            hudPresenter.dispose();
+        }
     }
 
     public HudPresenter getHudPresenter() {
         return hudPresenter;
+    }
+
+    public CharacterManager getCharacterManager() {
+        return characterManager;
     }
 }

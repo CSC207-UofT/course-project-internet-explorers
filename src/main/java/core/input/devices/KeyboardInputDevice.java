@@ -1,19 +1,24 @@
-package core.input;
+package core.input.devices;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
+import core.worldEntities.types.characters.Character;
+import java.util.function.Supplier;
 
-public class KeyboardInputDevice implements CharacterInputDevice, HudInputDevice {
+public class KeyboardInputDevice {
 
-    @Override
-    public CharacterInput getCharacterInput() {
-        return new CharacterInput(getDirection(), getUsing());
+    private final Supplier<Character.Input> characterInputSupplier = () -> new Character.Input(getDirection(), getUsing());
+
+    public Supplier<Character.Input> characterInputProvider() {
+        return characterInputSupplier;
     }
 
-    @Override
-    public HudInput getHudInput() {
-        return new HudInput(getInventory(), getPauseMenu());
+    private final Supplier<core.presenters.HUD.HudInput> hudInputInputProvider = () ->
+        new core.presenters.HUD.HudInput(getInventory(), getPauseMenu());
+
+    public Supplier<core.presenters.HUD.HudInput> hudInputInputProvider() {
+        return hudInputInputProvider;
     }
 
     private Vector2 getDirection() {

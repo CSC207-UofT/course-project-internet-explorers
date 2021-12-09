@@ -1,12 +1,14 @@
 package core.worldEntities.types.characters;
 
-import core.input.CharacterInput;
-import core.input.CharacterInputDevice;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import core.input.*;
 import core.inventory.Item;
 import core.inventory.Weapon;
 import core.inventory.WeaponUsageDelegate;
 import core.worldEntities.WorldEntityManager;
 import java.util.*;
+import java.util.function.Supplier;
 
 public class CharacterManager {
 
@@ -22,23 +24,21 @@ public class CharacterManager {
     }
 
     /**
-     * Updates the GameCharacter's velocity to move character in direction specified by the given input (provided by InputController).
+     * Updates the GameCharacter's velocity to move character in direction specified by the given input
      * Also invokes item usage on the held item (per the input).
      */
-    public void processInputs(float dt, Map<UUID, CharacterInput> inputs) {
-        inputs.forEach((id, input) -> {
-            // normalize input direction then scale by desired speed in m/s
-            entityManager.getEntity(id).setLinearVelocity(input.direction().nor().scl(10f));
+    private void handleCharacterInput(UUID id, Character.Input input) {
+        // normalize input direction then scale by desired speed
+        entityManager.getEntity(id).setLinearVelocity(input.direction().nor().scl(Character.SPEED));
 
-            if (input.using()) {
-                WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
-                usageDelegate.use((Weapon) verifyId(id).getInventory().get(0));
-            }
-        });
+        if (input.using()) {
+            WeaponUsageDelegate usageDelegate = new WeaponUsageDelegate(id);
+            usageDelegate.use((Weapon) verifyId(id).getInventory().get(0));
+        }
     }
 
-    public void setInputDeviceType(UUID id, Class<? extends CharacterInputDevice> inputDeviceType) {
-        verifyId(id).setInputDeviceType(inputDeviceType);
+    public void addCharacterInputMapping(InputManager inputManager, UUID id, Supplier<Character.Input> inputSupplier) {
+        inputManager.addInputMapping(new InputMapping<>(inputSupplier, input -> handleCharacterInput(id, input)));
     }
 
     /*
@@ -93,6 +93,17 @@ public class CharacterManager {
 
     public ArrayList<Item> getInventory(UUID id) {
         return verifyId(id).getInventory();
+    }
+
+    public ImageButton createInventorySlot(Item item, int index) {
+        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
+        if (index == 0) {
+            style.up = new TextureRegionDrawable(item.getSelectedTexture());
+        } else {
+            style.up = new TextureRegionDrawable(item.getUnselectedTexture());
+        }
+
+        return new ImageButton(style);
     }
 
     /*

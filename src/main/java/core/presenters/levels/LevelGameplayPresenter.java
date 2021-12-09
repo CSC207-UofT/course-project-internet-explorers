@@ -16,14 +16,11 @@ import core.levels.LevelManager;
  */
 public class LevelGameplayPresenter {
 
-    private final CameraManager cameraManager;
-    private final LevelManager levelManager;
     private final ShapeRenderer shapeRenderer;
     private final LevelGameplayController levelGameplayController;
     private final Box2DDebugRenderer box2DDebugRenderer;
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final SpriteBatch batch;
-
 
     private final ConfigurableSetting<Boolean> render_physics = Config.add(
         Boolean.class,
@@ -34,23 +31,39 @@ public class LevelGameplayPresenter {
     );
 
     public LevelGameplayPresenter(LevelGameplayController levelGameplayController) {
+        this(
+            levelGameplayController,
+            new Box2DDebugRenderer(),
+            new ShapeRenderer(),
+            new OrthogonalTiledMapRenderer(
+                levelGameplayController.getLevelManager().getMap(),
+                levelGameplayController.getLevelManager().getLevelUnitScale()
+            ),
+            new SpriteBatch()
+        );
+    }
+
+    public LevelGameplayPresenter(
+        LevelGameplayController levelGameplayController,
+        Box2DDebugRenderer box2DDebugRenderer,
+        ShapeRenderer shapeRenderer,
+        OrthogonalTiledMapRenderer mapRenderer,
+        SpriteBatch spriteBatch
+    ) {
         this.levelGameplayController = levelGameplayController;
-        this.levelManager = levelGameplayController.getLevelManager();
-        this.cameraManager = new CameraManager(levelManager.getUnitScale(), levelGameplayController.getEntityManager());
-        this.cameraManager.setSubjectID(levelGameplayController.getPlayerId());
-        this.box2DDebugRenderer = new Box2DDebugRenderer();
-        this.shapeRenderer = new ShapeRenderer();
-        this.mapRenderer = new OrthogonalTiledMapRenderer(levelManager.getMap(), levelManager.getLevelUnitScale());
-        this.batch = new SpriteBatch();
+        this.box2DDebugRenderer = box2DDebugRenderer;
+        this.shapeRenderer = shapeRenderer;
+        this.mapRenderer = mapRenderer;
+        this.batch = spriteBatch;
     }
 
     public void renderMap() {
-        mapRenderer.setView(cameraManager.getCamera());
+        mapRenderer.setView(levelGameplayController.getCameraManager().getCamera());
         mapRenderer.render();
     }
 
     public void renderWorld() {
-        batch.setProjectionMatrix(cameraManager.getCamera().combined);
+        batch.setProjectionMatrix(levelGameplayController.getCameraManager().getCamera().combined);
         batch.begin();
         levelGameplayController.getEntityManager().draw(batch);
         batch.end();
@@ -62,34 +75,43 @@ public class LevelGameplayPresenter {
      */
     public void renderPhysics() {
         if (render_physics.get()) {
-            box2DDebugRenderer.render(levelGameplayController.getLevelManager().getWorld(), cameraManager.getCamera().combined);
+            box2DDebugRenderer.render(
+                levelGameplayController.getLevelManager().getWorld(),
+                levelGameplayController.getCameraManager().getCamera().combined
+            );
         }
     }
 
-    public void render(float dt) {
+    public void render() {
         Gdx.gl.glClearColor(0.7f, 0.7f, 0.7f, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        cameraManager.update(dt);
 
         renderMap();
         renderWorld();
 
         // TODO move following code to the CameraManager
         // draw a red dot which marks the spot tracked by the camera (for debugging)
-        shapeRenderer.setProjectionMatrix(cameraManager.getCamera().combined);
+        shapeRenderer.setProjectionMatrix(levelGameplayController.getCameraManager().getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.circle(cameraManager.getSubjectPosition().x, cameraManager.getSubjectPosition().y, 0.1f, 16);
+        shapeRenderer.circle(
+            levelGameplayController.getCameraManager().getSubjectPosition().x,
+            levelGameplayController.getCameraManager().getSubjectPosition().y,
+            0.1f,
+            16
+        );
         shapeRenderer.end();
 
         // TODO only do this in debug mode
         renderPhysics();
-        levelGameplayController.getHudPresenter().draw();
+
+        if ((boolean) Config.get("render-graphics")) {
+            levelGameplayController.getHudPresenter().draw();
+        }
     }
 
     public void resize() {
-        cameraManager.syncCameraViewportToWindow();
+        levelGameplayController.getCameraManager().syncCameraViewportToWindow();
     }
 }

@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import core.worldEntities.collisions.CollisionManager;
 import core.worldEntities.types.characters.Character;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -39,7 +38,6 @@ public class WorldEntityManager {
     public <T extends WorldEntity> T createEntity(Class<T> type, BodyDef bodyDef, FixtureDef... fixtureDefs) {
         Body body = this.world.createBody(bodyDef);
         createFixtures(body, fixtureDefs);
-
         try {
             T entity = type.getConstructor(Body.class).newInstance(body);
             this.entities.put(entity.getId(), entity);
@@ -48,6 +46,14 @@ public class WorldEntityManager {
             e.printStackTrace();
             throw new RuntimeException("Failed to spawn a WorldEntity of type " + type + ".");
         }
+    }
+
+    /**
+     * Removes an entity from this World.
+     * @param id the id of the entity to delete
+     */
+    public void deleteEntity(UUID id) {
+        world.destroyBody(this.entities.remove(id).getBody());
     }
 
     /**
@@ -90,25 +96,24 @@ public class WorldEntityManager {
         return this.entities;
     }
 
-    public ArrayList<Float> getPlayerPosition(){
+    public ArrayList<Float> getPlayerPosition() {
         ArrayList<Float> playerPosition = new ArrayList<Float>();
 
-//        for (UUID id : entities.keySet()) {
-//            if (this.entities.get(id) instanceof Character entity){
-//                System.out.println(entity.getTeam());
-//            }
-//
-//        }
+        //        for (UUID id : entities.keySet()) {
+        //            if (this.entities.get(id) instanceof Character entity){
+        //                System.out.println(entity.getTeam());
+        //            }
+        //
+        //        }
 
         for (UUID id : entities.keySet()) {
-            if (this.entities.get(id) instanceof Character entity){
-                if (entity.getTeam().equals("player")){
+            if (this.entities.get(id) instanceof Character entity) {
+                if (entity.getTeam().equals("player")) {
                     playerPosition.add(entity.getPosition().x);
                     playerPosition.add(entity.getPosition().y);
                     return playerPosition;
                 }
             }
-
         }
         playerPosition.add(2F);
         playerPosition.add(2F);
@@ -116,10 +121,8 @@ public class WorldEntityManager {
         return playerPosition;
     }
 
-    public ArrayList<ArrayList<Float>> getEnemyPositions(){
+    public ArrayList<ArrayList<Float>> getEnemyPositions() {
         ArrayList<ArrayList<Float>> positions = new ArrayList<ArrayList<Float>>();
-
-
 
         for (UUID id : entities.keySet()) {
             if (this.entities.get(id) instanceof Character entity) {
@@ -135,7 +138,7 @@ public class WorldEntityManager {
         return positions;
     }
 
-    public ArrayList<ArrayList<Float>> getDefenderPositions(){
+    public ArrayList<ArrayList<Float>> getDefenderPositions() {
         ArrayList<ArrayList<Float>> positions = new ArrayList<ArrayList<Float>>();
 
         for (UUID id : entities.keySet()) {

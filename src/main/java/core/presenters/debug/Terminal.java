@@ -9,7 +9,7 @@ import org.apache.commons.cli.*;
 
 /**
  * basic terminal i/o for debugging purposes
- *
+ * <p>
  * This is a use-case class for Command objects which express functions achievable through a Terminal.
  */
 public class Terminal implements Runnable {
@@ -31,7 +31,8 @@ public class Terminal implements Runnable {
 
     /**
      * Entity class which represents a command that can be invoked by users, a.k.a. the devs.
-     * @param name Name used to identify and invoke the command.
+     *
+     * @param name    Name used to identify and invoke the command.
      * @param options Options object specifying options.
      * @param handler Callback function to handle parsed input to the command.
      *                Output should be written to the provided OutputStream.
@@ -42,17 +43,23 @@ public class Terminal implements Runnable {
     private final CommandLineParser parser;
     private final Scanner inputScanner;
     private final PrintStream printStream;
+    private final boolean decorateOutput;
     private boolean shouldClose;
 
-    public Terminal(InputStream inputStream, PrintStream printStream) {
+    public Terminal(InputStream inputStream, PrintStream printStream, boolean decorateOutput) {
         this.commands = new HashMap<>();
         this.parser = new DefaultParser();
         this.inputScanner = new Scanner(inputStream);
         this.printStream = printStream;
         this.shouldClose = false;
+        this.decorateOutput = decorateOutput;
 
         this.addQuitCommand();
         this.addEchoCommand();
+    }
+
+    public Terminal(InputStream inputStream, PrintStream printStream) {
+        this(inputStream, printStream, true);
     }
 
     public Terminal() {
@@ -65,27 +72,29 @@ public class Terminal implements Runnable {
      */
     @Override
     public void run() {
-        System.out.print("\n\n  ~ debug terminal ~");
-        do {
-            System.out.print("\n> ");
-            try {
+        if (decorateOutput) {
+            printStream.print("\n\n  ~ debug terminal ~\n> ");
+        }
+        try {
+            while (!shouldClose && inputScanner.hasNext() && inputScanner.hasNextLine()) {
                 // wait for non-empty line of input
-                if (inputScanner.hasNext() && inputScanner.hasNextLine()) {
-                    // split input into command name and command arguments
-                    String name = inputScanner.next();
-                    String[] args = inputScanner.nextLine().trim().split(" ");
+                // split input into command name and command arguments
+                String name = inputScanner.next();
+                String[] args = inputScanner.nextLine().trim().split(" ");
 
-                    Command cmd = commands.get(name);
-                    if (cmd == null) {
-                        System.out.println(name + " is not the name of a command.");
-                    } else {
-                        cmd.handler.accept(parser.parse(cmd.options, args), printStream);
-                    }
+                Command cmd = commands.get(name);
+                if (cmd == null) {
+                    printStream.println(name + " is not the name of a command.");
+                } else {
+                    cmd.handler.accept(parser.parse(cmd.options, args), printStream);
                 }
-            } catch (ParseException | NoSuchElementException e) {
-                System.err.println(e.getMessage());
+                if (!shouldClose && decorateOutput) {
+                    printStream.print("\n> ");
+                }
             }
-        } while (!shouldClose);
+        } catch (ParseException | NoSuchElementException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**

@@ -7,7 +7,5 @@ import java.util.UUID;
 public interface Item {
     Texture getSelectedTexture();
     Texture getUnselectedTexture();
-    int getSize();
     UUID getID();
-    ImageButton createInventorySlot(int i);
 }

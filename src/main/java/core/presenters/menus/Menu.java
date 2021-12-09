@@ -14,12 +14,16 @@ public abstract class Menu implements Screen {
     protected final ScreenController screenController;
     protected final Stage stage;
 
-    protected Menu(ScreenController screenController) {
+    protected Menu(ScreenController screenController, Stage stage) {
         this.screenController = screenController;
-        this.stage = new Stage(new ScreenViewport());
+        this.stage = stage;
     }
 
-    protected ClickListener createExitButtonListener(Screen nextScreen) {
+    protected Menu(ScreenController screenController) {
+        this(screenController, new Stage(new ScreenViewport()));
+    }
+
+    public ClickListener createExitButtonListener(Screen nextScreen) {
         return new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {

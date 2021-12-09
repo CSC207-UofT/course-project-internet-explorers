@@ -13,6 +13,9 @@
 **/build/
 !src/**/build/
 
+# Local Gradle settings
+gradle.properties
+
 # Ignore Gradle GUI config
 gradle-app.setting
 

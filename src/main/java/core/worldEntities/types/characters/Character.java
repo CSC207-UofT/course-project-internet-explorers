@@ -1,7 +1,8 @@
 package core.worldEntities.types.characters;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import core.input.CharacterInputDevice;
+import core.input.InputSchema;
 import core.inventory.Item;
 import core.worldEntities.WorldEntityWithSprite;
 import core.worldEntities.collisions.CollisionBehaviour;
@@ -11,6 +12,29 @@ import java.util.ArrayList;
 
 public class Character extends WorldEntityWithSprite implements TakesDamage, HasCollisionBehaviours {
 
+    public static class Input extends InputSchema {
+
+        private final Vector2 direction;
+        private final boolean using;
+
+        public Input(Vector2 direction, boolean using) {
+            this.direction = direction;
+            this.using = using;
+        }
+
+        public Input(Input input) {
+            this(input.direction, input.using);
+        }
+
+        public Vector2 direction() {
+            return direction.cpy();
+        }
+
+        public boolean using() {
+            return using;
+        }
+    }
+
     /*
      * Class that defines the main attributes of the classes Player, Enemy and Defender in the game.
      * @param health: The current health the GameCharacter has
@@ -19,11 +43,13 @@ public class Character extends WorldEntityWithSprite implements TakesDamage, Has
      * @param inventory: The Items the GameCharacter is able to use at a given point in the game
      * */
 
+    // measured in m/s
+    public static float SPEED = 10f;
+
     private String team;
     private float health = 0;
     private int level = 0;
     private ArrayList<Item> inventory = new ArrayList<>();
-    private Class<? extends CharacterInputDevice> inputDeviceType = CharacterInputDevice.class;
     private final ArrayList<CollisionBehaviour<?, ?>> collisionBehaviours = new ArrayList<>();
 
     public Character(Body body) {
@@ -62,14 +88,6 @@ public class Character extends WorldEntityWithSprite implements TakesDamage, Has
 
     public void setInventory(ArrayList<Item> inventory) {
         this.inventory = inventory;
-    }
-
-    public void setInputDeviceType(Class<? extends CharacterInputDevice> inputDeviceType) {
-        this.inputDeviceType = inputDeviceType;
-    }
-
-    public Class<? extends CharacterInputDevice> getInputDeviceType() {
-        return inputDeviceType;
     }
 
     @Override
